@@ -26,9 +26,6 @@ const SettingsRoles = lazy(() => import("../pages/settings/roles"));
 // Organization (Configuration)
 const Organization = lazy(() => import("../pages/organization"));
 
-// Services (Content)
-const Services = lazy(() => import("../pages/services"));
-
 // Logs (System Monitoring)
 const Logs = lazy(() => import("../pages/logs"));
 const LockScreen = lazy(() => import("../pages/lock-screen"));
@@ -88,14 +85,6 @@ export const protectedRoutes: RouteConfig[] = [
     },
 
     // CONFIGURATION SECTION
-    // Services
-    {
-        path: "/services",
-        element: <Services />,
-        layout: "default",
-        permissions: ["view services"],
-    },
-
     // Users
     {
         path: "/users",

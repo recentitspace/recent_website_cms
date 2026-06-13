@@ -6,7 +6,6 @@ import {
     Trash2,
     ClipboardList,
     Building2,
-    Layers,
 } from "lucide-react";
 
 // Import interface
@@ -18,19 +17,6 @@ export const sidebarMenu: MenuItem[] = [
         icon: LayoutDashboard,
         path: "/dashboard",
         permissions: ["view dashboard"],
-    },
-
-    // Content Section
-    {
-        title: "content",
-        isSection: true,
-        permissions: ["view services"],
-    },
-    {
-        title: "services",
-        icon: Layers,
-        path: "/services",
-        permissions: ["view services"],
     },
 
     // Configuration Section

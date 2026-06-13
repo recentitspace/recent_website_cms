@@ -51,12 +51,6 @@ class RolePermissionSeeder extends Seeder
 
             // view trash items
             "view trash items",
-
-            // services
-            'view services',
-            'create services',
-            'edit services',
-            'delete services',
         ];
 
         foreach ($permissions as $permission) {
