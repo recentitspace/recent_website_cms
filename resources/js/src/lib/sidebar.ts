@@ -6,6 +6,7 @@ import {
     Trash2,
     ClipboardList,
     Building2,
+    Image,
 } from "lucide-react";
 
 // Import interface
@@ -37,6 +38,19 @@ export const sidebarMenu: MenuItem[] = [
         path: "/settings",
         permissions: ["manage settings"],
 
+    },
+
+    // Website Content Section
+    {
+        title: "website_content",
+        isSection: true,
+        permissions: ["view media"],
+    },
+    {
+        title: "media_library",
+        icon: Image,
+        path: "/media",
+        permissions: ["view media"],
     },
 
     // System Monitoring Section

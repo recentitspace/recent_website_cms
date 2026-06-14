@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Enums\UserType;
-use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -15,10 +15,8 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
         $permissions = [
             // users
             'view users',
@@ -39,37 +37,43 @@ class RolePermissionSeeder extends Seeder
             // settings
             'manage settings',
 
-
             // reports
             'view reports',
 
             // logs
             'view logs',
 
-            // view dashboard
-            "view dashboard",
+            // dashboard
+            'view dashboard',
 
-            // view trash items
-            "view trash items",
+            // trash
+            'view trash items',
+
+            // media
+            'view media',
+            'upload media',
+            'edit media',
+            'delete media',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
-        // Create roles and assign permissions
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $adminRole->syncPermissions(Permission::all());
 
-        // 1. Admin - can do everything
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo(Permission::all()); // Admin gets all permissions
+        $adminUser = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin User',
+                'password' => bcrypt('password'),
+                'user_type' => UserType::ADMIN,
+            ]
+        );
 
-        // Create sample users and assign roles
-        $adminUser = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-            'user_type' => UserType::ADMIN,
-        ]);
-        $adminUser->assignRole('admin');
+        if (!$adminUser->hasRole('admin')) {
+            $adminUser->assignRole('admin');
+        }
     }
 }

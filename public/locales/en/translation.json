@@ -188,5 +188,7 @@
 
     "upload_items": "Upload Items",
     "system_monitoring": "System Monitoring",
-    "logs": "Logs"
+    "logs": "Logs",
+    "website_content": "Website Content",
+    "media_library": "Media Library"
 }

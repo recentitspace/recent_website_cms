@@ -30,6 +30,9 @@ Route::prefix('v1')->group(function () {
     // Organizations routes
     Route::prefix('organizations')->group(base_path('routes/api/v1/organizations.php'));
 
+    // Media routes
+    Route::prefix('media')->group(base_path('routes/api/v1/media.php'));
+
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
     Route::middleware('auth:sanctum')->post('/auth/profile-picture', [\App\Http\Controllers\Api\AuthController::class, 'updateProfilePicture']);

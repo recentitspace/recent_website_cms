@@ -30,6 +30,9 @@ const Organization = lazy(() => import("../pages/organization"));
 const Logs = lazy(() => import("../pages/logs"));
 const LockScreen = lazy(() => import("../pages/lock-screen"));
 
+// Website Content
+const Media = lazy(() => import("../pages/media"));
+
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
 const TrashUsers = lazy(() => import("../pages/trash/Users"));
@@ -91,6 +94,14 @@ export const protectedRoutes: RouteConfig[] = [
         element: <User />,
         layout: "default",
         permissions: ["view users"],
+    },
+
+    // WEBSITE CONTENT SECTION
+    {
+        path: "/media",
+        element: <Media />,
+        layout: "default",
+        permissions: ["view media"],
     },
 
     // Settings (with nested tabs)
