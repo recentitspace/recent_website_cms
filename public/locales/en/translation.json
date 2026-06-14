@@ -190,5 +190,7 @@
     "system_monitoring": "System Monitoring",
     "logs": "Logs",
     "website_content": "Website Content",
+    "site_settings": "Site Settings",
+    "social_links": "Social Links",
     "media_library": "Media Library"
 }

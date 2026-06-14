@@ -7,6 +7,8 @@ import {
     ClipboardList,
     Building2,
     Image,
+    Globe,
+    Share2,
 } from "lucide-react";
 
 // Import interface
@@ -44,7 +46,19 @@ export const sidebarMenu: MenuItem[] = [
     {
         title: "website_content",
         isSection: true,
-        permissions: ["view media"],
+        permissions: ["view media", "manage site settings", "view social links"],
+    },
+    {
+        title: "site_settings",
+        icon: Globe,
+        path: "/site-settings",
+        permissions: ["manage site settings"],
+    },
+    {
+        title: "social_links",
+        icon: Share2,
+        path: "/social-links",
+        permissions: ["view social links"],
     },
     {
         title: "media_library",

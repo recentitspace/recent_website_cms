@@ -33,6 +33,12 @@ Route::prefix('v1')->group(function () {
     // Media routes
     Route::prefix('media')->group(base_path('routes/api/v1/media.php'));
 
+    // Site settings routes
+    Route::prefix('site-settings')->group(base_path('routes/api/v1/site-settings.php'));
+
+    // Social links routes
+    Route::prefix('social-links')->group(base_path('routes/api/v1/social-links.php'));
+
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
     Route::middleware('auth:sanctum')->post('/auth/profile-picture', [\App\Http\Controllers\Api\AuthController::class, 'updateProfilePicture']);

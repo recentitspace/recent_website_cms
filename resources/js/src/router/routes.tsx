@@ -32,6 +32,8 @@ const LockScreen = lazy(() => import("../pages/lock-screen"));
 
 // Website Content
 const Media = lazy(() => import("../pages/media"));
+const SiteSettings = lazy(() => import("../pages/site-settings"));
+const SocialLinks = lazy(() => import("../pages/social-link"));
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
@@ -97,6 +99,18 @@ export const protectedRoutes: RouteConfig[] = [
     },
 
     // WEBSITE CONTENT SECTION
+    {
+        path: "/site-settings",
+        element: <SiteSettings />,
+        layout: "default",
+        permissions: ["manage site settings"],
+    },
+    {
+        path: "/social-links",
+        element: <SocialLinks />,
+        layout: "default",
+        permissions: ["view social links"],
+    },
     {
         path: "/media",
         element: <Media />,

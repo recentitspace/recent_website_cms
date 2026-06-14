@@ -5,3 +5,5 @@ export * from './common';
 export * from './role';
 export * from './mail';
 export * from './media';
+export * from './siteSetting';
+export * from './socialLink';

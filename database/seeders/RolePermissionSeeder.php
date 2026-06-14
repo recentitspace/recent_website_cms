@@ -54,6 +54,15 @@ class RolePermissionSeeder extends Seeder
             'upload media',
             'edit media',
             'delete media',
+
+            // site settings
+            'manage site settings',
+
+            // social links
+            'view social links',
+            'create social links',
+            'edit social links',
+            'delete social links',
         ];
 
         foreach ($permissions as $permission) {
