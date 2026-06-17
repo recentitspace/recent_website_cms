@@ -39,6 +39,10 @@ Route::prefix('v1')->group(function () {
     // Social links routes
     Route::prefix('social-links')->group(base_path('routes/api/v1/social-links.php'));
 
+    // Portfolio routes
+    Route::prefix('portfolio-categories')->group(base_path('routes/api/v1/portfolio-categories.php'));
+    Route::prefix('portfolio-items')->group(base_path('routes/api/v1/portfolio-items.php'));
+
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
     Route::middleware('auth:sanctum')->post('/auth/profile-picture', [\App\Http\Controllers\Api\AuthController::class, 'updateProfilePicture']);

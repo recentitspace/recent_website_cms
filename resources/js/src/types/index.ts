@@ -7,3 +7,5 @@ export * from './mail';
 export * from './media';
 export * from './siteSetting';
 export * from './socialLink';
+export * from './portfolioCategory';
+export * from './portfolioItem';

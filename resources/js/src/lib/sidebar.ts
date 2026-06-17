@@ -9,6 +9,7 @@ import {
     Image,
     Globe,
     Share2,
+    Briefcase,
 } from "lucide-react";
 
 // Import interface
@@ -46,7 +47,13 @@ export const sidebarMenu: MenuItem[] = [
     {
         title: "website_content",
         isSection: true,
-        permissions: ["view media", "manage site settings", "view social links"],
+        permissions: [
+            "view media",
+            "manage site settings",
+            "view social links",
+            "view portfolio categories",
+            "view portfolio items",
+        ],
     },
     {
         title: "site_settings",
@@ -65,6 +72,18 @@ export const sidebarMenu: MenuItem[] = [
         icon: Image,
         path: "/media",
         permissions: ["view media"],
+    },
+    {
+        title: "portfolio",
+        icon: Briefcase,
+        children: [
+            { title: "portfolio_categories", path: "/portfolio-categories" },
+            { title: "portfolio_items", path: "/portfolio-items" },
+        ],
+        permissions: [
+            "view portfolio categories",
+            "view portfolio items",
+        ],
     },
 
     // System Monitoring Section

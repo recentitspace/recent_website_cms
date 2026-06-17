@@ -2,6 +2,8 @@ import {
     Trash2,
     Users,
     Shield,
+    FolderTree,
+    Briefcase,
 } from "lucide-react";
 import React, { Suspense } from "react";
 import { useLocation, NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -28,6 +30,18 @@ const TrashIndex: React.FC = () => {
             title: t("trashed_roles"),
             icon: <Shield className="w-5 h-5" />,
             path: "/trash/roles",
+        },
+        {
+            id: "portfolio-categories",
+            title: t("trashed_portfolio_categories"),
+            icon: <FolderTree className="w-5 h-5" />,
+            path: "/trash/portfolio-categories",
+        },
+        {
+            id: "portfolio-items",
+            title: t("trashed_portfolio_items"),
+            icon: <Briefcase className="w-5 h-5" />,
+            path: "/trash/portfolio-items",
         },
     ];
 

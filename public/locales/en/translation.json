@@ -192,5 +192,10 @@
     "website_content": "Website Content",
     "site_settings": "Site Settings",
     "social_links": "Social Links",
-    "media_library": "Media Library"
+    "media_library": "Media Library",
+    "portfolio": "Portfolio",
+    "portfolio_categories": "Portfolio Categories",
+    "portfolio_items": "Portfolio Items",
+    "trashed_portfolio_categories": "Trashed Portfolio Categories",
+    "trashed_portfolio_items": "Trashed Portfolio Items"
 }

@@ -34,11 +34,15 @@ const LockScreen = lazy(() => import("../pages/lock-screen"));
 const Media = lazy(() => import("../pages/media"));
 const SiteSettings = lazy(() => import("../pages/site-settings"));
 const SocialLinks = lazy(() => import("../pages/social-link"));
+const PortfolioCategories = lazy(() => import("../pages/portfolio-category"));
+const PortfolioItems = lazy(() => import("../pages/portfolio-item"));
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
 const TrashUsers = lazy(() => import("../pages/trash/Users"));
 const TrashRoles = lazy(() => import("../pages/trash/Roles"));
+const TrashPortfolioCategories = lazy(() => import("../pages/trash/PortfolioCategories"));
+const TrashPortfolioItems = lazy(() => import("../pages/trash/PortfolioItems"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -117,6 +121,23 @@ export const protectedRoutes: RouteConfig[] = [
         layout: "default",
         permissions: ["view media"],
     },
+    {
+        path: "/portfolio-categories",
+        element: <PortfolioCategories />,
+        layout: "default",
+        permissions: ["view portfolio categories"],
+    },
+    {
+        path: "/portfolio-items",
+        element: <PortfolioItems />,
+        layout: "default",
+        permissions: ["view portfolio items"],
+    },
+    {
+        path: "/case-studies",
+        element: <Navigate to="/portfolio-items" replace />,
+        layout: "default",
+    },
 
     // Settings (with nested tabs)
     {
@@ -171,6 +192,18 @@ export const protectedRoutes: RouteConfig[] = [
             {
                 path: "roles",
                 element: <TrashRoles />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "portfolio-categories",
+                element: <TrashPortfolioCategories />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "portfolio-items",
+                element: <TrashPortfolioItems />,
                 layout: "default",
                 permissions: ["view trash items"],
             },
