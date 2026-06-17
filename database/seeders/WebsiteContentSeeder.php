@@ -2,15 +2,22 @@
 
 namespace Database\Seeders;
 
+use App\Concerns\ImportsRwebMedia;
 use App\Models\SiteSetting;
 use App\Models\SocialLink;
 use Illuminate\Database\Seeder;
 
 class WebsiteContentSeeder extends Seeder
 {
+    use ImportsRwebMedia;
+
     public function run(): void
     {
-        SiteSetting::firstOrCreate(
+        $logoLightId = $this->importMediaFromPath('assets/images/logo/logo.png', 'site');
+        $logoDarkId = $this->importMediaFromPath('assets/images/logo/logo-dark.png', 'site');
+        $faviconId = $this->importMediaFromPath('assets/images/favicon.png', 'site');
+
+        SiteSetting::updateOrCreate(
             ['id' => 1],
             [
                 'site_name' => 'Recent IT',
@@ -22,6 +29,9 @@ class WebsiteContentSeeder extends Seeder
                 'phone' => '+252611333381',
                 'address' => 'Taleex, Hodan, Mogadishu, Somalia',
                 'notification_email' => 'info@recent.so',
+                'logo_light_id' => $logoLightId,
+                'logo_dark_id' => $logoDarkId,
+                'favicon_id' => $faviconId,
             ]
         );
 
