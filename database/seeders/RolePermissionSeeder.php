@@ -75,6 +75,18 @@ class RolePermissionSeeder extends Seeder
             'create portfolio items',
             'edit portfolio items',
             'delete portfolio items',
+
+            // clients
+            'view clients',
+            'create clients',
+            'edit clients',
+            'delete clients',
+
+            // testimonials
+            'view testimonials',
+            'create testimonials',
+            'edit testimonials',
+            'delete testimonials',
         ];
 
         foreach ($permissions as $permission) {

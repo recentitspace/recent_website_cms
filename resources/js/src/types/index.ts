@@ -9,3 +9,5 @@ export * from './siteSetting';
 export * from './socialLink';
 export * from './portfolioCategory';
 export * from './portfolioItem';
+export * from './client';
+export * from './testimonial';

@@ -196,6 +196,10 @@
     "portfolio": "Portfolio",
     "portfolio_categories": "Portfolio Categories",
     "portfolio_items": "Portfolio Items",
+    "clients": "Clients",
+    "testimonials": "Testimonials",
     "trashed_portfolio_categories": "Trashed Portfolio Categories",
-    "trashed_portfolio_items": "Trashed Portfolio Items"
+    "trashed_portfolio_items": "Trashed Portfolio Items",
+    "trashed_clients": "Trashed Clients",
+    "trashed_testimonials": "Trashed Testimonials"
 }

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             WebsiteContentSeeder::class,
             PortfolioImportSeeder::class,
+            ClientsTestimonialsSeeder::class,
         ]);
     }
 }

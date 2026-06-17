@@ -36,6 +36,8 @@ const SiteSettings = lazy(() => import("../pages/site-settings"));
 const SocialLinks = lazy(() => import("../pages/social-link"));
 const PortfolioCategories = lazy(() => import("../pages/portfolio-category"));
 const PortfolioItems = lazy(() => import("../pages/portfolio-item"));
+const Clients = lazy(() => import("../pages/client"));
+const Testimonials = lazy(() => import("../pages/testimonial"));
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
@@ -43,6 +45,8 @@ const TrashUsers = lazy(() => import("../pages/trash/Users"));
 const TrashRoles = lazy(() => import("../pages/trash/Roles"));
 const TrashPortfolioCategories = lazy(() => import("../pages/trash/PortfolioCategories"));
 const TrashPortfolioItems = lazy(() => import("../pages/trash/PortfolioItems"));
+const TrashClients = lazy(() => import("../pages/trash/Clients"));
+const TrashTestimonials = lazy(() => import("../pages/trash/Testimonials"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -134,6 +138,18 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view portfolio items"],
     },
     {
+        path: "/clients",
+        element: <Clients />,
+        layout: "default",
+        permissions: ["view clients"],
+    },
+    {
+        path: "/testimonials",
+        element: <Testimonials />,
+        layout: "default",
+        permissions: ["view testimonials"],
+    },
+    {
         path: "/case-studies",
         element: <Navigate to="/portfolio-items" replace />,
         layout: "default",
@@ -204,6 +220,18 @@ export const protectedRoutes: RouteConfig[] = [
             {
                 path: "portfolio-items",
                 element: <TrashPortfolioItems />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "clients",
+                element: <TrashClients />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "testimonials",
+                element: <TrashTestimonials />,
                 layout: "default",
                 permissions: ["view trash items"],
             },

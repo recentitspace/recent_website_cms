@@ -10,6 +10,8 @@ import {
     Globe,
     Share2,
     Briefcase,
+    Handshake,
+    MessageSquareQuote,
 } from "lucide-react";
 
 // Import interface
@@ -53,6 +55,8 @@ export const sidebarMenu: MenuItem[] = [
             "view social links",
             "view portfolio categories",
             "view portfolio items",
+            "view clients",
+            "view testimonials",
         ],
     },
     {
@@ -84,6 +88,18 @@ export const sidebarMenu: MenuItem[] = [
             "view portfolio categories",
             "view portfolio items",
         ],
+    },
+    {
+        title: "clients",
+        icon: Handshake,
+        path: "/clients",
+        permissions: ["view clients"],
+    },
+    {
+        title: "testimonials",
+        icon: MessageSquareQuote,
+        path: "/testimonials",
+        permissions: ["view testimonials"],
     },
 
     // System Monitoring Section

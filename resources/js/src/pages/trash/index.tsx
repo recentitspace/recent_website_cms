@@ -4,6 +4,8 @@ import {
     Shield,
     FolderTree,
     Briefcase,
+    Handshake,
+    MessageSquareQuote,
 } from "lucide-react";
 import React, { Suspense } from "react";
 import { useLocation, NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -42,6 +44,18 @@ const TrashIndex: React.FC = () => {
             title: t("trashed_portfolio_items"),
             icon: <Briefcase className="w-5 h-5" />,
             path: "/trash/portfolio-items",
+        },
+        {
+            id: "clients",
+            title: t("trashed_clients"),
+            icon: <Handshake className="w-5 h-5" />,
+            path: "/trash/clients",
+        },
+        {
+            id: "testimonials",
+            title: t("trashed_testimonials"),
+            icon: <MessageSquareQuote className="w-5 h-5" />,
+            path: "/trash/testimonials",
         },
     ];
 
