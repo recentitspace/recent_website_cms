@@ -11,3 +11,5 @@ export * from './portfolioCategory';
 export * from './portfolioItem';
 export * from './client';
 export * from './testimonial';
+export * from './pricingSection';
+export * from './pricingPlan';

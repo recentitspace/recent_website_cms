@@ -12,6 +12,7 @@ import {
     Briefcase,
     Handshake,
     MessageSquareQuote,
+    DollarSign,
 } from "lucide-react";
 
 // Import interface
@@ -57,6 +58,8 @@ export const sidebarMenu: MenuItem[] = [
             "view portfolio items",
             "view clients",
             "view testimonials",
+            "view pricing sections",
+            "view pricing plans",
         ],
     },
     {
@@ -100,6 +103,18 @@ export const sidebarMenu: MenuItem[] = [
         icon: MessageSquareQuote,
         path: "/testimonials",
         permissions: ["view testimonials"],
+    },
+    {
+        title: "pricing",
+        icon: DollarSign,
+        children: [
+            { title: "pricing_sections", path: "/pricing-sections" },
+            { title: "pricing_plans", path: "/pricing-plans" },
+        ],
+        permissions: [
+            "view pricing sections",
+            "view pricing plans",
+        ],
     },
 
     // System Monitoring Section

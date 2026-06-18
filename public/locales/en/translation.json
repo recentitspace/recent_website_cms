@@ -198,8 +198,13 @@
     "portfolio_items": "Portfolio Items",
     "clients": "Clients",
     "testimonials": "Testimonials",
+    "pricing": "Pricing",
+    "pricing_sections": "Pricing Sections",
+    "pricing_plans": "Pricing Plans",
     "trashed_portfolio_categories": "Trashed Portfolio Categories",
     "trashed_portfolio_items": "Trashed Portfolio Items",
     "trashed_clients": "Trashed Clients",
-    "trashed_testimonials": "Trashed Testimonials"
+    "trashed_testimonials": "Trashed Testimonials",
+    "trashed_pricing_sections": "Trashed Pricing Sections",
+    "trashed_pricing_plans": "Trashed Pricing Plans"
 }

@@ -38,6 +38,8 @@ const PortfolioCategories = lazy(() => import("../pages/portfolio-category"));
 const PortfolioItems = lazy(() => import("../pages/portfolio-item"));
 const Clients = lazy(() => import("../pages/client"));
 const Testimonials = lazy(() => import("../pages/testimonial"));
+const PricingSections = lazy(() => import("../pages/pricing-section"));
+const PricingPlans = lazy(() => import("../pages/pricing-plan"));
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
@@ -47,6 +49,8 @@ const TrashPortfolioCategories = lazy(() => import("../pages/trash/PortfolioCate
 const TrashPortfolioItems = lazy(() => import("../pages/trash/PortfolioItems"));
 const TrashClients = lazy(() => import("../pages/trash/Clients"));
 const TrashTestimonials = lazy(() => import("../pages/trash/Testimonials"));
+const TrashPricingSections = lazy(() => import("../pages/trash/PricingSections"));
+const TrashPricingPlans = lazy(() => import("../pages/trash/PricingPlans"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -150,6 +154,18 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view testimonials"],
     },
     {
+        path: "/pricing-sections",
+        element: <PricingSections />,
+        layout: "default",
+        permissions: ["view pricing sections"],
+    },
+    {
+        path: "/pricing-plans",
+        element: <PricingPlans />,
+        layout: "default",
+        permissions: ["view pricing plans"],
+    },
+    {
         path: "/case-studies",
         element: <Navigate to="/portfolio-items" replace />,
         layout: "default",
@@ -232,6 +248,18 @@ export const protectedRoutes: RouteConfig[] = [
             {
                 path: "testimonials",
                 element: <TrashTestimonials />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "pricing-sections",
+                element: <TrashPricingSections />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "pricing-plans",
+                element: <TrashPricingPlans />,
                 layout: "default",
                 permissions: ["view trash items"],
             },

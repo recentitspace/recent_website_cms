@@ -44,6 +44,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('portfolio-items')->group(base_path('routes/api/v1/portfolio-items.php'));
     Route::prefix('clients')->group(base_path('routes/api/v1/clients.php'));
     Route::prefix('testimonials')->group(base_path('routes/api/v1/testimonials.php'));
+    Route::prefix('pricing-sections')->group(base_path('routes/api/v1/pricing-sections.php'));
+    Route::prefix('pricing-plans')->group(base_path('routes/api/v1/pricing-plans.php'));
 
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);

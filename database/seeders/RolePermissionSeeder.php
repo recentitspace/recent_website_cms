@@ -87,6 +87,18 @@ class RolePermissionSeeder extends Seeder
             'create testimonials',
             'edit testimonials',
             'delete testimonials',
+
+            // pricing sections
+            'view pricing sections',
+            'create pricing sections',
+            'edit pricing sections',
+            'delete pricing sections',
+
+            // pricing plans
+            'view pricing plans',
+            'create pricing plans',
+            'edit pricing plans',
+            'delete pricing plans',
         ];
 
         foreach ($permissions as $permission) {
