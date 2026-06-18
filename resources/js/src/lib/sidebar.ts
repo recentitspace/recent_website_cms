@@ -13,6 +13,7 @@ import {
     Handshake,
     MessageSquareQuote,
     DollarSign,
+    Layers,
 } from "lucide-react";
 
 // Import interface
@@ -60,6 +61,8 @@ export const sidebarMenu: MenuItem[] = [
             "view testimonials",
             "view pricing sections",
             "view pricing plans",
+            "view service categories",
+            "view service items",
         ],
     },
     {
@@ -114,6 +117,18 @@ export const sidebarMenu: MenuItem[] = [
         permissions: [
             "view pricing sections",
             "view pricing plans",
+        ],
+    },
+    {
+        title: "services",
+        icon: Layers,
+        children: [
+            { title: "service_categories", path: "/service-categories" },
+            { title: "service_items", path: "/service-items" },
+        ],
+        permissions: [
+            "view service categories",
+            "view service items",
         ],
     },
 

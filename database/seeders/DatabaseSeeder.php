@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             PortfolioImportSeeder::class,
             ClientsTestimonialsSeeder::class,
             PricingImportSeeder::class,
+            ServicesImportSeeder::class,
         ]);
     }
 }

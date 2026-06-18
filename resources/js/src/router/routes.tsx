@@ -40,6 +40,8 @@ const Clients = lazy(() => import("../pages/client"));
 const Testimonials = lazy(() => import("../pages/testimonial"));
 const PricingSections = lazy(() => import("../pages/pricing-section"));
 const PricingPlans = lazy(() => import("../pages/pricing-plan"));
+const ServiceCategories = lazy(() => import("../pages/service-category"));
+const ServiceItems = lazy(() => import("../pages/service-item"));
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
@@ -51,6 +53,8 @@ const TrashClients = lazy(() => import("../pages/trash/Clients"));
 const TrashTestimonials = lazy(() => import("../pages/trash/Testimonials"));
 const TrashPricingSections = lazy(() => import("../pages/trash/PricingSections"));
 const TrashPricingPlans = lazy(() => import("../pages/trash/PricingPlans"));
+const TrashServiceCategories = lazy(() => import("../pages/trash/ServiceCategories"));
+const TrashServiceItems = lazy(() => import("../pages/trash/ServiceItems"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -166,6 +170,18 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view pricing plans"],
     },
     {
+        path: "/service-categories",
+        element: <ServiceCategories />,
+        layout: "default",
+        permissions: ["view service categories"],
+    },
+    {
+        path: "/service-items",
+        element: <ServiceItems />,
+        layout: "default",
+        permissions: ["view service items"],
+    },
+    {
         path: "/case-studies",
         element: <Navigate to="/portfolio-items" replace />,
         layout: "default",
@@ -260,6 +276,18 @@ export const protectedRoutes: RouteConfig[] = [
             {
                 path: "pricing-plans",
                 element: <TrashPricingPlans />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "service-categories",
+                element: <TrashServiceCategories />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "service-items",
+                element: <TrashServiceItems />,
                 layout: "default",
                 permissions: ["view trash items"],
             },

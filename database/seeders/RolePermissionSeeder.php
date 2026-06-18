@@ -99,6 +99,18 @@ class RolePermissionSeeder extends Seeder
             'create pricing plans',
             'edit pricing plans',
             'delete pricing plans',
+
+            // service categories
+            'view service categories',
+            'create service categories',
+            'edit service categories',
+            'delete service categories',
+
+            // service items
+            'view service items',
+            'create service items',
+            'edit service items',
+            'delete service items',
         ];
 
         foreach ($permissions as $permission) {

@@ -13,3 +13,5 @@ export * from './client';
 export * from './testimonial';
 export * from './pricingSection';
 export * from './pricingPlan';
+export * from './serviceCategory';
+export * from './serviceItem';

@@ -201,10 +201,15 @@
     "pricing": "Pricing",
     "pricing_sections": "Pricing Sections",
     "pricing_plans": "Pricing Plans",
+    "services": "Services",
+    "service_categories": "Service Categories",
+    "service_items": "Service Items",
     "trashed_portfolio_categories": "Trashed Portfolio Categories",
     "trashed_portfolio_items": "Trashed Portfolio Items",
     "trashed_clients": "Trashed Clients",
     "trashed_testimonials": "Trashed Testimonials",
     "trashed_pricing_sections": "Trashed Pricing Sections",
-    "trashed_pricing_plans": "Trashed Pricing Plans"
+    "trashed_pricing_plans": "Trashed Pricing Plans",
+    "trashed_service_categories": "Trashed Service Categories",
+    "trashed_service_items": "Trashed Service Items"
 }

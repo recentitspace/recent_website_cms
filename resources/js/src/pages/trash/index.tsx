@@ -7,6 +7,7 @@ import {
     Handshake,
     MessageSquareQuote,
     DollarSign,
+    Layers,
 } from "lucide-react";
 import React, { Suspense } from "react";
 import { useLocation, NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -69,6 +70,18 @@ const TrashIndex: React.FC = () => {
             title: t("trashed_pricing_plans"),
             icon: <DollarSign className="w-5 h-5" />,
             path: "/trash/pricing-plans",
+        },
+        {
+            id: "service-categories",
+            title: t("trashed_service_categories"),
+            icon: <Layers className="w-5 h-5" />,
+            path: "/trash/service-categories",
+        },
+        {
+            id: "service-items",
+            title: t("trashed_service_items"),
+            icon: <Layers className="w-5 h-5" />,
+            path: "/trash/service-items",
         },
     ];
 
