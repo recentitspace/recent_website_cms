@@ -48,6 +48,10 @@ Route::prefix('v1')->group(function () {
     Route::prefix('pricing-plans')->group(base_path('routes/api/v1/pricing-plans.php'));
     Route::prefix('service-categories')->group(base_path('routes/api/v1/service-categories.php'));
     Route::prefix('service-items')->group(base_path('routes/api/v1/service-items.php'));
+    Route::prefix('faqs')->group(base_path('routes/api/v1/faqs.php'));
+    Route::prefix('stat-counters')->group(base_path('routes/api/v1/stat-counters.php'));
+    Route::prefix('page-blocks')->group(base_path('routes/api/v1/page-blocks.php'));
+    Route::prefix('page-block-items')->group(base_path('routes/api/v1/page-block-items.php'));
 
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);

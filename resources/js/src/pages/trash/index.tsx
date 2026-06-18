@@ -8,6 +8,8 @@ import {
     MessageSquareQuote,
     DollarSign,
     Layers,
+    HelpCircle,
+    FileText,
 } from "lucide-react";
 import React, { Suspense } from "react";
 import { useLocation, NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -82,6 +84,30 @@ const TrashIndex: React.FC = () => {
             title: t("trashed_service_items"),
             icon: <Layers className="w-5 h-5" />,
             path: "/trash/service-items",
+        },
+        {
+            id: "faqs",
+            title: t("trashed_faqs"),
+            icon: <HelpCircle className="w-5 h-5" />,
+            path: "/trash/faqs",
+        },
+        {
+            id: "stat-counters",
+            title: t("trashed_stat_counters"),
+            icon: <FileText className="w-5 h-5" />,
+            path: "/trash/stat-counters",
+        },
+        {
+            id: "page-blocks",
+            title: t("trashed_page_blocks"),
+            icon: <FileText className="w-5 h-5" />,
+            path: "/trash/page-blocks",
+        },
+        {
+            id: "page-block-items",
+            title: t("trashed_page_block_items"),
+            icon: <FileText className="w-5 h-5" />,
+            path: "/trash/page-block-items",
         },
     ];
 

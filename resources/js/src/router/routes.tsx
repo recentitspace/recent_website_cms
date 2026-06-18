@@ -42,6 +42,10 @@ const PricingSections = lazy(() => import("../pages/pricing-section"));
 const PricingPlans = lazy(() => import("../pages/pricing-plan"));
 const ServiceCategories = lazy(() => import("../pages/service-category"));
 const ServiceItems = lazy(() => import("../pages/service-item"));
+const Faqs = lazy(() => import("../pages/faq"));
+const StatCounters = lazy(() => import("../pages/stat-counter"));
+const PageBlocks = lazy(() => import("../pages/page-block"));
+const PageBlockItems = lazy(() => import("../pages/page-block-item"));
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
@@ -55,6 +59,10 @@ const TrashPricingSections = lazy(() => import("../pages/trash/PricingSections")
 const TrashPricingPlans = lazy(() => import("../pages/trash/PricingPlans"));
 const TrashServiceCategories = lazy(() => import("../pages/trash/ServiceCategories"));
 const TrashServiceItems = lazy(() => import("../pages/trash/ServiceItems"));
+const TrashFaqs = lazy(() => import("../pages/trash/Faqs"));
+const TrashStatCounters = lazy(() => import("../pages/trash/StatCounters"));
+const TrashPageBlocks = lazy(() => import("../pages/trash/PageBlocks"));
+const TrashPageBlockItems = lazy(() => import("../pages/trash/PageBlockItems"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -182,6 +190,30 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view service items"],
     },
     {
+        path: "/faqs",
+        element: <Faqs />,
+        layout: "default",
+        permissions: ["view faqs"],
+    },
+    {
+        path: "/stat-counters",
+        element: <StatCounters />,
+        layout: "default",
+        permissions: ["view stat counters"],
+    },
+    {
+        path: "/page-blocks",
+        element: <PageBlocks />,
+        layout: "default",
+        permissions: ["view page blocks"],
+    },
+    {
+        path: "/page-block-items",
+        element: <PageBlockItems />,
+        layout: "default",
+        permissions: ["view page block items"],
+    },
+    {
         path: "/case-studies",
         element: <Navigate to="/portfolio-items" replace />,
         layout: "default",
@@ -288,6 +320,30 @@ export const protectedRoutes: RouteConfig[] = [
             {
                 path: "service-items",
                 element: <TrashServiceItems />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "faqs",
+                element: <TrashFaqs />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "stat-counters",
+                element: <TrashStatCounters />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "page-blocks",
+                element: <TrashPageBlocks />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "page-block-items",
+                element: <TrashPageBlockItems />,
                 layout: "default",
                 permissions: ["view trash items"],
             },

@@ -204,6 +204,10 @@
     "services": "Services",
     "service_categories": "Service Categories",
     "service_items": "Service Items",
+    "faqs": "FAQs",
+    "stat_counters": "Stat Counters",
+    "page_blocks": "Page Blocks",
+    "page_block_items": "Page Block Items",
     "trashed_portfolio_categories": "Trashed Portfolio Categories",
     "trashed_portfolio_items": "Trashed Portfolio Items",
     "trashed_clients": "Trashed Clients",
@@ -211,5 +215,9 @@
     "trashed_pricing_sections": "Trashed Pricing Sections",
     "trashed_pricing_plans": "Trashed Pricing Plans",
     "trashed_service_categories": "Trashed Service Categories",
-    "trashed_service_items": "Trashed Service Items"
+    "trashed_service_items": "Trashed Service Items",
+    "trashed_faqs": "Trashed FAQs",
+    "trashed_stat_counters": "Trashed Stat Counters",
+    "trashed_page_blocks": "Trashed Page Blocks",
+    "trashed_page_block_items": "Trashed Page Block Items"
 }

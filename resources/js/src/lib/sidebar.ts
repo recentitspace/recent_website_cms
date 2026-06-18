@@ -14,6 +14,7 @@ import {
     MessageSquareQuote,
     DollarSign,
     Layers,
+    FileText,
 } from "lucide-react";
 
 // Import interface
@@ -63,6 +64,10 @@ export const sidebarMenu: MenuItem[] = [
             "view pricing plans",
             "view service categories",
             "view service items",
+            "view faqs",
+            "view stat counters",
+            "view page blocks",
+            "view page block items",
         ],
     },
     {
@@ -129,6 +134,22 @@ export const sidebarMenu: MenuItem[] = [
         permissions: [
             "view service categories",
             "view service items",
+        ],
+    },
+    {
+        title: "pages",
+        icon: FileText,
+        children: [
+            { title: "faqs", path: "/faqs" },
+            { title: "stat_counters", path: "/stat-counters" },
+            { title: "page_blocks", path: "/page-blocks" },
+            { title: "page_block_items", path: "/page-block-items" },
+        ],
+        permissions: [
+            "view faqs",
+            "view stat counters",
+            "view page blocks",
+            "view page block items",
         ],
     },
 

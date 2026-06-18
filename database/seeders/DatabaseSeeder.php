@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ClientsTestimonialsSeeder::class,
             PricingImportSeeder::class,
             ServicesImportSeeder::class,
+            PageContentImportSeeder::class,
         ]);
     }
 }

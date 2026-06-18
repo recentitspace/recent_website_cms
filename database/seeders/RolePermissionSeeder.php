@@ -111,6 +111,30 @@ class RolePermissionSeeder extends Seeder
             'create service items',
             'edit service items',
             'delete service items',
+
+            // faqs
+            'view faqs',
+            'create faqs',
+            'edit faqs',
+            'delete faqs',
+
+            // stat counters
+            'view stat counters',
+            'create stat counters',
+            'edit stat counters',
+            'delete stat counters',
+
+            // page blocks
+            'view page blocks',
+            'create page blocks',
+            'edit page blocks',
+            'delete page blocks',
+
+            // page block items
+            'view page block items',
+            'create page block items',
+            'edit page block items',
+            'delete page block items',
         ];
 
         foreach ($permissions as $permission) {
