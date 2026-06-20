@@ -77,6 +77,35 @@ const ServiceCategoryDetail: React.FC<ServiceCategoryDetailProps> = ({ categoryI
                 <span className="font-medium text-gray-500">CTA Text</span>
                 <p>{category.cta_text}</p>
             </div>
+            {category.process_title && (
+                <div>
+                    <span className="font-medium text-gray-500">Process Title</span>
+                    <p>{category.process_title}</p>
+                </div>
+            )}
+            {category.process_subtitle && (
+                <div>
+                    <span className="font-medium text-gray-500">Process Subtitle</span>
+                    <p>{category.process_subtitle}</p>
+                </div>
+            )}
+            {category.process_steps && category.process_steps.length > 0 && (
+                <div>
+                    <span className="font-medium text-gray-500">Process Steps</span>
+                    <ol className="mt-1 list-inside list-decimal space-y-2">
+                        {category.process_steps.map((step, index) => (
+                            <li key={`${step.title}-${index}`}>
+                                <span className="font-medium">{step.title}</span>
+                                {step.description && (
+                                    <p className="whitespace-pre-wrap text-gray-600 dark:text-gray-300">
+                                        {step.description}
+                                    </p>
+                                )}
+                            </li>
+                        ))}
+                    </ol>
+                </div>
+            )}
             <div>
                 <span className="font-medium text-gray-500">Sort Order</span>
                 <p>{category.sort_order}</p>

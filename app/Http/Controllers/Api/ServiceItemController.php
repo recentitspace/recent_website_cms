@@ -20,7 +20,7 @@ class ServiceItemController extends BaseController
 
     protected $defaultSortDirection = 'asc';
 
-    protected $relationships = ['category', 'icon'];
+    protected $relationships = ['category', 'icon', 'heroImage'];
 
     protected $validationRules = [
         'store' => [
@@ -29,8 +29,18 @@ class ServiceItemController extends BaseController
             'slug' => 'nullable|string|max:255',
             'icon_id' => 'nullable|exists:media,id',
             'page_path' => 'required|string|max:500',
+            'detail_hero_title' => 'nullable|string|max:255',
+            'detail_hero_description' => 'nullable|string',
+            'hero_image_id' => 'nullable|exists:media,id',
             'highlights' => 'nullable|array',
             'highlights.*' => 'string|max:500',
+            'process_title' => 'nullable|string|max:255',
+            'process_subtitle' => 'nullable|string|max:500',
+            'process_steps' => 'nullable|array',
+            'process_steps.*.title' => 'required_with:process_steps|string|max:255',
+            'process_steps.*.description' => 'nullable|string',
+            'process_steps.*.tasks' => 'nullable|array',
+            'process_steps.*.tasks.*' => 'string|max:500',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
             'show_on_home' => 'nullable|boolean',
@@ -41,8 +51,18 @@ class ServiceItemController extends BaseController
             'slug' => 'sometimes|nullable|string|max:255',
             'icon_id' => 'nullable|exists:media,id',
             'page_path' => 'sometimes|required|string|max:500',
+            'detail_hero_title' => 'nullable|string|max:255',
+            'detail_hero_description' => 'nullable|string',
+            'hero_image_id' => 'nullable|exists:media,id',
             'highlights' => 'nullable|array',
             'highlights.*' => 'string|max:500',
+            'process_title' => 'nullable|string|max:255',
+            'process_subtitle' => 'nullable|string|max:500',
+            'process_steps' => 'nullable|array',
+            'process_steps.*.title' => 'required_with:process_steps|string|max:255',
+            'process_steps.*.description' => 'nullable|string',
+            'process_steps.*.tasks' => 'nullable|array',
+            'process_steps.*.tasks.*' => 'string|max:500',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
             'show_on_home' => 'nullable|boolean',

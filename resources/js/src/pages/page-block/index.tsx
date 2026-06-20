@@ -19,6 +19,7 @@ const pageFilterOptions = [
     { value: "home", label: "Home" },
     { value: "about", label: "About" },
     { value: "faq", label: "FAQ" },
+    { value: "contact", label: "Contact" },
 ];
 
 const PageBlockList = () => {
@@ -192,15 +193,10 @@ const PageBlockList = () => {
             <DataTableWithSidebar<IPageBlock>
                 title="Page Block Table"
                 columns={columns}
-                fetchData={(params) =>
-                    pageBlockApi.getAll({
-                        ...params,
-                        ...(pageFilter ? { page_name: pageFilter } : {}),
-                    })
-                }
+                fetchData={(params) => pageBlockApi.getAll(params)}
                 searchFields={["page", "key", "title", "subtitle"]}
                 sortCol="sort_order"
-                query={{ page_name: pageFilter || undefined }}
+                query={pageFilter ? { page: pageFilter } : {}}
                 rowSelectionEnabled={true}
                 onSelectionChange={setSelectedRecords}
                 searchable={true}

@@ -16,7 +16,13 @@ class ServiceItem extends Model
         'slug',
         'icon_id',
         'page_path',
+        'detail_hero_title',
+        'detail_hero_description',
+        'hero_image_id',
         'highlights',
+        'process_title',
+        'process_subtitle',
+        'process_steps',
         'sort_order',
         'is_active',
         'show_on_home',
@@ -27,7 +33,9 @@ class ServiceItem extends Model
         return [
             'service_category_id' => 'integer',
             'icon_id' => 'integer',
+            'hero_image_id' => 'integer',
             'highlights' => 'array',
+            'process_steps' => 'array',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
             'show_on_home' => 'boolean',
@@ -43,5 +51,10 @@ class ServiceItem extends Model
     public function icon(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'icon_id');
+    }
+
+    public function heroImage(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'hero_image_id');
     }
 }

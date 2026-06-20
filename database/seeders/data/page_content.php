@@ -233,5 +233,12 @@ return [
             'subtitle' => 'Our FAQ',
             'sort_order' => 2,
         ],
+        [
+            'page' => 'contact',
+            'key' => 'contact_hero',
+            'title' => "Don't hesitate to reach out",
+            'subtitle' => "Have a question or a project in mind? We're here to help. Reach out to us anytime and our team will get back to you as soon as possible.",
+            'sort_order' => 1,
+        ],
     ],
 ];

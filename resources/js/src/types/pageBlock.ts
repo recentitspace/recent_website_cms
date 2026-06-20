@@ -1,7 +1,7 @@
 import { ITimestamped } from "./common";
 import { IMedia } from "./media";
 
-export type PageName = "home" | "about" | "faq";
+export type PageName = "home" | "about" | "faq" | "contact";
 
 export interface IPageBlock extends ITimestamped {
     id: number;

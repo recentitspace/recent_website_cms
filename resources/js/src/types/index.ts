@@ -15,6 +15,7 @@ export * from './pricingSection';
 export * from './pricingPlan';
 export * from './serviceCategory';
 export * from './serviceItem';
+export * from './processStep';
 export * from './faq';
 export * from './statCounter';
 export * from './pageBlock';

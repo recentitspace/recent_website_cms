@@ -21,6 +21,9 @@ class ServiceCategory extends Model
         'listing_subtitle',
         'page_path',
         'cta_text',
+        'process_title',
+        'process_subtitle',
+        'process_steps',
         'sort_order',
         'is_active',
         'show_on_home',
@@ -34,6 +37,7 @@ class ServiceCategory extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
             'show_on_home' => 'boolean',
+            'process_steps' => 'array',
             'deleted_at' => 'datetime',
         ];
     }

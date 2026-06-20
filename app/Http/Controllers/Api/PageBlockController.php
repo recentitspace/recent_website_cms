@@ -23,7 +23,7 @@ class PageBlockController extends BaseController
 
     protected $validationRules = [
         'store' => [
-            'page' => 'required|string|in:home,about,faq',
+            'page' => 'required|string|in:home,about,faq,contact',
             'key' => 'required|string|max:100|unique:page_blocks,key',
             'title' => 'nullable|string|max:500',
             'subtitle' => 'nullable|string|max:500',
@@ -38,7 +38,7 @@ class PageBlockController extends BaseController
             'is_active' => 'nullable|boolean',
         ],
         'update' => [
-            'page' => 'sometimes|required|string|in:home,about,faq',
+            'page' => 'sometimes|required|string|in:home,about,faq,contact',
             'key' => 'sometimes|required|string|max:100',
             'title' => 'nullable|string|max:500',
             'subtitle' => 'nullable|string|max:500',
@@ -57,10 +57,6 @@ class PageBlockController extends BaseController
     public function index(Request $request)
     {
         $query = $this->model::query();
-
-        if ($request->filled('page_name')) {
-            $query->where('page', $request->string('page_name'));
-        }
 
         $query = $this->applyApiFilters(
             $query,

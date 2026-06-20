@@ -18,10 +18,11 @@ const pageOptions = [
     { value: "home", label: "Home" },
     { value: "about", label: "About" },
     { value: "faq", label: "FAQ" },
+    { value: "contact", label: "Contact" },
 ];
 
 const pageBlockSchema = z.object({
-    page: z.enum(["home", "about", "faq"]),
+    page: z.enum(["home", "about", "faq", "contact"]),
     key: z.string().min(1, "Key is required"),
     title: z.string().optional(),
     subtitle: z.string().optional(),

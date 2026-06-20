@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -13,6 +14,11 @@ import FormTextarea from "../../../components/form/FormTextarea";
 import { serviceCategoryApi } from "../../../services/serviceCategory";
 import { IMedia, IServiceCategory } from "../../../types";
 
+const processStepSchema = z.object({
+    title: z.string().min(1, "Step title is required"),
+    description: z.string().optional(),
+});
+
 const categorySchema = z.object({
     title: z.string().min(1, "Title is required"),
     slug: z.string().optional(),
@@ -23,6 +29,9 @@ const categorySchema = z.object({
     listing_subtitle: z.string().optional(),
     page_path: z.string().min(1, "Page path is required"),
     cta_text: z.string().optional(),
+    process_title: z.string().optional(),
+    process_subtitle: z.string().optional(),
+    process_steps: z.array(processStepSchema).optional(),
     sort_order: z.coerce.number().min(0).optional(),
     is_active: z.boolean().optional(),
     show_on_home: z.boolean().optional(),
@@ -70,11 +79,20 @@ const ServiceCategoryForm: React.FC<ServiceCategoryFormProps> = ({
             listing_subtitle: "",
             page_path: "",
             cta_text: "Get started",
+            process_title: "",
+            process_subtitle: "",
+            process_steps: [],
             sort_order: 0,
             is_active: true,
             show_on_home: true,
         },
     });
+
+    const { fields: processStepFields, append: appendProcessStep, remove: removeProcessStep } =
+        useFieldArray({
+            control,
+            name: "process_steps",
+        });
 
     useEffect(() => {
         if (editCategory) {
@@ -88,6 +106,14 @@ const ServiceCategoryForm: React.FC<ServiceCategoryFormProps> = ({
                 listing_subtitle: editCategory.listing_subtitle || "",
                 page_path: editCategory.page_path,
                 cta_text: editCategory.cta_text || "Get started",
+                process_title: editCategory.process_title || "",
+                process_subtitle: editCategory.process_subtitle || "",
+                process_steps: editCategory.process_steps?.length
+                    ? editCategory.process_steps.map((step) => ({
+                          title: step.title,
+                          description: step.description || "",
+                      }))
+                    : [],
                 sort_order: editCategory.sort_order,
                 is_active: editCategory.is_active,
                 show_on_home: editCategory.show_on_home,
@@ -97,18 +123,27 @@ const ServiceCategoryForm: React.FC<ServiceCategoryFormProps> = ({
         }
     }, [editCategory, reset]);
 
+    const buildPayload = (data: CategoryFormData) => ({
+        ...data,
+        slug: data.slug?.trim() || undefined,
+        hero_title: data.hero_title?.trim() || null,
+        description: data.description?.trim() || null,
+        listing_subtitle: data.listing_subtitle?.trim() || null,
+        cta_text: data.cta_text?.trim() || "Get started",
+        process_title: data.process_title?.trim() || null,
+        process_subtitle: data.process_subtitle?.trim() || null,
+        process_steps: data.process_steps?.length
+            ? data.process_steps.map((step) => ({
+                  title: step.title.trim(),
+                  description: step.description?.trim() || null,
+              }))
+            : [],
+        icon_id: data.icon_id || null,
+        hero_image_id: data.hero_image_id || null,
+    });
+
     const createMutation = useMutation({
-        mutationFn: (data: CategoryFormData) =>
-            serviceCategoryApi.create({
-                ...data,
-                slug: data.slug?.trim() || undefined,
-                hero_title: data.hero_title?.trim() || null,
-                description: data.description?.trim() || null,
-                listing_subtitle: data.listing_subtitle?.trim() || null,
-                cta_text: data.cta_text?.trim() || "Get started",
-                icon_id: data.icon_id || null,
-                hero_image_id: data.hero_image_id || null,
-            }),
+        mutationFn: (data: CategoryFormData) => serviceCategoryApi.create(buildPayload(data)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Service Category Table"] });
             queryClient.invalidateQueries({ queryKey: ["Service Categories Select"] });
@@ -122,16 +157,7 @@ const ServiceCategoryForm: React.FC<ServiceCategoryFormProps> = ({
 
     const updateMutation = useMutation({
         mutationFn: (data: CategoryFormData) =>
-            serviceCategoryApi.update(editCategory!.id, {
-                ...data,
-                slug: data.slug?.trim() || undefined,
-                hero_title: data.hero_title?.trim() || null,
-                description: data.description?.trim() || null,
-                listing_subtitle: data.listing_subtitle?.trim() || null,
-                cta_text: data.cta_text?.trim() || "Get started",
-                icon_id: data.icon_id || null,
-                hero_image_id: data.hero_image_id || null,
-            }),
+            serviceCategoryApi.update(editCategory!.id, buildPayload(data)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Service Category Table"] });
             queryClient.invalidateQueries({ queryKey: ["Service Categories Select"] });
@@ -290,6 +316,104 @@ const ServiceCategoryForm: React.FC<ServiceCategoryFormProps> = ({
                     />
                 )}
             />
+
+            <Controller
+                name="process_title"
+                control={control}
+                render={({ field }) => (
+                    <FormInput
+                        label="Process Title"
+                        value={field.value || ""}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        error={errors.process_title?.message}
+                    />
+                )}
+            />
+
+            <Controller
+                name="process_subtitle"
+                control={control}
+                render={({ field }) => (
+                    <FormInput
+                        label="Process Subtitle"
+                        value={field.value || ""}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        error={errors.process_subtitle?.message}
+                    />
+                )}
+            />
+
+            <div>
+                <div className="mb-2 flex items-center justify-between">
+                    <label className="font-medium">Process Steps</label>
+                    <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary gap-1"
+                        onClick={() => appendProcessStep({ title: "", description: "" })}
+                    >
+                        <Plus size={14} />
+                        Add Step
+                    </button>
+                </div>
+
+                {processStepFields.length === 0 && (
+                    <p className="text-sm text-gray-500">No process steps added yet.</p>
+                )}
+
+                <div className="space-y-3">
+                    {processStepFields.map((field, index) => (
+                        <div
+                            key={field.id}
+                            className="rounded border border-gray-200 p-3 dark:border-gray-700"
+                        >
+                            <div className="mb-2 flex items-start justify-between gap-2">
+                                <span className="text-sm font-medium text-gray-500">
+                                    Step {index + 1}
+                                </span>
+                                <button
+                                    type="button"
+                                    className="text-danger hover:opacity-80"
+                                    onClick={() => removeProcessStep(index)}
+                                    aria-label={`Remove step ${index + 1}`}
+                                >
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
+
+                            <Controller
+                                name={`process_steps.${index}.title`}
+                                control={control}
+                                render={({ field: titleField }) => (
+                                    <FormInput
+                                        label="Title"
+                                        value={titleField.value || ""}
+                                        onChange={titleField.onChange}
+                                        onBlur={titleField.onBlur}
+                                        error={errors.process_steps?.[index]?.title?.message}
+                                    />
+                                )}
+                            />
+
+                            <Controller
+                                name={`process_steps.${index}.description`}
+                                control={control}
+                                render={({ field: descriptionField }) => (
+                                    <FormTextarea
+                                        label="Description"
+                                        value={descriptionField.value || ""}
+                                        onChange={descriptionField.onChange}
+                                        onBlur={descriptionField.onBlur}
+                                        error={errors.process_steps?.[index]?.description?.message}
+                                        rows={3}
+                                    />
+                                )}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             <Controller
                 name="sort_order"
