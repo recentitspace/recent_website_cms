@@ -30,6 +30,10 @@ const FaqDetail: React.FC<FaqDetailProps> = ({ faqId }) => {
             <div>
                 <h3 className="text-xl font-bold">{faq.question}</h3>
             </div>
+            <div>
+                <span className="font-medium text-gray-500">Context</span>
+                <p>{faq.service_category?.title || "FAQ Page"}</p>
+            </div>
             {faq.answer_paragraphs && faq.answer_paragraphs.length > 0 && (
                 <div>
                     <span className="font-medium text-gray-500">Answer</span>

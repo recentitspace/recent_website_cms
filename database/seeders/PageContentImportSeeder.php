@@ -6,6 +6,7 @@ use App\Concerns\ImportsRwebMedia;
 use App\Models\Faq;
 use App\Models\PageBlock;
 use App\Models\PageBlockItem;
+use App\Models\ServiceCategory;
 use App\Models\StatCounter;
 use Illuminate\Database\Seeder;
 
@@ -19,13 +20,40 @@ class PageContentImportSeeder extends Seeder
 
         foreach ($data['faqs'] as $faqData) {
             Faq::updateOrCreate(
-                ['question' => $faqData['question']],
+                [
+                    'question' => $faqData['question'],
+                    'service_category_id' => null,
+                ],
                 [
                     'answer_paragraphs' => $faqData['answer_paragraphs'],
                     'sort_order' => $faqData['sort_order'] ?? 0,
                     'is_active' => true,
                 ]
             );
+        }
+
+        $categoryFaqs = require __DIR__ . '/data/service_category_faqs.php';
+
+        foreach ($categoryFaqs as $slug => $faqs) {
+            $category = ServiceCategory::where('slug', $slug)->first();
+
+            if (!$category) {
+                continue;
+            }
+
+            foreach ($faqs as $faqData) {
+                Faq::updateOrCreate(
+                    [
+                        'question' => $faqData['question'],
+                        'service_category_id' => $category->id,
+                    ],
+                    [
+                        'answer_paragraphs' => $faqData['answer_paragraphs'],
+                        'sort_order' => $faqData['sort_order'] ?? 0,
+                        'is_active' => true,
+                    ]
+                );
+            }
         }
 
         foreach ($data['stat_counters'] as $counterData) {

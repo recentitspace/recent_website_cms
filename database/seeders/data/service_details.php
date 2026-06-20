@@ -191,126 +191,8 @@ return array (
       array (
         0 => 
         array (
-          'title' => 'Claim Your Identity Online',
-          'description' => 'Start your journey with the perfect domain name that reflects your brand and vision.
-                
-            
-
-            
-            
-                
-                    Extension
-                    Pricing
-                
-                
-                    
-                        
-                            .com
-                            {{-- Most Popular --}}
-                        
-                    
-                    
-                        $15
-                        /yr
-                    
-                
-                
-                    
-                        .so
-                    
-                    
-                        $15
-                        /yr
-                    
-                
-                
-                    
-                        .org
-                    
-                    
-                        $15
-                        /yr
-                    
-                
-                
-                    
-                        .net
-                    
-                    
-                        $15
-                        /yr
-                    
-                
-            
-
-            
-                
-                    
-                        
-                            
-                        
-                        Worldwide Extensions
-                        Choose from popular and niche TLDs to match your brand and audience, no matter the market.
-                    
-                
-                
-                    
-                        
-                            
-                        
-                        Private by Default
-                        Keep ownership details hidden with built‑in WHOIS privacy and reduce unwanted outreach.
-                    
-                
-                
-                    
-                        
-                            
-                        
-                        Renewal Safety Net
-                        Auto‑renewal plus alerts help you avoid expiry lapses and protect critical domains.
-                    
-                
-                
-                    
-                        
-                            
-                        
-                        Clean DNS Control
-                        Manage A, CNAME, MX, and TXT records with a clear dashboard and secure defaults.
-                    
-                
-            
-        
-    
-    
-
-    
-    
-        
-            
-                
-                    
-                        Our Process
-                        Simple Process. Reliable Domain & Hosting Setup.
-                    
-                
-            
-            
-            
-                
-                    
-                
-                
-                
-                    
-                    
-                        
-                            Step 1
-                        
-                        
-                            Domain Research
-                            Suggest short, memorable names aligned with your brand.',
+          'title' => 'Domain Research',
+          'description' => 'Suggest short, memorable names aligned with your brand.',
           'tasks' => 
           array (
             0 => 'Brand-Aligned Domain Suggestions',
@@ -371,6 +253,34 @@ return array (
             3 => 'Security Incident Response',
             4 => 'Ongoing Technical Support',
           ),
+        ),
+      ),
+      'domain_extensions' => 
+      array (
+        0 => 
+        array (
+          'extension' => '.com',
+          'price' => '15',
+          'period' => 'yr',
+          'badge' => 'Most Popular',
+        ),
+        1 => 
+        array (
+          'extension' => '.so',
+          'price' => '15',
+          'period' => 'yr',
+        ),
+        2 => 
+        array (
+          'extension' => '.org',
+          'price' => '15',
+          'period' => 'yr',
+        ),
+        3 => 
+        array (
+          'extension' => '.net',
+          'price' => '15',
+          'period' => 'yr',
         ),
       ),
     ),

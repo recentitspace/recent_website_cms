@@ -1,13 +1,15 @@
 import { IconTrash } from "@tabler/icons-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import { toast } from "sonner";
 import Breadcrumb from "../../components/Breadcrumb";
 import DataTableWithSidebar from "../../components/DataTableWithSidebar";
+import FormSelect from "../../components/form/FormSelect";
 import { useConfirmDialog, useSidebarDetail } from "../../hooks";
 import { faqApi } from "../../services/faq";
+import { serviceCategoryApi } from "../../services/serviceCategory";
 import { ColumnConfig } from "../../types/columns";
 import { IFaq } from "../../types";
 import FaqDetail from "./components/FaqDetail";
@@ -18,6 +20,26 @@ const FaqList = () => {
     const [selectedRecords, setSelectedRecords] = useState<IFaq[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [faqToEdit, setFaqToEdit] = useState<IFaq | null>(null);
+    const [contextFilter, setContextFilter] = useState<string>("");
+
+    const { data: categoriesResponse } = useQuery({
+        queryKey: ["Service Categories Select"],
+        queryFn: () =>
+            serviceCategoryApi.getAll({
+                per_page: 100,
+                sort_by: "sort_order",
+                sort_direction: "asc",
+            }),
+    });
+
+    const contextFilterOptions = [
+        { value: "", label: "All Contexts" },
+        { value: "global", label: "FAQ Page" },
+        ...(categoriesResponse?.data?.map((category) => ({
+            value: String(category.id),
+            label: category.title,
+        })) || []),
+    ];
 
     const {
         selectedId: selectedFaqId,
@@ -105,6 +127,17 @@ const FaqList = () => {
             ),
         },
         {
+            accessor: "service_category_id",
+            title: "Context",
+            type: "text",
+            sortable: false,
+            render: ({ service_category }) => (
+                <span className="font-medium">
+                    {service_category?.title || "FAQ Page"}
+                </span>
+            ),
+        },
+        {
             accessor: "answer_paragraphs",
             title: "Answer",
             type: "text",
@@ -177,7 +210,13 @@ const FaqList = () => {
                 fetchData={(params) => faqApi.getAll(params)}
                 searchFields={["question"]}
                 sortCol="sort_order"
-                query={{}}
+                query={
+                    contextFilter === "global"
+                        ? { service_category_id: { null: true } }
+                        : contextFilter
+                          ? { service_category_id: contextFilter }
+                          : {}
+                }
                 rowSelectionEnabled={true}
                 onSelectionChange={setSelectedRecords}
                 searchable={true}
@@ -196,17 +235,27 @@ const FaqList = () => {
                     },
                 ]}
                 buttons={
-                    <button
-                        type="button"
-                        className="btn btn-primary gap-2"
-                        onClick={() => {
-                            setFaqToEdit(null);
-                            setIsOpen(true);
-                        }}
-                    >
-                        <Plus size={16} />
-                        Add FAQ
-                    </button>
+                    <div className="flex flex-wrap items-center gap-3">
+                        <div className="w-56">
+                            <FormSelect
+                                label=""
+                                value={contextFilter}
+                                onChange={setContextFilter}
+                                options={contextFilterOptions}
+                            />
+                        </div>
+                        <button
+                            type="button"
+                            className="btn btn-primary gap-2"
+                            onClick={() => {
+                                setFaqToEdit(null);
+                                setIsOpen(true);
+                            }}
+                        >
+                            <Plus size={16} />
+                            Add FAQ
+                        </button>
+                    </div>
                 }
                 showSidebar={showSidebar}
                 sidebarTitle="FAQ Details"

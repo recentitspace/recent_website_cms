@@ -52,7 +52,21 @@ function extractProcess(string $html): array
         $result['process_subtitle'] = trim(strip_tags(str_replace(['<br>', '<br/>', '<br />'], ' ', $subMatch[1])));
     }
 
-    if (preg_match_all('/<h3>(.*?)<\\/h3>\\s*<p>\\s*(.*?)\\s*<\\/p>\\s*<div class="tasks-involved">[\\s\\S]*?<div class="task-tags">([\\s\\S]*?)<\\/div>/s', $html, $steps, PREG_SET_ORDER)) {
+    if (preg_match_all('/<div class="step-content-card">\\s*<h3>(.*?)<\\/h3>\\s*<p>\\s*(.*?)\\s*<\\/p>\\s*<div class="tasks-involved">[\\s\\S]*?<div class="task-tags">([\\s\\S]*?)<\\/div>/s', $html, $steps, PREG_SET_ORDER)) {
+        foreach ($steps as $step) {
+            $tasks = [];
+            if (preg_match_all('/<span>(.*?)<\\/span>/s', $step[3], $taskMatches)) {
+                foreach ($taskMatches[1] as $task) {
+                    $tasks[] = trim(html_entity_decode(strip_tags($task)));
+                }
+            }
+            $result['process_steps'][] = [
+                'title' => trim(strip_tags($step[1])),
+                'description' => trim(strip_tags($step[2])),
+                'tasks' => $tasks,
+            ];
+        }
+    } elseif (preg_match_all('/<h3>(.*?)<\\/h3>\\s*<p>\\s*(.*?)\\s*<\\/p>\\s*<div class="tasks-involved">[\\s\\S]*?<div class="task-tags">([\\s\\S]*?)<\\/div>/s', $html, $steps, PREG_SET_ORDER)) {
         foreach ($steps as $step) {
             $tasks = [];
             if (preg_match_all('/<span>(.*?)<\\/span>/s', $step[3], $taskMatches)) {
@@ -76,6 +90,38 @@ function extractProcess(string $html): array
     }
 
     return $result;
+}
+
+function extractDomainExtensions(string $html): array
+{
+    $extensions = [];
+
+    if (!preg_match('/<div class="domain-price-card[^"]*">([\\s\\S]*?)<\\/div>\\s*<div class="row g-24">/s', $html, $cardMatch)) {
+        return $extensions;
+    }
+
+    if (!preg_match_all('/<span class="domain-title">([^<]+)<\\/span>([\\s\\S]*?)<span class="domain-price">\\$?([^<]+)<\\/span>[\\s\\S]*?<span class="domain-period">\\/?([^<]+)<\\/span>/s', $cardMatch[1], $matches, PREG_SET_ORDER)) {
+        return $extensions;
+    }
+
+    foreach ($matches as $match) {
+        $badge = null;
+        if (preg_match('/<span class="domain-badge">([^<]+)<\\/span>/', $match[2], $badgeMatch)) {
+            $badge = trim(strip_tags($badgeMatch[1]));
+        }
+
+        $entry = [
+            'extension' => trim($match[1]),
+            'price' => trim($match[3]),
+            'period' => trim($match[4]),
+        ];
+        if ($badge) {
+            $entry['badge'] = $badge;
+        }
+        $extensions[] = $entry;
+    }
+
+    return $extensions;
 }
 
 $output = ['categories' => [], 'items' => []];
@@ -108,6 +154,11 @@ foreach ($items as $slug => $path) {
         'detail_hero_description' => $breadcrumb['description'],
         'hero_image' => $heroImage,
     ], $process);
+
+    $domainExtensions = extractDomainExtensions($html);
+    if (!empty($domainExtensions)) {
+        $output['items'][$slug]['domain_extensions'] = $domainExtensions;
+    }
 }
 
 $content = "<?php\n\nreturn " . var_export($output, true) . ";\n";

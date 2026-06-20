@@ -18,8 +18,11 @@ class FaqController extends BaseController
 
     protected $defaultSortDirection = 'asc';
 
+    protected $relationships = ['serviceCategory'];
+
     protected $validationRules = [
         'store' => [
+            'service_category_id' => 'nullable|exists:service_categories,id',
             'question' => 'required|string|max:500',
             'answer_paragraphs' => 'required|array|min:1',
             'answer_paragraphs.*' => 'required|string',
@@ -27,6 +30,7 @@ class FaqController extends BaseController
             'is_active' => 'nullable|boolean',
         ],
         'update' => [
+            'service_category_id' => 'nullable|exists:service_categories,id',
             'question' => 'sometimes|required|string|max:500',
             'answer_paragraphs' => 'sometimes|required|array|min:1',
             'answer_paragraphs.*' => 'required|string',

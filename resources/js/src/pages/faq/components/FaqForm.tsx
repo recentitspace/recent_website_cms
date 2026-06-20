@@ -9,10 +9,13 @@ import { z } from "zod";
 import ActionButton from "../../../components/ActionButton";
 import Alert from "../../../components/Alert";
 import FormInput from "../../../components/form/FormInput";
+import FormSelect from "../../../components/form/FormSelect";
 import { faqApi } from "../../../services/faq";
+import { serviceCategoryApi } from "../../../services/serviceCategory";
 import { IFaq } from "../../../types";
 
 const faqSchema = z.object({
+    service_category_id: z.union([z.coerce.number(), z.literal("")]).optional(),
     question: z.string().min(1, "Question is required"),
     answer_paragraphs: z.array(z.string()).optional(),
     sort_order: z.coerce.number().min(0).optional(),
@@ -39,6 +42,24 @@ const FaqForm: React.FC<FaqFormProps> = ({ faqToEdit, onClose }) => {
 
     const editFaq = fullFaq || faqToEdit;
 
+    const { data: categoriesResponse } = useQuery({
+        queryKey: ["Service Categories Select"],
+        queryFn: () =>
+            serviceCategoryApi.getAll({
+                per_page: 100,
+                sort_by: "sort_order",
+                sort_direction: "asc",
+            }),
+    });
+
+    const categoryOptions = [
+        { value: "", label: "FAQ Page (global)" },
+        ...(categoriesResponse?.data?.map((category) => ({
+            value: String(category.id),
+            label: category.title,
+        })) || []),
+    ];
+
     const {
         control,
         handleSubmit,
@@ -47,6 +68,7 @@ const FaqForm: React.FC<FaqFormProps> = ({ faqToEdit, onClose }) => {
     } = useForm<FaqFormData>({
         resolver: zodResolver(faqSchema),
         defaultValues: {
+            service_category_id: "",
             question: "",
             answer_paragraphs: [],
             sort_order: 0,
@@ -62,6 +84,9 @@ const FaqForm: React.FC<FaqFormProps> = ({ faqToEdit, onClose }) => {
     useEffect(() => {
         if (editFaq) {
             reset({
+                service_category_id: editFaq.service_category_id
+                    ? String(editFaq.service_category_id)
+                    : "",
                 question: editFaq.question,
                 answer_paragraphs: editFaq.answer_paragraphs?.length
                     ? editFaq.answer_paragraphs
@@ -72,12 +97,16 @@ const FaqForm: React.FC<FaqFormProps> = ({ faqToEdit, onClose }) => {
         }
     }, [editFaq, reset]);
 
+    const buildPayload = (data: FaqFormData) => ({
+        ...data,
+        service_category_id: data.service_category_id
+            ? Number(data.service_category_id)
+            : null,
+        answer_paragraphs: data.answer_paragraphs?.filter((p) => p.trim()) || [],
+    });
+
     const createMutation = useMutation({
-        mutationFn: (data: FaqFormData) =>
-            faqApi.create({
-                ...data,
-                answer_paragraphs: data.answer_paragraphs?.filter((p) => p.trim()) || [],
-            }),
+        mutationFn: (data: FaqFormData) => faqApi.create(buildPayload(data)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["FAQ Table"] });
             toast.success("FAQ created successfully");
@@ -89,11 +118,7 @@ const FaqForm: React.FC<FaqFormProps> = ({ faqToEdit, onClose }) => {
     });
 
     const updateMutation = useMutation({
-        mutationFn: (data: FaqFormData) =>
-            faqApi.update(editFaq!.id, {
-                ...data,
-                answer_paragraphs: data.answer_paragraphs?.filter((p) => p.trim()) || [],
-            }),
+        mutationFn: (data: FaqFormData) => faqApi.update(editFaq!.id, buildPayload(data)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["FAQ Table"] });
             queryClient.invalidateQueries({ queryKey: ["faq", editFaq?.id] });
@@ -117,6 +142,20 @@ const FaqForm: React.FC<FaqFormProps> = ({ faqToEdit, onClose }) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {generalError && <Alert type="danger" message={generalError} />}
+
+            <Controller
+                name="service_category_id"
+                control={control}
+                render={({ field }) => (
+                    <FormSelect
+                        label="Context"
+                        value={String(field.value ?? "")}
+                        onChange={field.onChange}
+                        options={categoryOptions}
+                        error={errors.service_category_id?.message}
+                    />
+                )}
+            />
 
             <Controller
                 name="question"

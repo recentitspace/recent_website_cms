@@ -28,6 +28,13 @@ const processStepSchema = z.object({
     tasks: z.array(z.string()).optional(),
 });
 
+const domainExtensionSchema = z.object({
+    extension: z.string().min(1, "Extension is required"),
+    price: z.string().min(1, "Price is required"),
+    period: z.string().optional(),
+    badge: z.string().optional(),
+});
+
 const itemSchema = z.object({
     service_category_id: z.coerce.number().min(1, "Category is required"),
     title: z.string().min(1, "Title is required"),
@@ -41,6 +48,7 @@ const itemSchema = z.object({
     process_title: z.string().optional(),
     process_subtitle: z.string().optional(),
     process_steps: z.array(processStepSchema).optional(),
+    domain_extensions: z.array(domainExtensionSchema).optional(),
     sort_order: z.coerce.number().min(0).optional(),
     is_active: z.boolean().optional(),
     show_on_home: z.boolean().optional(),
@@ -168,6 +176,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
             process_title: "",
             process_subtitle: "",
             process_steps: [],
+            domain_extensions: [],
             sort_order: 0,
             is_active: true,
             show_on_home: true,
@@ -188,6 +197,15 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
         name: "process_steps",
     });
 
+    const {
+        fields: domainExtensionFields,
+        append: appendDomainExtension,
+        remove: removeDomainExtension,
+    } = useFieldArray({
+        control,
+        name: "domain_extensions",
+    });
+
     const buildPayload = (data: ItemFormData) => ({
         ...data,
         slug: data.slug?.trim() || undefined,
@@ -203,6 +221,14 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
                   title: step.title.trim(),
                   description: step.description?.trim() || null,
                   tasks: step.tasks?.filter((task) => task.trim()) || [],
+              }))
+            : [],
+        domain_extensions: data.domain_extensions?.length
+            ? data.domain_extensions.map((row) => ({
+                  extension: row.extension.trim(),
+                  price: row.price.trim(),
+                  period: row.period?.trim() || "yr",
+                  badge: row.badge?.trim() || null,
               }))
             : [],
     });
@@ -226,6 +252,14 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
                           title: step.title,
                           description: step.description || "",
                           tasks: step.tasks?.length ? step.tasks : [],
+                      }))
+                    : [],
+                domain_extensions: editItem.domain_extensions?.length
+                    ? editItem.domain_extensions.map((row) => ({
+                          extension: row.extension,
+                          price: row.price,
+                          period: row.period || "yr",
+                          badge: row.badge || "",
                       }))
                     : [],
                 sort_order: editItem.sort_order,
@@ -393,6 +427,124 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
                     />
                 )}
             />
+
+            <div>
+                <div className="mb-2 flex items-center justify-between">
+                    <label className="font-medium">Domain Extensions</label>
+                    <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary gap-1"
+                        onClick={() =>
+                            appendDomainExtension({
+                                extension: "",
+                                price: "",
+                                period: "yr",
+                                badge: "",
+                            })
+                        }
+                    >
+                        <Plus size={14} />
+                        Add Extension
+                    </button>
+                </div>
+
+                {domainExtensionFields.length === 0 && (
+                    <p className="text-sm text-gray-500">
+                        No domain extensions added. Use this for Domain &amp; Hosting pricing rows.
+                    </p>
+                )}
+
+                <div className="space-y-3">
+                    {domainExtensionFields.map((field, index) => (
+                        <div
+                            key={field.id}
+                            className="rounded border border-gray-200 p-3 dark:border-gray-700"
+                        >
+                            <div className="mb-2 flex items-start justify-between gap-2">
+                                <span className="text-sm font-medium text-gray-500">
+                                    Row {index + 1}
+                                </span>
+                                <button
+                                    type="button"
+                                    className="text-danger hover:opacity-80"
+                                    onClick={() => removeDomainExtension(index)}
+                                    aria-label={`Remove extension row ${index + 1}`}
+                                >
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
+
+                            <div className="grid gap-3 sm:grid-cols-2">
+                                <Controller
+                                    name={`domain_extensions.${index}.extension`}
+                                    control={control}
+                                    render={({ field: extensionField }) => (
+                                        <FormInput
+                                            label="Extension"
+                                            value={extensionField.value || ""}
+                                            onChange={extensionField.onChange}
+                                            onBlur={extensionField.onBlur}
+                                            placeholder=".com"
+                                            error={
+                                                errors.domain_extensions?.[index]?.extension
+                                                    ?.message
+                                            }
+                                        />
+                                    )}
+                                />
+                                <Controller
+                                    name={`domain_extensions.${index}.price`}
+                                    control={control}
+                                    render={({ field: priceField }) => (
+                                        <FormInput
+                                            label="Price"
+                                            value={priceField.value || ""}
+                                            onChange={priceField.onChange}
+                                            onBlur={priceField.onBlur}
+                                            placeholder="15"
+                                            error={
+                                                errors.domain_extensions?.[index]?.price?.message
+                                            }
+                                        />
+                                    )}
+                                />
+                                <Controller
+                                    name={`domain_extensions.${index}.period`}
+                                    control={control}
+                                    render={({ field: periodField }) => (
+                                        <FormInput
+                                            label="Period"
+                                            value={periodField.value || ""}
+                                            onChange={periodField.onChange}
+                                            onBlur={periodField.onBlur}
+                                            placeholder="yr"
+                                            error={
+                                                errors.domain_extensions?.[index]?.period?.message
+                                            }
+                                        />
+                                    )}
+                                />
+                                <Controller
+                                    name={`domain_extensions.${index}.badge`}
+                                    control={control}
+                                    render={({ field: badgeField }) => (
+                                        <FormInput
+                                            label="Badge (optional)"
+                                            value={badgeField.value || ""}
+                                            onChange={badgeField.onChange}
+                                            onBlur={badgeField.onBlur}
+                                            placeholder="Most Popular"
+                                            error={
+                                                errors.domain_extensions?.[index]?.badge?.message
+                                            }
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             <div>
                 <div className="mb-2 flex items-center justify-between">
