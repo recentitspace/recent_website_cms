@@ -1,5 +1,4 @@
 import { ITimestamped } from "./common";
-import { IDomainExtension } from "./domainExtension";
 import { IMedia } from "./media";
 import { IProcessStep } from "./processStep";
 import { IServiceCategory } from "./serviceCategory";
@@ -18,7 +17,6 @@ export interface IServiceItem extends ITimestamped {
     process_title?: string | null;
     process_subtitle?: string | null;
     process_steps?: IProcessStep[] | null;
-    domain_extensions?: IDomainExtension[] | null;
     sort_order: number;
     is_active: boolean;
     show_on_home: boolean;

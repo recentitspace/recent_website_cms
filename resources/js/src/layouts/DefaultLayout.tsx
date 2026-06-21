@@ -10,6 +10,7 @@ import Sidebar from "./Sidebar";
 import Portals from "../components/Portals";
 import Loader from "../components/Loader";
 import BackToTop from "../components/BackToTop";
+import { CmsContentModeProvider } from "../contexts/CmsContentModeContext";
 import { toggleSidebar } from "../store/themeConfigSlice";
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
@@ -30,6 +31,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
 
     return (
         <App>
+            <CmsContentModeProvider>
             {/* BEGIN MAIN CONTAINER */}
             <div className="relative">
                 {/* sidebar menu overlay */}
@@ -76,6 +78,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
                     </div>
                 </div>
             </div>
+            </CmsContentModeProvider>
         </App>
     );
 };

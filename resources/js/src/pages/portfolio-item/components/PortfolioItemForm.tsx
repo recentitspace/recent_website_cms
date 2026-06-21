@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import ActionButton from "../../../components/ActionButton";
+import FormFooter from "../../../components/form/FormFooter";
 import Alert from "../../../components/Alert";
 import MediaMultiSelect from "../../../components/media/MediaMultiSelect";
 import MediaSelect from "../../../components/media/MediaSelect";
@@ -443,24 +443,7 @@ const PortfolioItemForm: React.FC<PortfolioItemFormProps> = ({ itemToEdit, onClo
                 )}
             />
 
-            <div className="mt-8 flex justify-end">
-                <ActionButton
-                    type="button"
-                    variant="outline-danger"
-                    onClick={onClose}
-                    isLoading={false}
-                    displayText="Cancel"
-                    disabled={isSubmitting}
-                />
-                <ActionButton
-                    type="submit"
-                    variant="primary"
-                    isLoading={isSubmitting}
-                    loadingText={isEditMode ? "Updating..." : "Saving..."}
-                    displayText={isEditMode ? "Update" : "Save"}
-                    className="ltr:ml-4 rtl:mr-4"
-                />
-            </div>
+            <FormFooter onCancel={onClose} isSubmitting={isSubmitting} isEditMode={isEditMode} />
         </form>
     );
 };

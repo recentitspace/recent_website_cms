@@ -1,4 +1,6 @@
+import { Hash } from "lucide-react";
 import React from "react";
+
 import GenericModal from "../../../components/GenericModal";
 import { IStatCounter } from "../../../types";
 import StatCounterForm from "./StatCounterForm";
@@ -20,7 +22,9 @@ const StatCounterModal: React.FC<StatCounterModalProps> = ({
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit Stat Counter" : "Add Stat Counter"}
+            title={isEditMode ? "Edit statistic" : "Add statistic"}
+            subtitle="A number and short label shown in the homepage stats section."
+            icon={Hash}
             maxWidth="lg"
         >
             <StatCounterForm counterToEdit={counterToEdit} onClose={() => setIsOpen(false)} />

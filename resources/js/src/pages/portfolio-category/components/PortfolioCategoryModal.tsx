@@ -1,4 +1,6 @@
+import { FolderOpen } from "lucide-react";
 import React from "react";
+
 import GenericModal from "../../../components/GenericModal";
 import { IPortfolioCategory } from "../../../types";
 import PortfolioCategoryForm from "./PortfolioCategoryForm";
@@ -20,7 +22,9 @@ const PortfolioCategoryModal: React.FC<PortfolioCategoryModalProps> = ({
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit Portfolio Category" : "Add Portfolio Category"}
+            title={isEditMode ? "Edit portfolio category" : "Add portfolio category"}
+            subtitle="A group for organizing your case studies and projects."
+            icon={FolderOpen}
             maxWidth="lg"
         >
             <PortfolioCategoryForm

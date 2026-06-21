@@ -255,34 +255,6 @@ return array (
           ),
         ),
       ),
-      'domain_extensions' => 
-      array (
-        0 => 
-        array (
-          'extension' => '.com',
-          'price' => '15',
-          'period' => 'yr',
-          'badge' => 'Most Popular',
-        ),
-        1 => 
-        array (
-          'extension' => '.so',
-          'price' => '15',
-          'period' => 'yr',
-        ),
-        2 => 
-        array (
-          'extension' => '.org',
-          'price' => '15',
-          'period' => 'yr',
-        ),
-        3 => 
-        array (
-          'extension' => '.net',
-          'price' => '15',
-          'period' => 'yr',
-        ),
-      ),
     ),
     'website-development' => 
     array (

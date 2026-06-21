@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PageBlock extends Model
@@ -40,10 +39,5 @@ class PageBlock extends Model
     public function image(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'image_id');
-    }
-
-    public function items(): HasMany
-    {
-        return $this->hasMany(PageBlockItem::class)->orderBy('sort_order');
     }
 }

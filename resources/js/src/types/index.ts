@@ -20,4 +20,7 @@ export * from './domainExtension';
 export * from './faq';
 export * from './statCounter';
 export * from './pageBlock';
-export * from './pageBlockItem';
+export * from './whyChooseItem';
+export * from './aboutDriveItem';
+export * from './aboutObjective';
+export * from './contentCard';

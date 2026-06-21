@@ -74,6 +74,12 @@ const TrashIndex: React.FC = () => {
             path: "/trash/pricing-plans",
         },
         {
+            id: "domain-extensions",
+            title: t("trashed_domain_extensions"),
+            icon: <DollarSign className="w-5 h-5" />,
+            path: "/trash/domain-extensions",
+        },
+        {
             id: "service-categories",
             title: t("trashed_service_categories"),
             icon: <Layers className="w-5 h-5" />,
@@ -104,10 +110,22 @@ const TrashIndex: React.FC = () => {
             path: "/trash/page-blocks",
         },
         {
-            id: "page-block-items",
-            title: t("trashed_page_block_items"),
+            id: "why-choose-items",
+            title: t("trashed_why_choose_items"),
             icon: <FileText className="w-5 h-5" />,
-            path: "/trash/page-block-items",
+            path: "/trash/why-choose-items",
+        },
+        {
+            id: "about-drive-items",
+            title: t("trashed_about_drive_items"),
+            icon: <FileText className="w-5 h-5" />,
+            path: "/trash/about-drive-items",
+        },
+        {
+            id: "about-objectives",
+            title: t("trashed_about_objectives"),
+            icon: <FileText className="w-5 h-5" />,
+            path: "/trash/about-objectives",
         },
     ];
 

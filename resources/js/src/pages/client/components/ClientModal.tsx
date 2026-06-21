@@ -1,4 +1,6 @@
+import { Building2 } from "lucide-react";
 import React from "react";
+
 import GenericModal from "../../../components/GenericModal";
 import { IClient } from "../../../types";
 import ClientForm from "./ClientForm";
@@ -16,7 +18,9 @@ const ClientModal: React.FC<ClientModalProps> = ({ isOpen, setIsOpen, clientToEd
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit Client" : "Add Client"}
+            title={isEditMode ? "Edit client logo" : "Add client logo"}
+            subtitle="Upload a client or partner logo for the homepage."
+            icon={Building2}
             maxWidth="lg"
         >
             <ClientForm clientToEdit={clientToEdit} onClose={() => setIsOpen(false)} />

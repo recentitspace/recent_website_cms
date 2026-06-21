@@ -1,4 +1,6 @@
+import { MessageSquareQuote } from "lucide-react";
 import React from "react";
+
 import GenericModal from "../../../components/GenericModal";
 import { ITestimonial } from "../../../types";
 import TestimonialForm from "./TestimonialForm";
@@ -20,10 +22,15 @@ const TestimonialModal: React.FC<TestimonialModalProps> = ({
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit Testimonial" : "Add Testimonial"}
-            maxWidth="xl"
+            title={isEditMode ? "Edit testimonial" : "Add testimonial"}
+            subtitle="A client quote shown in the testimonials section on your homepage."
+            icon={MessageSquareQuote}
+            maxWidth="lg"
         >
-            <TestimonialForm testimonialToEdit={testimonialToEdit} onClose={() => setIsOpen(false)} />
+            <TestimonialForm
+                testimonialToEdit={testimonialToEdit}
+                onClose={() => setIsOpen(false)}
+            />
         </GenericModal>
     );
 };

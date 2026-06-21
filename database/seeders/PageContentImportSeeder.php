@@ -3,11 +3,13 @@
 namespace Database\Seeders;
 
 use App\Concerns\ImportsRwebMedia;
+use App\Models\AboutDriveItem;
+use App\Models\AboutObjective;
 use App\Models\Faq;
 use App\Models\PageBlock;
-use App\Models\PageBlockItem;
 use App\Models\ServiceCategory;
 use App\Models\StatCounter;
+use App\Models\WhyChooseItem;
 use Illuminate\Database\Seeder;
 
 class PageContentImportSeeder extends Seeder
@@ -74,11 +76,10 @@ class PageContentImportSeeder extends Seeder
         }
 
         foreach ($data['page_blocks'] as $blockData) {
-            $items = $blockData['items'] ?? [];
             $imagePath = $blockData['image'] ?? null;
-            unset($blockData['items'], $blockData['image']);
+            unset($blockData['image']);
 
-            $block = PageBlock::updateOrCreate(
+            PageBlock::updateOrCreate(
                 ['key' => $blockData['key']],
                 [
                     'page' => $blockData['page'],
@@ -95,25 +96,45 @@ class PageContentImportSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
+        }
 
-            foreach ($items as $itemData) {
-                $itemImagePath = $itemData['image'] ?? null;
-                unset($itemData['image']);
+        foreach (require __DIR__ . '/data/why_choose_items.php' as $itemData) {
+            WhyChooseItem::updateOrCreate(
+                ['title' => $itemData['title']],
+                [
+                    'body' => $itemData['body'] ?? null,
+                    'icon_id' => $this->importMediaFromPath($itemData['icon'] ?? null, 'page-content'),
+                    'sort_order' => $itemData['sort_order'] ?? 0,
+                    'is_active' => true,
+                ]
+            );
+        }
 
-                PageBlockItem::updateOrCreate(
-                    [
-                        'page_block_id' => $block->id,
-                        'title' => $itemData['title'],
-                    ],
-                    [
-                        'body' => $itemData['body'] ?? null,
-                        'image_id' => $this->importMediaFromPath($itemImagePath, 'page-content'),
-                        'bullets' => $itemData['bullets'] ?? null,
-                        'sort_order' => $itemData['sort_order'] ?? 0,
-                        'is_active' => true,
-                    ]
-                );
-            }
+        foreach (require __DIR__ . '/data/about_drive_items.php' as $itemData) {
+            $imagePath = $itemData['image'] ?? null;
+            unset($itemData['image']);
+
+            AboutDriveItem::updateOrCreate(
+                ['title' => $itemData['title']],
+                [
+                    'body' => $itemData['body'] ?? null,
+                    'image_id' => $this->importMediaFromPath($imagePath, 'page-content'),
+                    'bullets' => $itemData['bullets'] ?? null,
+                    'sort_order' => $itemData['sort_order'] ?? 0,
+                    'is_active' => true,
+                ]
+            );
+        }
+
+        foreach (require __DIR__ . '/data/about_objectives.php' as $itemData) {
+            AboutObjective::updateOrCreate(
+                ['title' => $itemData['title']],
+                [
+                    'body' => $itemData['body'] ?? null,
+                    'sort_order' => $itemData['sort_order'] ?? 0,
+                    'is_active' => true,
+                ]
+            );
         }
     }
 }

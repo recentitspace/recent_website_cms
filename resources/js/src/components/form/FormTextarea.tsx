@@ -5,6 +5,7 @@ export interface FormTextareaProps
     extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     id: string;
     label?: string;
+    hint?: string;
     placeholder?: string;
     error?: string;
     required?: boolean;
@@ -20,6 +21,7 @@ const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
         {
             id,
             label,
+            hint,
             placeholder,
             error,
             required = false,
@@ -60,6 +62,9 @@ const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
                             <span className="text-red-500 ml-1">*</span>
                         )}
                     </label>
+                )}
+                {hint && !error && (
+                    <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">{hint}</p>
                 )}
 
                 <div className="relative">

@@ -40,12 +40,28 @@ const Clients = lazy(() => import("../pages/client"));
 const Testimonials = lazy(() => import("../pages/testimonial"));
 const PricingSections = lazy(() => import("../pages/pricing-section"));
 const PricingPlans = lazy(() => import("../pages/pricing-plan"));
+const DomainExtensions = lazy(() => import("../pages/domain-extension"));
 const ServiceCategories = lazy(() => import("../pages/service-category"));
 const ServiceItems = lazy(() => import("../pages/service-item"));
 const Faqs = lazy(() => import("../pages/faq"));
 const StatCounters = lazy(() => import("../pages/stat-counter"));
 const PageBlocks = lazy(() => import("../pages/page-block"));
-const PageBlockItems = lazy(() => import("../pages/page-block-item"));
+const WhyChooseItems = lazy(() => import("../pages/why-choose-item"));
+const AboutDriveItems = lazy(() => import("../pages/about-drive-item"));
+const AboutObjectives = lazy(() => import("../pages/about-objective"));
+
+// Website Editor
+const EditorOverview = lazy(() => import("../pages/editor"));
+const EditorSiteWidePage = lazy(() => import("../pages/editor/EditorSiteWidePage"));
+const EditorHomePage = lazy(() => import("../pages/editor/EditorHomePage"));
+const EditorAboutPage = lazy(() => import("../pages/editor/EditorAboutPage"));
+const EditorFaqPage = lazy(() => import("../pages/editor/EditorFaqPage"));
+const EditorContactPage = lazy(() => import("../pages/editor/EditorContactPage"));
+const EditorPricingPage = lazy(() => import("../pages/editor/EditorPricingPage"));
+const EditorPortfolioPage = lazy(() => import("../pages/editor/EditorPortfolioPage"));
+const ServiceCategoryEditorPage = lazy(
+    () => import("../pages/editor/services/ServiceCategoryEditorPage")
+);
 
 // Trash Management (System Monitoring)
 const TrashPage = lazy(() => import("../pages/trash"));
@@ -57,12 +73,15 @@ const TrashClients = lazy(() => import("../pages/trash/Clients"));
 const TrashTestimonials = lazy(() => import("../pages/trash/Testimonials"));
 const TrashPricingSections = lazy(() => import("../pages/trash/PricingSections"));
 const TrashPricingPlans = lazy(() => import("../pages/trash/PricingPlans"));
+const TrashDomainExtensions = lazy(() => import("../pages/trash/DomainExtensions"));
 const TrashServiceCategories = lazy(() => import("../pages/trash/ServiceCategories"));
 const TrashServiceItems = lazy(() => import("../pages/trash/ServiceItems"));
 const TrashFaqs = lazy(() => import("../pages/trash/Faqs"));
 const TrashStatCounters = lazy(() => import("../pages/trash/StatCounters"));
 const TrashPageBlocks = lazy(() => import("../pages/trash/PageBlocks"));
-const TrashPageBlockItems = lazy(() => import("../pages/trash/PageBlockItems"));
+const TrashWhyChooseItems = lazy(() => import("../pages/trash/WhyChooseItems"));
+const TrashAboutDriveItems = lazy(() => import("../pages/trash/AboutDriveItems"));
+const TrashAboutObjectives = lazy(() => import("../pages/trash/AboutObjectives"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -178,6 +197,12 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view pricing plans"],
     },
     {
+        path: "/domain-extensions",
+        element: <DomainExtensions />,
+        layout: "default",
+        permissions: ["view domain extensions"],
+    },
+    {
         path: "/service-categories",
         element: <ServiceCategories />,
         layout: "default",
@@ -208,15 +233,83 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view page blocks"],
     },
     {
-        path: "/page-block-items",
-        element: <PageBlockItems />,
+        path: "/why-choose-items",
+        element: <WhyChooseItems />,
         layout: "default",
-        permissions: ["view page block items"],
+        permissions: ["view why choose items"],
+    },
+    {
+        path: "/about-drive-items",
+        element: <AboutDriveItems />,
+        layout: "default",
+        permissions: ["view about drive items"],
+    },
+    {
+        path: "/about-objectives",
+        element: <AboutObjectives />,
+        layout: "default",
+        permissions: ["view about objectives"],
     },
     {
         path: "/case-studies",
         element: <Navigate to="/portfolio-items" replace />,
         layout: "default",
+    },
+
+    // WEBSITE EDITOR
+    {
+        path: "/editor",
+        element: <EditorOverview />,
+        layout: "default",
+        permissions: ["view page blocks"],
+    },
+    {
+        path: "/editor/site-wide",
+        element: <EditorSiteWidePage />,
+        layout: "default",
+        permissions: ["manage site settings", "view social links", "view media"],
+    },
+    {
+        path: "/editor/home",
+        element: <EditorHomePage />,
+        layout: "default",
+        permissions: ["view page blocks", "view stat counters", "view clients", "view testimonials"],
+    },
+    {
+        path: "/editor/about",
+        element: <EditorAboutPage />,
+        layout: "default",
+        permissions: ["view page blocks"],
+    },
+    {
+        path: "/editor/services/:slug",
+        element: <ServiceCategoryEditorPage />,
+        layout: "default",
+        permissions: ["view service categories", "view service items", "view faqs"],
+    },
+    {
+        path: "/editor/pricing",
+        element: <EditorPricingPage />,
+        layout: "default",
+        permissions: ["view pricing sections", "view pricing plans"],
+    },
+    {
+        path: "/editor/portfolio",
+        element: <EditorPortfolioPage />,
+        layout: "default",
+        permissions: ["view portfolio categories", "view portfolio items"],
+    },
+    {
+        path: "/editor/faq",
+        element: <EditorFaqPage />,
+        layout: "default",
+        permissions: ["view faqs", "view page blocks"],
+    },
+    {
+        path: "/editor/contact",
+        element: <EditorContactPage />,
+        layout: "default",
+        permissions: ["view page blocks", "manage site settings"],
     },
 
     // Settings (with nested tabs)
@@ -312,6 +405,12 @@ export const protectedRoutes: RouteConfig[] = [
                 permissions: ["view trash items"],
             },
             {
+                path: "domain-extensions",
+                element: <TrashDomainExtensions />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
                 path: "service-categories",
                 element: <TrashServiceCategories />,
                 layout: "default",
@@ -342,8 +441,20 @@ export const protectedRoutes: RouteConfig[] = [
                 permissions: ["view trash items"],
             },
             {
-                path: "page-block-items",
-                element: <TrashPageBlockItems />,
+                path: "why-choose-items",
+                element: <TrashWhyChooseItems />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "about-drive-items",
+                element: <TrashAboutDriveItems />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "about-objectives",
+                element: <TrashAboutObjectives />,
                 layout: "default",
                 permissions: ["view trash items"],
             },

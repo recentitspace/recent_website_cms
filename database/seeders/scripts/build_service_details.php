@@ -157,7 +157,7 @@ foreach ($items as $slug => $path) {
 
     $domainExtensions = extractDomainExtensions($html);
     if (!empty($domainExtensions)) {
-        $output['items'][$slug]['domain_extensions'] = $domainExtensions;
+        // Domain extensions are managed separately under Pricing in the CMS.
     }
 }
 

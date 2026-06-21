@@ -1,4 +1,6 @@
+import { DollarSign } from "lucide-react";
 import React from "react";
+
 import GenericModal from "../../../components/GenericModal";
 import { IPricingSection } from "../../../types";
 import PricingSectionForm from "./PricingSectionForm";
@@ -20,7 +22,9 @@ const PricingSectionModal: React.FC<PricingSectionModalProps> = ({
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit Pricing Section" : "Add Pricing Section"}
+            title={isEditMode ? "Edit pricing category" : "Add pricing category"}
+            subtitle="A group that contains one or more pricing plans."
+            icon={DollarSign}
             maxWidth="lg"
         >
             <PricingSectionForm

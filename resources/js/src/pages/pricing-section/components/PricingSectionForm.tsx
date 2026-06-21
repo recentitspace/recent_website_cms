@@ -5,9 +5,13 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import ActionButton from "../../../components/ActionButton";
 import Alert from "../../../components/Alert";
+import FormAdvancedFields from "../../../components/form/FormAdvancedFields";
+import FormFooter from "../../../components/form/FormFooter";
 import FormInput from "../../../components/form/FormInput";
+import FormSection from "../../../components/form/FormSection";
+import FormToggle from "../../../components/form/FormToggle";
+import { useSimpleFormMode } from "../../../hooks/useSimpleFormMode";
 import { pricingSectionApi } from "../../../services/pricingSection";
 import { IPricingSection } from "../../../types";
 
@@ -32,6 +36,7 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
     onClose,
 }) => {
     const queryClient = useQueryClient();
+    const simpleMode = useSimpleFormMode();
     const [generalError, setGeneralError] = useState<string | null>(null);
     const isEditMode = Boolean(sectionToEdit);
 
@@ -65,16 +70,21 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
         }
     }, [sectionToEdit, reset]);
 
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ["Pricing Section Table"] });
+        queryClient.invalidateQueries({ queryKey: ["Pricing Sections Select"] });
+        queryClient.invalidateQueries({ queryKey: ["editor-pricing-sections"] });
+    };
+
     const createMutation = useMutation({
         mutationFn: (data: SectionFormData) => pricingSectionApi.create(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Pricing Section Table"] });
-            queryClient.invalidateQueries({ queryKey: ["Pricing Sections Select"] });
-            toast.success("Pricing section created successfully");
+            invalidate();
+            toast.success("Pricing category saved");
             onClose();
         },
         onError: (error: any) => {
-            setGeneralError(error?.message || "Failed to create pricing section");
+            setGeneralError(error?.message || "Could not save category");
         },
     });
 
@@ -82,16 +92,15 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
         mutationFn: (data: SectionFormData) =>
             pricingSectionApi.update(sectionToEdit!.id, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Pricing Section Table"] });
-            queryClient.invalidateQueries({ queryKey: ["Pricing Sections Select"] });
+            invalidate();
             queryClient.invalidateQueries({
                 queryKey: ["pricing-section", sectionToEdit?.id],
             });
-            toast.success("Pricing section updated successfully");
+            toast.success("Pricing category updated");
             onClose();
         },
         onError: (error: any) => {
-            setGeneralError(error?.message || "Failed to update pricing section");
+            setGeneralError(error?.message || "Could not update category");
         },
     });
 
@@ -113,111 +122,95 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {generalError && <Alert type="danger" message={generalError} />}
 
-            <Controller
-                name="title"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Title"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={errors.title?.message}
+            <FormSection
+                title="Category details"
+                description="A group of pricing plans — for example “Web Design” or “Hosting”."
+            >
+                <Controller
+                    name="title"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Category name"
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={errors.title?.message}
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="subtitle"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Short description"
+                            hint="Shown under the category title on the pricing page"
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={errors.subtitle?.message}
+                        />
+                    )}
+                />
+            </FormSection>
+
+            <FormAdvancedFields>
+                {!simpleMode && (
+                    <Controller
+                        name="slug"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="URL slug"
+                                value={field.value || ""}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                                error={errors.slug?.message}
+                            />
+                        )}
                     />
                 )}
-            />
-
-            <Controller
-                name="slug"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Slug (optional)"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={errors.slug?.message}
-                    />
-                )}
-            />
-
-            <Controller
-                name="subtitle"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Subtitle"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={errors.subtitle?.message}
-                    />
-                )}
-            />
-
-            <Controller
-                name="sort_order"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Sort Order"
-                        type="number"
-                        value={String(field.value ?? 0)}
-                        onChange={(value) => field.onChange(Number(value))}
-                        onBlur={field.onBlur}
-                        error={errors.sort_order?.message}
-                    />
-                )}
-            />
-
-            <Controller
-                name="is_active"
-                control={control}
-                render={({ field }) => (
-                    <label className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
+                <Controller
+                    name="sort_order"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Display order"
+                            type="number"
+                            value={String(field.value ?? 0)}
+                            onChange={(value) => field.onChange(Number(value))}
+                            onBlur={field.onBlur}
+                            error={errors.sort_order?.message}
+                        />
+                    )}
+                />
+                <Controller
+                    name="is_active"
+                    control={control}
+                    render={({ field }) => (
+                        <FormToggle
+                            label="Show on website"
                             checked={field.value ?? true}
-                            onChange={(event) => field.onChange(event.target.checked)}
+                            onChange={field.onChange}
                         />
-                        <span>Active</span>
-                    </label>
-                )}
-            />
-
-            <Controller
-                name="show_on_home"
-                control={control}
-                render={({ field }) => (
-                    <label className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
+                    )}
+                />
+                <Controller
+                    name="show_on_home"
+                    control={control}
+                    render={({ field }) => (
+                        <FormToggle
+                            label="Show on home page"
                             checked={field.value ?? false}
-                            onChange={(event) => field.onChange(event.target.checked)}
+                            onChange={field.onChange}
                         />
-                        <span>Show on Home</span>
-                    </label>
-                )}
-            />
+                    )}
+                />
+            </FormAdvancedFields>
 
-            <div className="mt-8 flex justify-end">
-                <ActionButton
-                    type="button"
-                    variant="outline-danger"
-                    onClick={onClose}
-                    isLoading={false}
-                    displayText="Cancel"
-                    disabled={isSubmitting}
-                />
-                <ActionButton
-                    type="submit"
-                    variant="primary"
-                    isLoading={isSubmitting}
-                    loadingText={isEditMode ? "Updating..." : "Saving..."}
-                    displayText={isEditMode ? "Update" : "Save"}
-                    className="ltr:ml-4 rtl:mr-4"
-                />
-            </div>
+            <FormFooter onCancel={onClose} isSubmitting={isSubmitting} isEditMode={isEditMode} />
         </form>
     );
 };

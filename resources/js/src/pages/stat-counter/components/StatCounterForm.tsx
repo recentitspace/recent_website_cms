@@ -5,16 +5,19 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import ActionButton from "../../../components/ActionButton";
 import Alert from "../../../components/Alert";
 import MediaSelect from "../../../components/media/MediaSelect";
+import FormAdvancedFields from "../../../components/form/FormAdvancedFields";
+import FormFooter from "../../../components/form/FormFooter";
 import FormInput from "../../../components/form/FormInput";
+import FormSection from "../../../components/form/FormSection";
+import FormToggle from "../../../components/form/FormToggle";
 import { statCounterApi } from "../../../services/statCounter";
 import { IMedia, IStatCounter } from "../../../types";
 
 const statCounterSchema = z.object({
-    label: z.string().min(1, "Label is required"),
-    value: z.string().min(1, "Value is required"),
+    label: z.string().min(1, "Description is required"),
+    value: z.string().min(1, "Number is required"),
     suffix: z.string().optional(),
     icon_id: z.number().nullable().optional(),
     sort_order: z.coerce.number().min(0).optional(),
@@ -76,6 +79,11 @@ const StatCounterForm: React.FC<StatCounterFormProps> = ({ counterToEdit, onClos
         }
     }, [editCounter, reset]);
 
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ["Stat Counter Table"] });
+        queryClient.invalidateQueries({ queryKey: ["editor-home-counters"] });
+    };
+
     const createMutation = useMutation({
         mutationFn: (data: StatCounterFormData) =>
             statCounterApi.create({
@@ -84,12 +92,12 @@ const StatCounterForm: React.FC<StatCounterFormProps> = ({ counterToEdit, onClos
                 icon_id: data.icon_id || null,
             }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Stat Counter Table"] });
-            toast.success("Stat counter created successfully");
+            invalidate();
+            toast.success("Statistic saved");
             onClose();
         },
         onError: (error: any) => {
-            setGeneralError(error?.message || "Failed to create stat counter");
+            setGeneralError(error?.message || "Could not save statistic");
         },
     });
 
@@ -101,13 +109,13 @@ const StatCounterForm: React.FC<StatCounterFormProps> = ({ counterToEdit, onClos
                 icon_id: data.icon_id || null,
             }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Stat Counter Table"] });
+            invalidate();
             queryClient.invalidateQueries({ queryKey: ["stat-counter", editCounter?.id] });
-            toast.success("Stat counter updated successfully");
+            toast.success("Statistic updated");
             onClose();
         },
         onError: (error: any) => {
-            setGeneralError(error?.message || "Failed to update stat counter");
+            setGeneralError(error?.message || "Could not update statistic");
         },
     });
 
@@ -124,130 +132,115 @@ const StatCounterForm: React.FC<StatCounterFormProps> = ({ counterToEdit, onClos
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {generalError && <Alert type="danger" message={generalError} />}
 
-            <Controller
-                name="label"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Label"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={errors.label?.message}
+            <FormSection
+                title="The number"
+                description="What visitors see in the stats row on your homepage."
+            >
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <Controller
+                        name="value"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Number"
+                                hint='e.g. "150" or "10"'
+                                value={field.value || ""}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                                error={errors.value?.message}
+                            />
+                        )}
                     />
-                )}
-            />
+                    <Controller
+                        name="suffix"
+                        control={control}
+                        render={({ field }) => (
+                            <FormInput
+                                label="Symbol after number"
+                                hint='Optional: +, %, K, yrs'
+                                value={field.value || ""}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                                error={errors.suffix?.message}
+                            />
+                        )}
+                    />
+                </div>
 
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <Controller
-                    name="value"
+                    name="label"
                     control={control}
                     render={({ field }) => (
                         <FormInput
-                            label="Value"
+                            label="What it means"
+                            hint='e.g. "Happy clients" or "Projects completed"'
                             value={field.value || ""}
                             onChange={field.onChange}
                             onBlur={field.onBlur}
-                            error={errors.value?.message}
+                            error={errors.label?.message}
                         />
                     )}
                 />
+            </FormSection>
 
+            <FormSection title="Icon" description="Small icon shown next to the number (optional).">
                 <Controller
-                    name="suffix"
+                    name="icon_id"
+                    control={control}
+                    render={({ field }) => (
+                        <MediaSelect
+                            label="Icon image"
+                            value={field.value}
+                            selectedMedia={selectedIcon}
+                            onChange={(mediaId, media) => {
+                                field.onChange(mediaId);
+                                setSelectedIcon(media || null);
+                            }}
+                        />
+                    )}
+                />
+            </FormSection>
+
+            <FormAdvancedFields>
+                <Controller
+                    name="sort_order"
                     control={control}
                     render={({ field }) => (
                         <FormInput
-                            label="Suffix (optional)"
-                            value={field.value || ""}
-                            onChange={field.onChange}
+                            label="Display order"
+                            type="number"
+                            value={String(field.value ?? 0)}
+                            onChange={(value) => field.onChange(Number(value))}
                             onBlur={field.onBlur}
-                            error={errors.suffix?.message}
-                            placeholder="e.g. +, %, K"
+                            error={errors.sort_order?.message}
                         />
                     )}
                 />
-            </div>
-
-            <Controller
-                name="icon_id"
-                control={control}
-                render={({ field }) => (
-                    <MediaSelect
-                        label="Icon"
-                        value={field.value}
-                        selectedMedia={selectedIcon}
-                        onChange={(mediaId, media) => {
-                            field.onChange(mediaId);
-                            setSelectedIcon(media || null);
-                        }}
-                    />
-                )}
-            />
-
-            <Controller
-                name="sort_order"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Sort Order"
-                        type="number"
-                        value={String(field.value ?? 0)}
-                        onChange={(value) => field.onChange(Number(value))}
-                        onBlur={field.onBlur}
-                        error={errors.sort_order?.message}
-                    />
-                )}
-            />
-
-            <Controller
-                name="is_active"
-                control={control}
-                render={({ field }) => (
-                    <label className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
+                <Controller
+                    name="is_active"
+                    control={control}
+                    render={({ field }) => (
+                        <FormToggle
+                            label="Show on website"
                             checked={field.value ?? true}
-                            onChange={(event) => field.onChange(event.target.checked)}
+                            onChange={field.onChange}
                         />
-                        <span>Active</span>
-                    </label>
-                )}
-            />
-
-            <Controller
-                name="show_on_home"
-                control={control}
-                render={({ field }) => (
-                    <label className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
+                    )}
+                />
+                <Controller
+                    name="show_on_home"
+                    control={control}
+                    render={({ field }) => (
+                        <FormToggle
+                            label="Show on home page"
                             checked={field.value ?? true}
-                            onChange={(event) => field.onChange(event.target.checked)}
+                            onChange={field.onChange}
                         />
-                        <span>Show on Home</span>
-                    </label>
-                )}
-            />
+                    )}
+                />
+            </FormAdvancedFields>
 
-            <div className="mt-8 flex justify-end">
-                <ActionButton
-                    type="button"
-                    variant="outline-danger"
-                    onClick={onClose}
-                    isLoading={false}
-                    displayText="Cancel"
-                    disabled={isSubmitting}
-                />
-                <ActionButton
-                    type="submit"
-                    variant="primary"
-                    isLoading={isSubmitting}
-                    loadingText={isEditMode ? "Updating..." : "Saving..."}
-                    displayText={isEditMode ? "Update" : "Save"}
-                    className="ltr:ml-4 rtl:mr-4"
-                />
-            </div>
+            <FormFooter onCancel={onClose} isSubmitting={isSubmitting} isEditMode={isEditMode} />
         </form>
     );
 };

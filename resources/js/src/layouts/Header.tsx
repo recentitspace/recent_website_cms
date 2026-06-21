@@ -12,6 +12,7 @@ import {
     ThemeSwitcher,
     UserDropdown,
 } from "../components/header";
+import ContentModeToggle from "../components/cms/ContentModeToggle";
 import { useModal } from "../contexts/ModalContext";
 import { IRootState } from "../store";
 
@@ -66,6 +67,7 @@ const Header = () => {
                     <QuickLinks onOpenModal={openModal} />
 
                     <div className="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
+                        <ContentModeToggle />
                         <SearchBar />
                         <ThemeSwitcher />
                         <LanguageSwitcher />

@@ -83,36 +83,6 @@ const ServiceItemDetail: React.FC<ServiceItemDetailProps> = ({ itemId }) => {
                     </ul>
                 </div>
             )}
-            {item.domain_extensions && item.domain_extensions.length > 0 && (
-                <div>
-                    <span className="font-medium text-gray-500">Domain Extensions</span>
-                    <div className="mt-2 overflow-x-auto">
-                        <table className="min-w-full text-left text-sm">
-                            <thead>
-                                <tr className="border-b border-gray-200 dark:border-gray-700">
-                                    <th className="py-2 pr-4 font-medium">Extension</th>
-                                    <th className="py-2 pr-4 font-medium">Pricing</th>
-                                    <th className="py-2 font-medium">Badge</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {item.domain_extensions.map((row) => (
-                                    <tr
-                                        key={`${row.extension}-${row.price}`}
-                                        className="border-b border-gray-100 dark:border-gray-800"
-                                    >
-                                        <td className="py-2 pr-4">{row.extension}</td>
-                                        <td className="py-2 pr-4">
-                                            ${row.price}/{row.period || "yr"}
-                                        </td>
-                                        <td className="py-2">{row.badge || "-"}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
             {item.process_title && (
                 <div>
                     <span className="font-medium text-gray-500">Process Title</span>

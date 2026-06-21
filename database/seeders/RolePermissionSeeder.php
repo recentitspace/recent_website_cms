@@ -100,6 +100,12 @@ class RolePermissionSeeder extends Seeder
             'edit pricing plans',
             'delete pricing plans',
 
+            // domain extensions
+            'view domain extensions',
+            'create domain extensions',
+            'edit domain extensions',
+            'delete domain extensions',
+
             // service categories
             'view service categories',
             'create service categories',
@@ -130,11 +136,23 @@ class RolePermissionSeeder extends Seeder
             'edit page blocks',
             'delete page blocks',
 
-            // page block items
-            'view page block items',
-            'create page block items',
-            'edit page block items',
-            'delete page block items',
+            // why choose items
+            'view why choose items',
+            'create why choose items',
+            'edit why choose items',
+            'delete why choose items',
+
+            // about drive items
+            'view about drive items',
+            'create about drive items',
+            'edit about drive items',
+            'delete about drive items',
+
+            // about objectives
+            'view about objectives',
+            'create about objectives',
+            'edit about objectives',
+            'delete about objectives',
         ];
 
         foreach ($permissions as $permission) {

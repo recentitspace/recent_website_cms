@@ -1,4 +1,6 @@
+import { Wrench } from "lucide-react";
 import React from "react";
+
 import GenericModal from "../../../components/GenericModal";
 import { IServiceItem } from "../../../types";
 import ServiceItemForm from "./ServiceItemForm";
@@ -20,8 +22,10 @@ const ServiceItemModal: React.FC<ServiceItemModalProps> = ({
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit Service Item" : "Add Service Item"}
-            maxWidth="lg"
+            title={isEditMode ? "Edit service" : "Add service"}
+            subtitle="Service listing and detail page content — headline, highlights, and process steps."
+            icon={Wrench}
+            maxWidth="3xl"
         >
             <ServiceItemForm itemToEdit={itemToEdit} onClose={() => setIsOpen(false)} />
         </GenericModal>

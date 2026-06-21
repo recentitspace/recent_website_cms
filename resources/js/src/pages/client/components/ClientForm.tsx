@@ -5,15 +5,18 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import ActionButton from "../../../components/ActionButton";
 import Alert from "../../../components/Alert";
 import MediaSelect from "../../../components/media/MediaSelect";
+import FormAdvancedFields from "../../../components/form/FormAdvancedFields";
+import FormFooter from "../../../components/form/FormFooter";
 import FormInput from "../../../components/form/FormInput";
+import FormSection from "../../../components/form/FormSection";
+import FormToggle from "../../../components/form/FormToggle";
 import { clientApi } from "../../../services/client";
 import { IClient, IMedia } from "../../../types";
 
 const clientSchema = z.object({
-    name: z.string().min(1, "Name is required"),
+    name: z.string().min(1, "Company name is required"),
     logo_id: z.number().nullable().optional(),
     url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
     sort_order: z.coerce.number().min(0).optional(),
@@ -73,6 +76,11 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
         }
     }, [editClient, reset]);
 
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ["Client Table"] });
+        queryClient.invalidateQueries({ queryKey: ["editor-home-clients"] });
+    };
+
     const createMutation = useMutation({
         mutationFn: (data: ClientFormData) =>
             clientApi.create({
@@ -81,12 +89,12 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
                 logo_id: data.logo_id || null,
             }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Client Table"] });
-            toast.success("Client created successfully");
+            invalidate();
+            toast.success("Client logo saved");
             onClose();
         },
         onError: (error: any) => {
-            setGeneralError(error?.message || "Failed to create client");
+            setGeneralError(error?.message || "Could not save client");
         },
     });
 
@@ -98,13 +106,13 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
                 logo_id: data.logo_id || null,
             }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Client Table"] });
+            invalidate();
             queryClient.invalidateQueries({ queryKey: ["client", editClient?.id] });
-            toast.success("Client updated successfully");
+            toast.success("Client logo updated");
             onClose();
         },
         onError: (error: any) => {
-            setGeneralError(error?.message || "Failed to update client");
+            setGeneralError(error?.message || "Could not update client");
         },
     });
 
@@ -121,113 +129,98 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {generalError && <Alert type="danger" message={generalError} />}
 
-            <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Name"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={errors.name?.message}
-                    />
-                )}
-            />
+            <FormSection
+                title="Client details"
+                description="Name and logo shown in the client logos row on the homepage."
+            >
+                <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Company name"
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={errors.name?.message}
+                        />
+                    )}
+                />
 
-            <Controller
-                name="logo_id"
-                control={control}
-                render={({ field }) => (
-                    <MediaSelect
-                        label="Logo"
-                        value={field.value}
-                        selectedMedia={selectedMedia}
-                        onChange={(mediaId, media) => {
-                            field.onChange(mediaId);
-                            setSelectedMedia(media || null);
-                        }}
-                    />
-                )}
-            />
+                <Controller
+                    name="logo_id"
+                    control={control}
+                    render={({ field }) => (
+                        <MediaSelect
+                            label="Logo image"
+                            value={field.value}
+                            selectedMedia={selectedMedia}
+                            onChange={(mediaId, media) => {
+                                field.onChange(mediaId);
+                                setSelectedMedia(media || null);
+                            }}
+                        />
+                    )}
+                />
 
-            <Controller
-                name="url"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Website URL (optional)"
-                        value={field.value || ""}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={errors.url?.message}
-                    />
-                )}
-            />
+                <Controller
+                    name="url"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Website link"
+                            hint="Optional — opens when visitors click the logo"
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={errors.url?.message}
+                            placeholder="https://..."
+                        />
+                    )}
+                />
+            </FormSection>
 
-            <Controller
-                name="sort_order"
-                control={control}
-                render={({ field }) => (
-                    <FormInput
-                        label="Sort Order"
-                        type="number"
-                        value={String(field.value ?? 0)}
-                        onChange={(value) => field.onChange(Number(value))}
-                        onBlur={field.onBlur}
-                        error={errors.sort_order?.message}
-                    />
-                )}
-            />
-
-            <Controller
-                name="is_active"
-                control={control}
-                render={({ field }) => (
-                    <label className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
+            <FormAdvancedFields>
+                <Controller
+                    name="sort_order"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Display order"
+                            type="number"
+                            value={String(field.value ?? 0)}
+                            onChange={(value) => field.onChange(Number(value))}
+                            onBlur={field.onBlur}
+                            error={errors.sort_order?.message}
+                        />
+                    )}
+                />
+                <Controller
+                    name="is_active"
+                    control={control}
+                    render={({ field }) => (
+                        <FormToggle
+                            label="Show on website"
                             checked={field.value ?? true}
-                            onChange={(event) => field.onChange(event.target.checked)}
+                            onChange={field.onChange}
                         />
-                        <span>Active</span>
-                    </label>
-                )}
-            />
-
-            <Controller
-                name="show_on_home"
-                control={control}
-                render={({ field }) => (
-                    <label className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
+                    )}
+                />
+                <Controller
+                    name="show_on_home"
+                    control={control}
+                    render={({ field }) => (
+                        <FormToggle
+                            label="Show on home page"
+                            description="Display in the scrolling client logos row"
                             checked={field.value ?? false}
-                            onChange={(event) => field.onChange(event.target.checked)}
+                            onChange={field.onChange}
                         />
-                        <span>Show on Home (brand slider)</span>
-                    </label>
-                )}
-            />
+                    )}
+                />
+            </FormAdvancedFields>
 
-            <div className="mt-8 flex justify-end">
-                <ActionButton
-                    type="button"
-                    variant="outline-danger"
-                    onClick={onClose}
-                    isLoading={false}
-                    displayText="Cancel"
-                    disabled={isSubmitting}
-                />
-                <ActionButton
-                    type="submit"
-                    variant="primary"
-                    isLoading={isSubmitting}
-                    loadingText={isEditMode ? "Updating..." : "Saving..."}
-                    displayText={isEditMode ? "Update" : "Save"}
-                    className="ltr:ml-4 rtl:mr-4"
-                />
-            </div>
+            <FormFooter onCancel={onClose} isSubmitting={isSubmitting} isEditMode={isEditMode} />
         </form>
     );
 };

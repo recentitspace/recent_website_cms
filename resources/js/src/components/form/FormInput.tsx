@@ -7,6 +7,7 @@ interface FormInputProps
         "value" | "onChange"
     > {
     label: string;
+    hint?: string;
     icon?: LucideIcon;
     error?: string;
     value: string;
@@ -17,6 +18,7 @@ interface FormInputProps
 
 const FormInput: React.FC<FormInputProps> = ({
     label,
+    hint,
     icon: Icon,
     error,
     className = "",
@@ -44,14 +46,19 @@ const FormInput: React.FC<FormInputProps> = ({
 
     return (
         <div className="space-y-2">
-            <label
-                htmlFor={props.id}
-                className={`block text-sm font-medium ${
-                    error ? "text-red-500" : "text-gray-700 dark:text-gray-300"
-                }`}
-            >
-                {label}
-            </label>
+            {label ? (
+                <label
+                    htmlFor={props.id}
+                    className={`block text-sm font-medium ${
+                        error ? "text-red-500" : "text-gray-700 dark:text-gray-300"
+                    }`}
+                >
+                    {label}
+                </label>
+            ) : null}
+            {hint && !error && (
+                <p className="text-xs text-gray-500 dark:text-gray-400">{hint}</p>
+            )}
             <div className="relative">
                 {Icon && (
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">

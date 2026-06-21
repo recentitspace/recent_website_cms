@@ -69,7 +69,6 @@ class ServicesImportSeeder extends Seeder
                         'process_title' => $detail['process_title'] ?? null,
                         'process_subtitle' => $detail['process_subtitle'] ?? null,
                         'process_steps' => $detail['process_steps'] ?? null,
-                        'domain_extensions' => $detail['domain_extensions'] ?? null,
                         'sort_order' => $itemData['sort_order'] ?? 0,
                         'is_active' => true,
                         'show_on_home' => true,

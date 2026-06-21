@@ -7,10 +7,11 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import {
-    sidebarMenu,
     filterMenuByPermissions,
     cleanEmptySections,
 } from "../lib/sidebar";
+import { buildSidebarMenu } from "../lib/buildSidebarMenu";
+import { useCmsContentMode } from "../contexts/CmsContentModeContext";
 import { IRootState } from "../store";
 import { toggleSidebar } from "../store/themeConfigSlice";
 import { MenuItem } from "../types/sidebar";
@@ -30,6 +31,7 @@ const Sidebar = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const { hasAnyPermission } = usePermission();
+    const { mode } = useCmsContentMode();
     const isDark = themeConfig.theme === 'dark' || themeConfig.isDarkMode;
 
     // Determine which logo to use based on theme
@@ -44,7 +46,7 @@ const Sidebar = () => {
 
     // Filter sidebar menu based on user permissions
     const filteredSidebarMenu = cleanEmptySections(
-        filterMenuByPermissions(sidebarMenu, hasAnyPermission)
+        filterMenuByPermissions(buildSidebarMenu(mode), hasAnyPermission)
     );
 
 
