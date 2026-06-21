@@ -38,7 +38,6 @@ const pageBlockSchema = z.object({
     cta_secondary_text: z.string().optional(),
     cta_secondary_url: z.string().optional().or(z.literal("")),
     video_url: z.string().optional().or(z.literal("")),
-    sort_order: z.coerce.number().min(0).optional(),
     is_active: z.boolean().optional(),
 });
 
@@ -83,7 +82,6 @@ const PageBlockForm: React.FC<PageBlockFormProps> = ({ blockToEdit, onClose }) =
             cta_secondary_text: "",
             cta_secondary_url: "",
             video_url: "",
-            sort_order: 0,
             is_active: true,
         },
     });
@@ -102,7 +100,6 @@ const PageBlockForm: React.FC<PageBlockFormProps> = ({ blockToEdit, onClose }) =
                 cta_secondary_text: editBlock.cta_secondary_text || "",
                 cta_secondary_url: editBlock.cta_secondary_url || "",
                 video_url: editBlock.video_url || "",
-                sort_order: editBlock.sort_order,
                 is_active: editBlock.is_active,
             });
             setSelectedImage(editBlock.image || null);
@@ -362,21 +359,6 @@ const PageBlockForm: React.FC<PageBlockFormProps> = ({ blockToEdit, onClose }) =
                         />
                     </div>
                 ) : null}
-
-                <Controller
-                    name="sort_order"
-                    control={control}
-                    render={({ field }) => (
-                        <FormInput
-                            label="Display order"
-                            type="number"
-                            value={String(field.value ?? 0)}
-                            onChange={(value) => field.onChange(Number(value))}
-                            onBlur={field.onBlur}
-                            error={errors.sort_order?.message}
-                        />
-                    )}
-                />
 
                 <Controller
                     name="is_active"

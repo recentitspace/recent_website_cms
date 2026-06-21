@@ -92,7 +92,6 @@ class PageContentImportSeeder extends Seeder
                     'cta_secondary_text' => $blockData['cta_secondary_text'] ?? null,
                     'cta_secondary_url' => $blockData['cta_secondary_url'] ?? null,
                     'video_url' => $blockData['video_url'] ?? null,
-                    'sort_order' => $blockData['sort_order'] ?? 0,
                     'is_active' => true,
                 ]
             );

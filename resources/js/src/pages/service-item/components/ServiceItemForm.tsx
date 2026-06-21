@@ -114,15 +114,21 @@ const ProcessStepTasks: React.FC<ProcessStepTasksProps> = ({
 
 interface ServiceItemFormProps {
     itemToEdit?: IServiceItem | null;
+    defaultServiceCategoryId?: number | null;
     onClose: () => void;
 }
 
-const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }) => {
+const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
+    itemToEdit,
+    defaultServiceCategoryId,
+    onClose,
+}) => {
     const queryClient = useQueryClient();
     const [generalError, setGeneralError] = useState<string | null>(null);
     const [selectedIcon, setSelectedIcon] = useState<IMedia | null>(null);
     const [selectedHeroImage, setSelectedHeroImage] = useState<IMedia | null>(null);
     const isEditMode = Boolean(itemToEdit);
+    const hideCategorySelect = Boolean(defaultServiceCategoryId) || isEditMode;
 
     const { data: fullItem } = useQuery({
         queryKey: ["service-item", itemToEdit?.id],
@@ -234,13 +240,39 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
             });
             setSelectedIcon(editItem.icon || null);
             setSelectedHeroImage(editItem.hero_image || null);
+            return;
         }
-    }, [editItem, reset]);
+
+        if (defaultServiceCategoryId) {
+            reset({
+                service_category_id: defaultServiceCategoryId,
+                title: "",
+                slug: "",
+                icon_id: null,
+                page_path: "",
+                detail_hero_title: "",
+                detail_hero_description: "",
+                hero_image_id: null,
+                highlights: [],
+                process_title: "",
+                process_subtitle: "",
+                process_steps: [],
+                sort_order: 0,
+                is_active: true,
+                show_on_home: true,
+            });
+        }
+    }, [editItem, defaultServiceCategoryId, reset]);
 
     const createMutation = useMutation({
         mutationFn: (data: ItemFormData) => serviceItemApi.create(buildPayload(data)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Service Item Table"] });
+            if (defaultServiceCategoryId) {
+                queryClient.invalidateQueries({
+                    queryKey: ["editor-service-items", defaultServiceCategoryId],
+                });
+            }
             toast.success("Service item created successfully");
             onClose();
         },
@@ -276,19 +308,21 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({ itemToEdit, onClose }
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {generalError && <Alert type="danger" message={generalError} />}
 
-            <Controller
-                name="service_category_id"
-                control={control}
-                render={({ field }) => (
-                    <FormSelect
-                        label="Category"
-                        value={String(field.value || "")}
-                        onChange={(value) => field.onChange(Number(value))}
-                        options={categoryOptions}
-                        error={errors.service_category_id?.message}
-                    />
-                )}
-            />
+            {!hideCategorySelect && (
+                <Controller
+                    name="service_category_id"
+                    control={control}
+                    render={({ field }) => (
+                        <FormSelect
+                            label="Category"
+                            value={String(field.value || "")}
+                            onChange={(value) => field.onChange(Number(value))}
+                            options={categoryOptions}
+                            error={errors.service_category_id?.message}
+                        />
+                    )}
+                />
+            )}
 
             <Controller
                 name="title"

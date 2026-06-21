@@ -135,12 +135,6 @@ const PageBlockList = () => {
             ),
         },
         {
-            accessor: "sort_order",
-            title: "Order",
-            type: "number",
-            sortable: true,
-        },
-        {
             accessor: "is_active",
             title: "Active",
             type: "text",
@@ -195,7 +189,7 @@ const PageBlockList = () => {
                 columns={columns}
                 fetchData={(params) => pageBlockApi.getAll(params)}
                 searchFields={["page", "key", "title", "subtitle"]}
-                sortCol="sort_order"
+                sortCol="key"
                 query={pageFilter ? { page: pageFilter } : {}}
                 rowSelectionEnabled={true}
                 onSelectionChange={setSelectedRecords}

@@ -20,6 +20,12 @@ const EditorPortfolioPage = () => {
     const [itemModalOpen, setItemModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<IPortfolioCategory | null>(null);
     const [selectedItem, setSelectedItem] = useState<IPortfolioItem | null>(null);
+    const [defaultCategoryId, setDefaultCategoryId] = useState<number | null>(null);
+
+    const openAddCategory = () => {
+        setSelectedCategory(null);
+        setCategoryModalOpen(true);
+    };
 
     const { data: categoriesResponse, isLoading } = useQuery({
         queryKey: ["editor-portfolio-categories"],
@@ -70,6 +76,8 @@ const EditorPortfolioPage = () => {
                     <EditorEmptyState
                         message="No portfolio categories yet."
                         hint="Create a category first, then add your project case studies."
+                        onAction={openAddCategory}
+                        actionLabel="Add category"
                     />
                 ) : (
                     categories.map((category, index) => (
@@ -83,6 +91,12 @@ const EditorPortfolioPage = () => {
                             }}
                             onEditItem={(item) => {
                                 setSelectedItem(item);
+                                setDefaultCategoryId(null);
+                                setItemModalOpen(true);
+                            }}
+                            onAddItem={() => {
+                                setSelectedItem(null);
+                                setDefaultCategoryId(category.id);
                                 setItemModalOpen(true);
                             }}
                         />
@@ -108,10 +122,12 @@ const EditorPortfolioPage = () => {
                     setItemModalOpen(open);
                     if (!open) {
                         setSelectedItem(null);
+                        setDefaultCategoryId(null);
                         refresh();
                     }
                 }}
                 itemToEdit={selectedItem}
+                defaultPortfolioCategoryId={defaultCategoryId}
             />
         </>
     );
@@ -122,6 +138,7 @@ interface PortfolioCategoryBlockProps {
     sectionNumber: number;
     onEditCategory: () => void;
     onEditItem: (item: IPortfolioItem) => void;
+    onAddItem: () => void;
 }
 
 const PortfolioCategoryBlock: React.FC<PortfolioCategoryBlockProps> = ({
@@ -129,6 +146,7 @@ const PortfolioCategoryBlock: React.FC<PortfolioCategoryBlockProps> = ({
     sectionNumber,
     onEditCategory,
     onEditItem,
+    onAddItem,
 }) => {
     const { data: itemsResponse, isLoading } = useQuery({
         queryKey: ["editor-portfolio-items", category.id],
@@ -149,11 +167,14 @@ const PortfolioCategoryBlock: React.FC<PortfolioCategoryBlockProps> = ({
             description="Case studies and projects in this category."
             sectionNumber={sectionNumber}
             action={
-                <EditorActionButton
-                    label="Edit category"
-                    onClick={onEditCategory}
-                    variant="primary"
-                />
+                <div className="flex flex-wrap gap-2">
+                    <EditorActionButton label="Add project" onClick={onAddItem} />
+                    <EditorActionButton
+                        label="Edit category"
+                        onClick={onEditCategory}
+                        variant="primary"
+                    />
+                </div>
             }
         >
             {isLoading ? (
@@ -162,6 +183,8 @@ const PortfolioCategoryBlock: React.FC<PortfolioCategoryBlockProps> = ({
                 <EditorEmptyState
                     message="No projects in this category yet."
                     hint="Add a case study with a title, thumbnail image, and project details."
+                    onAction={onAddItem}
+                    actionLabel="Add first project"
                 />
             ) : (
                 <div className="grid gap-4 md:grid-cols-2">

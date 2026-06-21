@@ -78,10 +78,15 @@ type ItemFormData = z.infer<typeof itemSchema>;
 
 interface PortfolioItemFormProps {
     itemToEdit?: IPortfolioItem | null;
+    defaultPortfolioCategoryId?: number | null;
     onClose: () => void;
 }
 
-const PortfolioItemForm: React.FC<PortfolioItemFormProps> = ({ itemToEdit, onClose }) => {
+const PortfolioItemForm: React.FC<PortfolioItemFormProps> = ({
+    itemToEdit,
+    defaultPortfolioCategoryId,
+    onClose,
+}) => {
     const queryClient = useQueryClient();
     const [generalError, setGeneralError] = useState<string | null>(null);
     const [selectedMedia, setSelectedMedia] = useState<IMedia | null>(
@@ -89,6 +94,7 @@ const PortfolioItemForm: React.FC<PortfolioItemFormProps> = ({ itemToEdit, onClo
     );
     const [selectedGallery, setSelectedGallery] = useState<IMedia[]>([]);
     const isEditMode = Boolean(itemToEdit);
+    const hideCategorySelect = Boolean(defaultPortfolioCategoryId) || isEditMode;
 
     const { data: fullItem } = useQuery({
         queryKey: ["portfolio-item", itemToEdit?.id],
@@ -171,13 +177,40 @@ const PortfolioItemForm: React.FC<PortfolioItemFormProps> = ({ itemToEdit, onClo
             });
             setSelectedMedia(editItem.thumbnail || null);
             setSelectedGallery(galleryMedia);
+            return;
         }
-    }, [editItem, reset]);
+
+        if (defaultPortfolioCategoryId) {
+            reset({
+                portfolio_category_id: defaultPortfolioCategoryId,
+                title: "",
+                slug: "",
+                tags: "",
+                type: "image",
+                thumbnail_id: null,
+                external_link: "",
+                youtube_url: "",
+                featured: false,
+                sort_order: 0,
+                is_published: true,
+                show_on_home: false,
+                home_sort_order: null,
+                gallery_media_ids: [],
+            });
+            setSelectedMedia(null);
+            setSelectedGallery([]);
+        }
+    }, [editItem, defaultPortfolioCategoryId, reset]);
 
     const createMutation = useMutation({
         mutationFn: (data: ItemFormData) => portfolioItemApi.create(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Portfolio Item Table"] });
+            if (defaultPortfolioCategoryId) {
+                queryClient.invalidateQueries({
+                    queryKey: ["editor-portfolio-items", defaultPortfolioCategoryId],
+                });
+            }
             toast.success("Portfolio item created successfully");
             onClose();
         },
@@ -222,20 +255,22 @@ const PortfolioItemForm: React.FC<PortfolioItemFormProps> = ({ itemToEdit, onClo
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {generalError && <Alert type="danger" message={generalError} />}
 
-            <Controller
-                name="portfolio_category_id"
-                control={control}
-                render={({ field }) => (
-                    <FormSelect
-                        label="Category"
-                        options={categoryOptions}
-                        value={String(field.value || "")}
-                        onChange={(value) => field.onChange(Number(value))}
-                        onBlur={field.onBlur}
-                        error={errors.portfolio_category_id?.message}
-                    />
-                )}
-            />
+            {!hideCategorySelect && (
+                <Controller
+                    name="portfolio_category_id"
+                    control={control}
+                    render={({ field }) => (
+                        <FormSelect
+                            label="Category"
+                            options={categoryOptions}
+                            value={String(field.value || "")}
+                            onChange={(value) => field.onChange(Number(value))}
+                            onBlur={field.onBlur}
+                            error={errors.portfolio_category_id?.message}
+                        />
+                    )}
+                />
+            )}
 
             <Controller
                 name="title"

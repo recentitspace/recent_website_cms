@@ -9,12 +9,14 @@ interface PortfolioItemModalProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     itemToEdit?: IPortfolioItem | null;
+    defaultPortfolioCategoryId?: number | null;
 }
 
 const PortfolioItemModal: React.FC<PortfolioItemModalProps> = ({
     isOpen,
     setIsOpen,
     itemToEdit,
+    defaultPortfolioCategoryId,
 }) => {
     const isEditMode = Boolean(itemToEdit);
 
@@ -27,7 +29,11 @@ const PortfolioItemModal: React.FC<PortfolioItemModalProps> = ({
             icon={Briefcase}
             maxWidth="2xl"
         >
-            <PortfolioItemForm itemToEdit={itemToEdit} onClose={() => setIsOpen(false)} />
+            <PortfolioItemForm
+                itemToEdit={itemToEdit}
+                defaultPortfolioCategoryId={defaultPortfolioCategoryId}
+                onClose={() => setIsOpen(false)}
+            />
         </GenericModal>
     );
 };

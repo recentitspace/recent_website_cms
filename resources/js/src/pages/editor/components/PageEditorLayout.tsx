@@ -19,7 +19,7 @@ import {
     IWhyChooseItem,
     PageName,
 } from "../../../types";
-import { PAGE_EDITOR_TITLES } from "../lib/editorPageLabels";
+import { PAGE_EDITOR_TITLES, sortPageBlocksForEditor } from "../lib/editorPageLabels";
 import EditorBlockCard from "./EditorBlockCard";
 import EditorLoadingState from "./EditorLoadingState";
 import EditorPageShell from "./EditorPageShell";
@@ -77,7 +77,7 @@ const PageEditorLayout: React.FC<PageEditorLayoutProps> = ({ page, children }) =
         queryFn: () =>
             pageBlockApi.getAll({
                 per_page: 100,
-                sort_by: "sort_order",
+                sort_by: "key",
                 sort_direction: "asc",
                 filter: { page },
             }),
@@ -116,7 +116,10 @@ const PageEditorLayout: React.FC<PageEditorLayoutProps> = ({ page, children }) =
         enabled: page === "about",
     });
 
-    const blocks = blocksResponse?.data || [];
+    const blocks = useMemo(
+        () => sortPageBlocksForEditor(page, blocksResponse?.data || []),
+        [page, blocksResponse?.data]
+    );
 
     const itemsByBlockKey = useMemo(() => {
         const map = new Map<string, IContentCardItem[]>();
@@ -206,16 +209,16 @@ const PageEditorLayout: React.FC<PageEditorLayoutProps> = ({ page, children }) =
                 icon={PageIcon}
                 tip={
                     <>
-                        Sections are listed in the order they appear on your website — from top to
-                        bottom. Click <strong>Edit this section</strong> on any block to change its
-                        text, images, or buttons.
+                        Each section is a fixed part of this page — edit its text, images, or
+                        buttons here. Card lists below a section are managed separately and keep
+                        their own display order.
                     </>
                 }
             >
                 {isLoading ? (
                     <EditorLoadingState message="Loading page sections..." />
                 ) : (
-                    blocks.map((block, index) => {
+                    blocks.map((block) => {
                         const hasItems = BLOCKS_WITH_ITEMS.has(block.key as ItemBlockKey);
                         const blockKey = block.key as ItemBlockKey;
 
@@ -223,7 +226,6 @@ const PageEditorLayout: React.FC<PageEditorLayoutProps> = ({ page, children }) =
                             <EditorBlockCard
                                 key={block.id}
                                 block={block}
-                                sectionNumber={index + 1}
                                 items={hasItems ? itemsByBlockKey.get(block.key) || [] : []}
                                 onEditBlock={openEditBlock}
                                 onEditItem={

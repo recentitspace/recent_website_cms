@@ -16,7 +16,6 @@ export interface IPageBlock extends ITimestamped {
     cta_secondary_text?: string | null;
     cta_secondary_url?: string | null;
     video_url?: string | null;
-    sort_order: number;
     is_active: boolean;
     image?: IMedia | null;
 }

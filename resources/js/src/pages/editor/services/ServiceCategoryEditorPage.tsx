@@ -97,6 +97,11 @@ const ServiceCategoryEditorPage = () => {
         setFaqModalOpen(true);
     };
 
+    const openAddItem = () => {
+        setSelectedItem(null);
+        setItemModalOpen(true);
+    };
+
     const openAddFaq = () => {
         setSelectedFaq(null);
         setFaqModalOpen(true);
@@ -251,11 +256,23 @@ const ServiceCategoryEditorPage = () => {
                     title="Services in this group"
                     description="Each card links to its own detail page with more information."
                     sectionNumber={3}
+                    action={
+                        <EditorActionButton
+                            label="Add service"
+                            onClick={openAddItem}
+                            variant="primary"
+                        />
+                    }
                 >
                     {itemsLoading ? (
                         <EditorLoadingState message="Loading services..." />
                     ) : items.length === 0 ? (
-                        <EditorEmptyState message="No services in this group yet." />
+                        <EditorEmptyState
+                            message="No services in this group yet."
+                            hint="Add a service with a title, page link, and highlights."
+                            onAction={openAddItem}
+                            actionLabel="Add first service"
+                        />
                     ) : (
                         <div className="grid gap-4 md:grid-cols-2">
                             {items.map((item) => (
@@ -300,13 +317,11 @@ const ServiceCategoryEditorPage = () => {
                     description="FAQ accordion shown at the bottom of this service page."
                     sectionNumber={4}
                     action={
-                        faqs.length > 0 ? (
-                            <EditorActionButton
-                                label="Add question"
-                                onClick={openAddFaq}
-                                variant="primary"
-                            />
-                        ) : undefined
+                        <EditorActionButton
+                            label="Add question"
+                            onClick={openAddFaq}
+                            variant="primary"
+                        />
                     }
                 >
                     {faqsLoading ? (
@@ -367,6 +382,7 @@ const ServiceCategoryEditorPage = () => {
                     }
                 }}
                 itemToEdit={selectedItem}
+                defaultServiceCategoryId={category.id}
             />
 
             <FaqModal

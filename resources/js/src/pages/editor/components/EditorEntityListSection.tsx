@@ -40,7 +40,7 @@ function EditorEntityListSection<T extends { id: number }>({
             description={description}
             sectionNumber={sectionNumber}
             action={
-                onAdd && items.length > 0 ? (
+                onAdd ? (
                     <EditorActionButton label={addLabel} onClick={onAdd} variant="primary" />
                 ) : undefined
             }

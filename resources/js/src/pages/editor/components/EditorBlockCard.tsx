@@ -4,6 +4,7 @@ import React from "react";
 import { IContentCardItem, IPageBlock } from "../../../types";
 import { getPageBlockLabel } from "../lib/editorPageLabels";
 import EditorActionButton from "./EditorActionButton";
+import EditorEmptyState from "./EditorEmptyState";
 import EditorPreviewField from "./EditorPreviewField";
 import EditorSection from "./EditorSection";
 
@@ -119,57 +120,67 @@ const EditorBlockCard: React.FC<EditorBlockCardProps> = ({
                 </div>
             </div>
 
-            {items.length > 0 && (
+            {onAddItem && (
                 <div className="mt-5 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200">
                             <Layers size={16} className="text-primary" />
-                            Cards in this section ({items.length})
+                            {items.length > 0
+                                ? `Cards in this section (${items.length})`
+                                : "Cards in this section"}
                         </div>
-                        {onAddItem && (
-                            <EditorActionButton label="Add card" onClick={onAddItem} />
-                        )}
+                        <EditorActionButton label="Add card" onClick={onAddItem} />
                     </div>
-                    <div className="grid gap-3 md:grid-cols-2">
-                        {items.map((item, index) => (
-                            <div
-                                key={item.id}
-                                className="flex flex-col justify-between gap-3 rounded-xl border border-white-dark/20 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-black/40"
-                            >
-                                <div>
-                                    <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                                        Card {index + 1}
-                                    </span>
-                                    <p className="mt-1 font-semibold text-gray-900 dark:text-white">
-                                        {item.title}
-                                    </p>
-                                    {item.body && (
-                                        <p className="mt-1 line-clamp-3 text-sm text-gray-600 dark:text-gray-300">
-                                            {item.body}
+
+                    {items.length === 0 ? (
+                        <EditorEmptyState
+                            message="No cards yet."
+                            hint="Add feature cards, objectives, or other items for this section."
+                            onAction={onAddItem}
+                            actionLabel="Add card"
+                        />
+                    ) : (
+                        <div className="grid gap-3 md:grid-cols-2">
+                            {items.map((item, index) => (
+                                <div
+                                    key={item.id}
+                                    className="flex flex-col justify-between gap-3 rounded-xl border border-white-dark/20 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-black/40"
+                                >
+                                    <div>
+                                        <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+                                            Card {index + 1}
+                                        </span>
+                                        <p className="mt-1 font-semibold text-gray-900 dark:text-white">
+                                            {item.title}
                                         </p>
-                                    )}
-                                    {item.bullets && item.bullets.length > 0 && (
-                                        <ul className="mt-2 space-y-1 text-sm text-gray-500">
-                                            {item.bullets.slice(0, 3).map((bullet) => (
-                                                <li key={bullet} className="flex gap-2">
-                                                    <span className="text-primary">•</span>
-                                                    <span>{bullet}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        {item.body && (
+                                            <p className="mt-1 line-clamp-3 text-sm text-gray-600 dark:text-gray-300">
+                                                {item.body}
+                                            </p>
+                                        )}
+                                        {item.bullets && item.bullets.length > 0 && (
+                                            <ul className="mt-2 space-y-1 text-sm text-gray-500">
+                                                {item.bullets.slice(0, 3).map((bullet) => (
+                                                    <li key={bullet} className="flex gap-2">
+                                                        <span className="text-primary">•</span>
+                                                        <span>{bullet}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                    {onEditItem && (
+                                        <div className="flex justify-end">
+                                            <EditorActionButton
+                                                label="Edit card"
+                                                onClick={() => onEditItem(item)}
+                                            />
+                                        </div>
                                     )}
                                 </div>
-                                {onEditItem && (
-                                    <div className="flex justify-end">
-                                        <EditorActionButton
-                                            label="Edit card"
-                                            onClick={() => onEditItem(item)}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
         </EditorSection>

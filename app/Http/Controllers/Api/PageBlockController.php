@@ -12,10 +12,10 @@ class PageBlockController extends BaseController
     protected $searchableFields = ['page', 'key', 'title', 'subtitle'];
 
     protected $sortableFields = [
-        'id', 'page', 'key', 'title', 'sort_order', 'is_active', 'created_at', 'updated_at',
+        'id', 'page', 'key', 'title', 'is_active', 'created_at', 'updated_at',
     ];
 
-    protected $defaultSortField = 'sort_order';
+    protected $defaultSortField = 'key';
 
     protected $defaultSortDirection = 'asc';
 
@@ -34,7 +34,6 @@ class PageBlockController extends BaseController
             'cta_secondary_text' => 'nullable|string|max:100',
             'cta_secondary_url' => 'nullable|string|max:500',
             'video_url' => 'nullable|string|max:500',
-            'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ],
         'update' => [
@@ -49,7 +48,6 @@ class PageBlockController extends BaseController
             'cta_secondary_text' => 'nullable|string|max:100',
             'cta_secondary_url' => 'nullable|string|max:500',
             'video_url' => 'nullable|string|max:500',
-            'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
         ],
     ];

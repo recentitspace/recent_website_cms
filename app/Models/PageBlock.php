@@ -22,7 +22,6 @@ class PageBlock extends Model
         'cta_secondary_text',
         'cta_secondary_url',
         'video_url',
-        'sort_order',
         'is_active',
     ];
 
@@ -30,7 +29,6 @@ class PageBlock extends Model
     {
         return [
             'image_id' => 'integer',
-            'sort_order' => 'integer',
             'is_active' => 'boolean',
             'deleted_at' => 'datetime',
         ];

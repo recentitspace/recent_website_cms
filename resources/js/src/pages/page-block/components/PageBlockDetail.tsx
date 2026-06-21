@@ -118,10 +118,6 @@ const PageBlockDetail: React.FC<PageBlockDetailProps> = ({ blockId }) => {
                 </div>
             )}
             <div>
-                <span className="font-medium text-gray-500">Sort Order</span>
-                <p>{block.sort_order}</p>
-            </div>
-            <div>
                 <span className="font-medium text-gray-500">Active</span>
                 <p>{block.is_active ? "Yes" : "No"}</p>
             </div>

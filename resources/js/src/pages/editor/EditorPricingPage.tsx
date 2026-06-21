@@ -22,6 +22,11 @@ const EditorPricingPage = () => {
     const [selectedPlan, setSelectedPlan] = useState<IPricingPlan | null>(null);
     const [defaultSectionId, setDefaultSectionId] = useState<number | null>(null);
 
+    const openAddSection = () => {
+        setSelectedSection(null);
+        setSectionModalOpen(true);
+    };
+
     const { data: sectionsResponse, isLoading } = useQuery({
         queryKey: ["editor-pricing-sections"],
         queryFn: () =>
@@ -69,6 +74,8 @@ const EditorPricingPage = () => {
                     <EditorEmptyState
                         message="No pricing categories yet."
                         hint="Create a category first, then add plans inside it."
+                        onAction={openAddSection}
+                        actionLabel="Add category"
                     />
                 ) : (
                     sections.map((section, index) => (
@@ -158,11 +165,14 @@ const PricingSectionBlock: React.FC<PricingSectionBlockProps> = ({
             description={section.subtitle || "Plans visitors can choose in this category."}
             sectionNumber={sectionNumber}
             action={
-                <EditorActionButton
-                    label="Edit category"
-                    onClick={onEditSection}
-                    variant="primary"
-                />
+                <div className="flex flex-wrap gap-2">
+                    <EditorActionButton label="Add plan" onClick={onAddPlan} />
+                    <EditorActionButton
+                        label="Edit category"
+                        onClick={onEditSection}
+                        variant="primary"
+                    />
+                </div>
             }
         >
             {isLoading ? (
@@ -175,11 +185,7 @@ const PricingSectionBlock: React.FC<PricingSectionBlockProps> = ({
                     actionLabel="Add first plan"
                 />
             ) : (
-                <>
-                    <div className="mb-4 flex justify-end">
-                        <EditorActionButton label="Add plan" onClick={onAddPlan} />
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2">
                         {plans.map((plan) => (
                             <div
                                 key={plan.id}
@@ -217,8 +223,7 @@ const PricingSectionBlock: React.FC<PricingSectionBlockProps> = ({
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </>
+                </div>
             )}
         </EditorSection>
     );

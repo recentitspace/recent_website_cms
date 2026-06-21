@@ -9,12 +9,14 @@ interface ServiceItemModalProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     itemToEdit?: IServiceItem | null;
+    defaultServiceCategoryId?: number | null;
 }
 
 const ServiceItemModal: React.FC<ServiceItemModalProps> = ({
     isOpen,
     setIsOpen,
     itemToEdit,
+    defaultServiceCategoryId,
 }) => {
     const isEditMode = Boolean(itemToEdit);
 
@@ -27,7 +29,11 @@ const ServiceItemModal: React.FC<ServiceItemModalProps> = ({
             icon={Wrench}
             maxWidth="3xl"
         >
-            <ServiceItemForm itemToEdit={itemToEdit} onClose={() => setIsOpen(false)} />
+            <ServiceItemForm
+                itemToEdit={itemToEdit}
+                defaultServiceCategoryId={defaultServiceCategoryId}
+                onClose={() => setIsOpen(false)}
+            />
         </GenericModal>
     );
 };

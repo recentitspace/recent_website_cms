@@ -1,5 +1,44 @@
 import { PageName } from "../../../types";
 
+export const PAGE_BLOCK_DISPLAY_ORDER: Record<PageName, string[]> = {
+    home: [
+        "home_hero",
+        "home_services_header",
+        "home_cta",
+        "home_why_choose",
+        "home_pricing_header",
+        "home_case_studies_header",
+        "home_testimonials_header",
+    ],
+    about: [
+        "about_who_we_are",
+        "about_what_drives_us",
+        "about_objectives",
+        "about_video",
+    ],
+    faq: ["faq_hero", "faq_section"],
+    contact: ["contact_hero"],
+};
+
+export const sortPageBlocksForEditor = <T extends { key: string }>(
+    page: PageName,
+    blocks: T[]
+): T[] => {
+    const order = PAGE_BLOCK_DISPLAY_ORDER[page] || [];
+    const rank = new Map(order.map((key, index) => [key, index]));
+
+    return [...blocks].sort((a, b) => {
+        const aRank = rank.get(a.key) ?? 999;
+        const bRank = rank.get(b.key) ?? 999;
+
+        if (aRank !== bRank) {
+            return aRank - bRank;
+        }
+
+        return a.key.localeCompare(b.key);
+    });
+};
+
 export const getPageBlockLabel = (key: string): { title: string; description?: string } => {
     const labels: Record<string, { title: string; description?: string }> = {
         home_hero: {
