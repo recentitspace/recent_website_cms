@@ -53,6 +53,8 @@ const AboutObjectives = lazy(() => import("../pages/about-objective"));
 // Website Editor
 const EditorOverview = lazy(() => import("../pages/editor"));
 const EditorSiteWidePage = lazy(() => import("../pages/editor/EditorSiteWidePage"));
+const EditorSocialLinksPage = lazy(() => import("../pages/editor/EditorSocialLinksPage"));
+const EditorMediaPage = lazy(() => import("../pages/editor/EditorMediaPage"));
 const EditorHomePage = lazy(() => import("../pages/editor/EditorHomePage"));
 const EditorAboutPage = lazy(() => import("../pages/editor/EditorAboutPage"));
 const EditorFaqPage = lazy(() => import("../pages/editor/EditorFaqPage"));
@@ -268,6 +270,18 @@ export const protectedRoutes: RouteConfig[] = [
         element: <EditorSiteWidePage />,
         layout: "default",
         permissions: ["manage site settings", "view social links", "view media"],
+    },
+    {
+        path: "/editor/site-wide/social-links",
+        element: <EditorSocialLinksPage />,
+        layout: "default",
+        permissions: ["view social links"],
+    },
+    {
+        path: "/editor/site-wide/media",
+        element: <EditorMediaPage />,
+        layout: "default",
+        permissions: ["view media"],
     },
     {
         path: "/editor/home",

@@ -82,6 +82,7 @@ const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
         mutationFn: (data: SocialLinkFormData) => socialLinkApi.create(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Social Link Table"] });
+            queryClient.invalidateQueries({ queryKey: ["editor-social-links"] });
             toast.success("Social link created successfully");
             onClose();
         },
@@ -95,6 +96,7 @@ const SocialLinkForm: React.FC<SocialLinkFormProps> = ({
             socialLinkApi.update(socialLinkToEdit!.id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Social Link Table"] });
+            queryClient.invalidateQueries({ queryKey: ["editor-social-links"] });
             queryClient.invalidateQueries({
                 queryKey: ["social-link", socialLinkToEdit?.id],
             });

@@ -28,6 +28,8 @@ const SERVICE_SLUG_MAP: Record<string, string> = {
 const EDITOR_TO_ADVANCED: Record<string, string> = {
     "/editor": "/site-settings",
     "/editor/site-wide": "/site-settings",
+    "/editor/site-wide/social-links": "/social-links",
+    "/editor/site-wide/media": "/media",
     "/editor/home": "/page-blocks",
     "/editor/about": "/page-blocks",
     "/editor/pricing": "/pricing-sections",
@@ -93,8 +95,16 @@ export const getEditorRedirectPath = (pathname: string): string => {
         return "/editor/home";
     }
 
-    if (pathname === "/site-settings" || pathname === "/social-links" || pathname === "/media") {
+    if (pathname === "/site-settings") {
         return "/editor/site-wide";
+    }
+
+    if (pathname === "/social-links") {
+        return "/editor/site-wide/social-links";
+    }
+
+    if (pathname === "/media") {
+        return "/editor/site-wide/media";
     }
 
     return "/editor";

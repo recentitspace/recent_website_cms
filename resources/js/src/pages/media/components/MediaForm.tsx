@@ -69,6 +69,7 @@ const MediaForm: React.FC<MediaFormProps> = ({ mediaToEdit, onClose }) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Media Table"] });
+            queryClient.invalidateQueries({ queryKey: ["editor-media-library"] });
             toast.success("Media uploaded successfully");
             onClose();
         },
@@ -82,6 +83,7 @@ const MediaForm: React.FC<MediaFormProps> = ({ mediaToEdit, onClose }) => {
             mediaApi.update(mediaToEdit!.id, { alt_text: data.alt_text || null }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Media Table"] });
+            queryClient.invalidateQueries({ queryKey: ["editor-media-library"] });
             queryClient.invalidateQueries({ queryKey: ["media", mediaToEdit?.id] });
             toast.success("Media updated successfully");
             onClose();

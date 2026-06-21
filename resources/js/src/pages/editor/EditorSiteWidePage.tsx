@@ -18,14 +18,14 @@ const EditorSiteWidePage = () => {
         {
             title: "Social media links",
             description: "Links to Facebook, Instagram, TikTok, LinkedIn, and other profiles.",
-            path: "/social-links",
+            path: "/editor/site-wide/social-links",
             icon: Share2,
             color: "from-sky-500/10 to-sky-500/5",
         },
         {
             title: "Image library",
             description: "Upload and manage photos used across your website.",
-            path: "/media",
+            path: "/editor/site-wide/media",
             icon: Image,
             color: "from-violet-500/10 to-violet-500/5",
         },
@@ -84,8 +84,9 @@ const EditorSiteWidePage = () => {
                 </div>
 
                 <EditorTip variant="info">
-                    These screens open in the full management view. When you&apos;re done, use the
-                    sidebar to return to <strong>Website Editor</strong>.
+                    Company info opens as a simple form. Social links and images use the same
+                    friendly card view. Use the sidebar to return to <strong>Website Editor</strong>{" "}
+                    when you&apos;re done.
                 </EditorTip>
             </EditorPageShell>
         </>

@@ -3,9 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Upload } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import Breadcrumb from "../../components/Breadcrumb";
 import DataTableWithSidebar from "../../components/DataTableWithSidebar";
+import { useCmsContentMode } from "../../contexts/CmsContentModeContext";
 import { useConfirmDialog, useSidebarDetail } from "../../hooks";
 import { mediaApi } from "../../services/media";
 import { ColumnConfig } from "../../types/columns";
@@ -25,7 +27,7 @@ const formatFileSize = (bytes: number): string => {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 };
 
-const MediaList = () => {
+const MediaTable = () => {
     const queryClient = useQueryClient();
     const [selectedRecords, setSelectedRecords] = useState<IMedia[]>([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -240,6 +242,16 @@ const MediaList = () => {
             />
         </div>
     );
+};
+
+const MediaList = () => {
+    const { mode, isWebsiteContentArea } = useCmsContentMode();
+
+    if (mode === "editor" && isWebsiteContentArea) {
+        return <Navigate to="/editor/site-wide/media" replace />;
+    }
+
+    return <MediaTable />;
 };
 
 export default MediaList;

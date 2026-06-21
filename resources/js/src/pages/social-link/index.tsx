@@ -3,9 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import Breadcrumb from "../../components/Breadcrumb";
 import DataTableWithSidebar from "../../components/DataTableWithSidebar";
+import { useCmsContentMode } from "../../contexts/CmsContentModeContext";
 import { useConfirmDialog, useSidebarDetail } from "../../hooks";
 import { socialLinkApi } from "../../services/socialLink";
 import { ColumnConfig } from "../../types/columns";
@@ -13,7 +15,7 @@ import { ISocialLink } from "../../types";
 import SocialLinkDetail from "./components/SocialLinkDetail";
 import SocialLinkModal from "./components/SocialLinkModal";
 
-const SocialLinkList = () => {
+const SocialLinkTable = () => {
     const queryClient = useQueryClient();
     const [selectedRecords, setSelectedRecords] = useState<ISocialLink[]>([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -224,6 +226,16 @@ const SocialLinkList = () => {
             />
         </div>
     );
+};
+
+const SocialLinkList = () => {
+    const { mode, isWebsiteContentArea } = useCmsContentMode();
+
+    if (mode === "editor" && isWebsiteContentArea) {
+        return <Navigate to="/editor/site-wide/social-links" replace />;
+    }
+
+    return <SocialLinkTable />;
 };
 
 export default SocialLinkList;
