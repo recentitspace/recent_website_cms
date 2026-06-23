@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Concerns\ImportsRwebMedia;
 use App\Models\AboutDriveItem;
 use App\Models\AboutObjective;
+use App\Models\Blog;
 use App\Models\Faq;
 use App\Models\PageBlock;
 use App\Models\ServiceCategory;
@@ -131,6 +132,29 @@ class PageContentImportSeeder extends Seeder
                 [
                     'body' => $itemData['body'] ?? null,
                     'sort_order' => $itemData['sort_order'] ?? 0,
+                    'is_active' => true,
+                ]
+            );
+        }
+
+        foreach (require __DIR__ . '/data/blogs.php' as $blogData) {
+            $imagePath = $blogData['featured_image'] ?? null;
+            unset($blogData['featured_image']);
+
+            Blog::updateOrCreate(
+                ['slug' => $blogData['slug']],
+                [
+                    'title' => $blogData['title'],
+                    'excerpt' => $blogData['excerpt'] ?? null,
+                    'body_paragraphs' => $blogData['body_paragraphs'] ?? null,
+                    'author_name' => $blogData['author_name'] ?? null,
+                    'featured_image_id' => $this->importMediaFromPath($imagePath, 'page-content'),
+                    'published_at' => $blogData['published_at'] ?? null,
+                    'external_link' => $blogData['external_link'] ?? null,
+                    'tags' => $blogData['tags'] ?? null,
+                    'sort_order' => $blogData['sort_order'] ?? 0,
+                    'home_sort_order' => $blogData['home_sort_order'] ?? null,
+                    'show_on_home' => $blogData['show_on_home'] ?? false,
                     'is_active' => true,
                 ]
             );

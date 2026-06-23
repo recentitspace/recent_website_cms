@@ -127,6 +127,12 @@ return [
             'subtitle' => 'Discover how businesses likes our strategies.',
         ],
         [
+            'page' => 'home',
+            'key' => 'home_blog_header',
+            'title' => 'blogs',
+            'subtitle' => 'Recent articles from blog',
+        ],
+        [
             'page' => 'about',
             'key' => 'about_who_we_are',
             'title' => 'Who We Are',

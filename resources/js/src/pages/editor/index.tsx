@@ -6,6 +6,7 @@ import {
     Home,
     Layers,
     MessageCircle,
+    Newspaper,
     Phone,
     Sparkles,
     UserCircle,
@@ -59,6 +60,13 @@ const editorPages = [
         path: "/editor/portfolio",
         icon: Briefcase,
         color: "from-rose-500/10 to-rose-500/5",
+    },
+    {
+        title: "Blog",
+        description: "Articles for your blog pages and the home page carousel.",
+        path: "/editor/blog",
+        icon: Newspaper,
+        color: "from-indigo-500/10 to-indigo-500/5",
     },
     {
         title: "FAQ page",

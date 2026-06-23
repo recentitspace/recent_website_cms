@@ -9,6 +9,7 @@ export const PAGE_BLOCK_DISPLAY_ORDER: Record<PageName, string[]> = {
         "home_pricing_header",
         "home_case_studies_header",
         "home_testimonials_header",
+        "home_blog_header",
     ],
     about: [
         "about_who_we_are",
@@ -69,6 +70,10 @@ export const getPageBlockLabel = (key: string): { title: string; description?: s
             title: "Testimonials header",
             description: "Title and subtitle above client testimonials.",
         },
+        home_blog_header: {
+            title: "Blogs header",
+            description: "Title and subtitle above the blog carousel on the home page.",
+        },
         about_who_we_are: {
             title: "Who we are",
             description: "Company introduction with image and story text.",
@@ -109,7 +114,7 @@ export const getPageBlockLabel = (key: string): { title: string; description?: s
 export const PAGE_EDITOR_TITLES: Record<PageName, { title: string; subtitle: string }> = {
     home: {
         title: "Home page",
-        subtitle: "Edit the sections visitors see on your homepage, from the hero to testimonials.",
+        subtitle: "Edit the sections visitors see on your homepage, from the hero to the blog carousel.",
     },
     about: {
         title: "About page",

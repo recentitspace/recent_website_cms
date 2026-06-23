@@ -55,6 +55,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('why-choose-items')->group(base_path('routes/api/v1/why-choose-items.php'));
     Route::prefix('about-drive-items')->group(base_path('routes/api/v1/about-drive-items.php'));
     Route::prefix('about-objectives')->group(base_path('routes/api/v1/about-objectives.php'));
+    Route::prefix('blogs')->group(base_path('routes/api/v1/blogs.php'));
 
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);

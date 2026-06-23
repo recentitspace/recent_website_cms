@@ -24,3 +24,4 @@ export * from './whyChooseItem';
 export * from './aboutDriveItem';
 export * from './aboutObjective';
 export * from './contentCard';
+export * from './blog';

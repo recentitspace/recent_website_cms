@@ -153,6 +153,12 @@ class RolePermissionSeeder extends Seeder
             'create about objectives',
             'edit about objectives',
             'delete about objectives',
+
+            // blogs
+            'view blogs',
+            'create blogs',
+            'edit blogs',
+            'delete blogs',
         ];
 
         foreach ($permissions as $permission) {

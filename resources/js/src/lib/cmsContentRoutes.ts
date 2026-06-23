@@ -16,6 +16,7 @@ const ADVANCED_WEBSITE_PATHS = [
     "/why-choose-items",
     "/about-drive-items",
     "/about-objectives",
+    "/blogs",
 ];
 
 const EDITOR_WEBSITE_PREFIX = "/editor";
@@ -34,6 +35,7 @@ const EDITOR_TO_ADVANCED: Record<string, string> = {
     "/editor/about": "/page-blocks",
     "/editor/pricing": "/pricing-sections",
     "/editor/portfolio": "/portfolio-categories",
+    "/editor/blog": "/blogs",
     "/editor/faq": "/faqs",
     "/editor/contact": "/page-blocks",
     "/editor/services/business-automation": "/service-categories",
@@ -57,6 +59,10 @@ export const getEditorRedirectPath = (pathname: string): string => {
 
     if (SERVICE_SLUG_MAP[pathname]) {
         return SERVICE_SLUG_MAP[pathname];
+    }
+
+    if (pathname.startsWith("/blog")) {
+        return "/editor/blog";
     }
 
     if (pathname.startsWith("/portfolio")) {

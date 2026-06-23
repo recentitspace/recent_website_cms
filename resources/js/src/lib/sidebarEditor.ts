@@ -6,6 +6,7 @@ import {
     Home,
     Layers,
     MessageCircle,
+    Newspaper,
     Phone,
     UserCircle,
 } from "lucide-react";
@@ -34,6 +35,7 @@ export const editorWebsiteMenu: MenuItem[] = [
             "view why choose items",
             "view about drive items",
             "view about objectives",
+            "view blogs",
         ],
     },
     {
@@ -58,6 +60,7 @@ export const editorWebsiteMenu: MenuItem[] = [
             "view why choose items",
             "view about drive items",
             "view about objectives",
+            "view blogs",
         ],
     },
     {
@@ -108,6 +111,12 @@ export const editorWebsiteMenu: MenuItem[] = [
         icon: Briefcase,
         path: "/editor/portfolio",
         permissions: ["view portfolio categories", "view portfolio items"],
+    },
+    {
+        title: "editor_blog_page",
+        icon: Newspaper,
+        path: "/editor/blog",
+        permissions: ["view blogs"],
     },
     {
         title: "editor_faq_page",

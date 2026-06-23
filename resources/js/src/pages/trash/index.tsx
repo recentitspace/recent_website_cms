@@ -10,6 +10,7 @@ import {
     Layers,
     HelpCircle,
     FileText,
+    Newspaper,
 } from "lucide-react";
 import React, { Suspense } from "react";
 import { useLocation, NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -126,6 +127,12 @@ const TrashIndex: React.FC = () => {
             title: t("trashed_about_objectives"),
             icon: <FileText className="w-5 h-5" />,
             path: "/trash/about-objectives",
+        },
+        {
+            id: "blogs",
+            title: t("trashed_blogs"),
+            icon: <Newspaper className="w-5 h-5" />,
+            path: "/trash/blogs",
         },
     ];
 

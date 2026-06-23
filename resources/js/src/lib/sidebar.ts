@@ -14,6 +14,7 @@ import {
     MessageSquareQuote,
     DollarSign,
     Layers,
+    Newspaper,
     FileText,
 } from "lucide-react";
 
@@ -71,6 +72,7 @@ export const sidebarMenu: MenuItem[] = [
             "view why choose items",
             "view about drive items",
             "view about objectives",
+            "view blogs",
         ],
     },
     {
@@ -114,6 +116,12 @@ export const sidebarMenu: MenuItem[] = [
         icon: MessageSquareQuote,
         path: "/testimonials",
         permissions: ["view testimonials"],
+    },
+    {
+        title: "blogs",
+        icon: Newspaper,
+        path: "/blogs",
+        permissions: ["view blogs"],
     },
     {
         title: "pricing",

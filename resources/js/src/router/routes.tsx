@@ -49,6 +49,7 @@ const PageBlocks = lazy(() => import("../pages/page-block"));
 const WhyChooseItems = lazy(() => import("../pages/why-choose-item"));
 const AboutDriveItems = lazy(() => import("../pages/about-drive-item"));
 const AboutObjectives = lazy(() => import("../pages/about-objective"));
+const Blogs = lazy(() => import("../pages/blog"));
 
 // Website Editor
 const EditorOverview = lazy(() => import("../pages/editor"));
@@ -61,6 +62,7 @@ const EditorFaqPage = lazy(() => import("../pages/editor/EditorFaqPage"));
 const EditorContactPage = lazy(() => import("../pages/editor/EditorContactPage"));
 const EditorPricingPage = lazy(() => import("../pages/editor/EditorPricingPage"));
 const EditorPortfolioPage = lazy(() => import("../pages/editor/EditorPortfolioPage"));
+const EditorBlogsPage = lazy(() => import("../pages/editor/EditorBlogsPage"));
 const ServiceCategoryEditorPage = lazy(
     () => import("../pages/editor/services/ServiceCategoryEditorPage")
 );
@@ -84,6 +86,7 @@ const TrashPageBlocks = lazy(() => import("../pages/trash/PageBlocks"));
 const TrashWhyChooseItems = lazy(() => import("../pages/trash/WhyChooseItems"));
 const TrashAboutDriveItems = lazy(() => import("../pages/trash/AboutDriveItems"));
 const TrashAboutObjectives = lazy(() => import("../pages/trash/AboutObjectives"));
+const TrashBlogs = lazy(() => import("../pages/trash/Blogs"));
 
 // Redirect component - now redirects from root (/) to /dashboard
 const RedirectToDashboard = () => <Navigate to="/dashboard" replace />;
@@ -253,6 +256,12 @@ export const protectedRoutes: RouteConfig[] = [
         permissions: ["view about objectives"],
     },
     {
+        path: "/blogs",
+        element: <Blogs />,
+        layout: "default",
+        permissions: ["view blogs"],
+    },
+    {
         path: "/case-studies",
         element: <Navigate to="/portfolio-items" replace />,
         layout: "default",
@@ -312,6 +321,12 @@ export const protectedRoutes: RouteConfig[] = [
         element: <EditorPortfolioPage />,
         layout: "default",
         permissions: ["view portfolio categories", "view portfolio items"],
+    },
+    {
+        path: "/editor/blog",
+        element: <EditorBlogsPage />,
+        layout: "default",
+        permissions: ["view blogs"],
     },
     {
         path: "/editor/faq",
@@ -469,6 +484,12 @@ export const protectedRoutes: RouteConfig[] = [
             {
                 path: "about-objectives",
                 element: <TrashAboutObjectives />,
+                layout: "default",
+                permissions: ["view trash items"],
+            },
+            {
+                path: "blogs",
+                element: <TrashBlogs />,
                 layout: "default",
                 permissions: ["view trash items"],
             },
