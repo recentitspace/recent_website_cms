@@ -131,6 +131,20 @@ const ServiceItemDetail: React.FC<ServiceItemDetailProps> = ({ itemId }) => {
                 <span className="font-medium text-gray-500">Show on Home</span>
                 <p>{item.show_on_home ? "Yes" : "No"}</p>
             </div>
+            <div>
+                <span className="font-medium text-gray-500">Featured Portfolio Section</span>
+                <p>{item.show_featured_portfolio ? "Yes" : "No"}</p>
+            </div>
+            {item.show_featured_portfolio && item.portfolio_category_slug && (
+                <div>
+                    <span className="font-medium text-gray-500">Portfolio Category Slug</span>
+                    <p>{item.portfolio_category_slug}</p>
+                </div>
+            )}
+            <div>
+                <span className="font-medium text-gray-500">Domain Registration Section</span>
+                <p>{item.show_domain_registration ? "Yes" : "No"}</p>
+            </div>
         </div>
     );
 };

@@ -8,6 +8,7 @@ import {
     FieldErrors,
     useFieldArray,
     useForm,
+    useWatch,
 } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -19,6 +20,7 @@ import FormInput from "../../../components/form/FormInput";
 import FormSelect from "../../../components/form/FormSelect";
 import FormTextarea from "../../../components/form/FormTextarea";
 import { serviceCategoryApi } from "../../../services/serviceCategory";
+import { portfolioCategoryApi } from "../../../services/portfolioCategory";
 import { serviceItemApi } from "../../../services/serviceItem";
 import { IMedia, IServiceItem } from "../../../types";
 
@@ -44,6 +46,17 @@ const itemSchema = z.object({
     sort_order: z.coerce.number().min(0).optional(),
     is_active: z.boolean().optional(),
     show_on_home: z.boolean().optional(),
+    show_featured_portfolio: z.boolean().optional(),
+    portfolio_category_slug: z.string().optional(),
+    show_domain_registration: z.boolean().optional(),
+}).superRefine((data, ctx) => {
+    if (data.show_featured_portfolio && !data.portfolio_category_slug?.trim()) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Portfolio category is required when featured portfolio is enabled",
+            path: ["portfolio_category_slug"],
+        });
+    }
 });
 
 type ItemFormData = z.infer<typeof itemSchema>;
@@ -154,6 +167,24 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
             label: category.title,
         })) || [];
 
+    const { data: portfolioCategoriesResponse } = useQuery({
+        queryKey: ["Portfolio Categories Select"],
+        queryFn: () =>
+            portfolioCategoryApi.getAll({
+                per_page: 100,
+                sort_by: "sort_order",
+                sort_direction: "asc",
+            }),
+    });
+
+    const portfolioCategoryOptions = [
+        { value: "", label: "Select portfolio category" },
+        ...(portfolioCategoriesResponse?.data?.map((category) => ({
+            value: category.slug,
+            label: category.name,
+        })) || []),
+    ];
+
     const {
         control,
         handleSubmit,
@@ -177,7 +208,15 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
             sort_order: 0,
             is_active: true,
             show_on_home: true,
+            show_featured_portfolio: false,
+            portfolio_category_slug: "",
+            show_domain_registration: false,
         },
+    });
+
+    const showFeaturedPortfolio = useWatch({
+        control,
+        name: "show_featured_portfolio",
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -211,6 +250,11 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
                   tasks: step.tasks?.filter((task) => task.trim()) || [],
               }))
             : [],
+        show_featured_portfolio: data.show_featured_portfolio ?? false,
+        portfolio_category_slug: data.show_featured_portfolio
+            ? data.portfolio_category_slug?.trim() || null
+            : null,
+        show_domain_registration: data.show_domain_registration ?? false,
     });
 
     useEffect(() => {
@@ -237,6 +281,9 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
                 sort_order: editItem.sort_order,
                 is_active: editItem.is_active,
                 show_on_home: editItem.show_on_home,
+                show_featured_portfolio: editItem.show_featured_portfolio ?? false,
+                portfolio_category_slug: editItem.portfolio_category_slug || "",
+                show_domain_registration: editItem.show_domain_registration ?? false,
             });
             setSelectedIcon(editItem.icon || null);
             setSelectedHeroImage(editItem.hero_image || null);
@@ -260,6 +307,9 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
                 sort_order: 0,
                 is_active: true,
                 show_on_home: true,
+                show_featured_portfolio: false,
+                portfolio_category_slug: "",
+                show_domain_registration: false,
             });
         }
     }, [editItem, defaultServiceCategoryId, reset]);
@@ -574,6 +624,60 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
                         </div>
                     ))}
                 </div>
+            </div>
+
+            <div className="rounded border border-gray-200 p-4 dark:border-gray-700">
+                <h4 className="mb-3 font-medium">Detail Page Sections</h4>
+                <p className="mb-4 text-sm text-gray-500">
+                    Control optional blocks shown on this service item&apos;s public detail page.
+                </p>
+
+                <Controller
+                    name="show_featured_portfolio"
+                    control={control}
+                    render={({ field }) => (
+                        <label className="mb-3 flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={field.value ?? false}
+                                onChange={(event) => field.onChange(event.target.checked)}
+                            />
+                            <span>Show featured portfolio section</span>
+                        </label>
+                    )}
+                />
+
+                {showFeaturedPortfolio && (
+                    <Controller
+                        name="portfolio_category_slug"
+                        control={control}
+                        render={({ field }) => (
+                            <FormSelect
+                                label="Portfolio Category"
+                                value={field.value || ""}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                                options={portfolioCategoryOptions}
+                                error={errors.portfolio_category_slug?.message}
+                            />
+                        )}
+                    />
+                )}
+
+                <Controller
+                    name="show_domain_registration"
+                    control={control}
+                    render={({ field }) => (
+                        <label className="mt-3 flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={field.value ?? false}
+                                onChange={(event) => field.onChange(event.target.checked)}
+                            />
+                            <span>Show domain registration section</span>
+                        </label>
+                    )}
+                />
             </div>
 
             <Controller

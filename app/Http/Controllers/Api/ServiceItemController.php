@@ -44,6 +44,9 @@ class ServiceItemController extends BaseController
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
             'show_on_home' => 'nullable|boolean',
+            'show_featured_portfolio' => 'nullable|boolean',
+            'portfolio_category_slug' => 'nullable|string|max:255|exists:portfolio_categories,slug|required_if:show_featured_portfolio,true',
+            'show_domain_registration' => 'nullable|boolean',
         ],
         'update' => [
             'service_category_id' => 'sometimes|required|exists:service_categories,id',
@@ -66,6 +69,9 @@ class ServiceItemController extends BaseController
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
             'show_on_home' => 'nullable|boolean',
+            'show_featured_portfolio' => 'nullable|boolean',
+            'portfolio_category_slug' => 'nullable|string|max:255|exists:portfolio_categories,slug|required_if:show_featured_portfolio,true',
+            'show_domain_registration' => 'nullable|boolean',
         ],
     ];
 
@@ -96,6 +102,7 @@ class ServiceItemController extends BaseController
     public function store(Request $request)
     {
         $validated = $request->validate($this->validationRules['store']);
+        $validated = $this->normalizePageSectionFields($validated);
 
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);
@@ -126,6 +133,7 @@ class ServiceItemController extends BaseController
         }
 
         $validated = $request->validate($rules);
+        $validated = $this->normalizePageSectionFields($validated, $item);
 
         if (array_key_exists('slug', $validated) && empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title'] ?? $item->title);
@@ -142,5 +150,18 @@ class ServiceItemController extends BaseController
         );
 
         return $this->successResponse($item->load($this->relationships), 'Resource updated successfully');
+    }
+
+    protected function normalizePageSectionFields(array $validated, ?ServiceItem $item = null): array
+    {
+        $showFeaturedPortfolio = array_key_exists('show_featured_portfolio', $validated)
+            ? (bool) $validated['show_featured_portfolio']
+            : (bool) ($item?->show_featured_portfolio ?? false);
+
+        if (!$showFeaturedPortfolio) {
+            $validated['portfolio_category_slug'] = null;
+        }
+
+        return $validated;
     }
 }

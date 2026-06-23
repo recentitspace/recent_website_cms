@@ -17,6 +17,23 @@ class ServicesImportSeeder extends Seeder
         $details = require __DIR__ . '/data/service_details.php';
         $categoryDetails = $details['categories'] ?? [];
         $itemDetails = $details['items'] ?? [];
+        $itemPageFlags = [
+            'website-development' => [
+                'show_featured_portfolio' => true,
+                'portfolio_category_slug' => 'web-development',
+            ],
+            'brand-identity' => [
+                'show_featured_portfolio' => true,
+                'portfolio_category_slug' => 'brand-identity',
+            ],
+            'photo-video-production' => [
+                'show_featured_portfolio' => true,
+                'portfolio_category_slug' => 'video-production',
+            ],
+            'domain-hosting' => [
+                'show_domain_registration' => true,
+            ],
+        ];
 
         foreach ($categories as $categoryData) {
             $items = $categoryData['items'] ?? [];
@@ -50,6 +67,7 @@ class ServicesImportSeeder extends Seeder
             foreach ($items as $itemData) {
                 $itemSlug = $itemData['slug'];
                 $detail = $itemDetails[$itemSlug] ?? [];
+                $pageFlags = $itemPageFlags[$itemSlug] ?? [];
                 $detailHeroImage = $detail['hero_image'] ?? null;
                 unset($detail['hero_image']);
 
@@ -72,6 +90,9 @@ class ServicesImportSeeder extends Seeder
                         'sort_order' => $itemData['sort_order'] ?? 0,
                         'is_active' => true,
                         'show_on_home' => true,
+                        'show_featured_portfolio' => $pageFlags['show_featured_portfolio'] ?? false,
+                        'portfolio_category_slug' => $pageFlags['portfolio_category_slug'] ?? null,
+                        'show_domain_registration' => $pageFlags['show_domain_registration'] ?? false,
                     ]
                 );
             }

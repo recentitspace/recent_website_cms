@@ -20,6 +20,9 @@ export interface IServiceItem extends ITimestamped {
     sort_order: number;
     is_active: boolean;
     show_on_home: boolean;
+    show_featured_portfolio: boolean;
+    portfolio_category_slug?: string | null;
+    show_domain_registration: boolean;
     category?: IServiceCategory | null;
     icon?: IMedia | null;
     hero_image?: IMedia | null;

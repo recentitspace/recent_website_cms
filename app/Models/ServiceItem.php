@@ -26,6 +26,9 @@ class ServiceItem extends Model
         'sort_order',
         'is_active',
         'show_on_home',
+        'show_featured_portfolio',
+        'portfolio_category_slug',
+        'show_domain_registration',
     ];
 
     protected function casts(): array
@@ -39,6 +42,8 @@ class ServiceItem extends Model
             'sort_order' => 'integer',
             'is_active' => 'boolean',
             'show_on_home' => 'boolean',
+            'show_featured_portfolio' => 'boolean',
+            'show_domain_registration' => 'boolean',
             'deleted_at' => 'datetime',
         ];
     }
