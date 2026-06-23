@@ -57,6 +57,11 @@ Route::prefix('v1')->group(function () {
     Route::prefix('about-objectives')->group(base_path('routes/api/v1/about-objectives.php'));
     Route::prefix('blogs')->group(base_path('routes/api/v1/blogs.php'));
 
+    // Public read API for R-web (API key required)
+    Route::prefix('public')
+        ->middleware('public_api_key')
+        ->group(base_path('routes/api/v1/public.php'));
+
     // Profile routes
     Route::middleware('auth:sanctum')->put('/auth/profile', [\App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
     Route::middleware('auth:sanctum')->post('/auth/profile-picture', [\App\Http\Controllers\Api\AuthController::class, 'updateProfilePicture']);
