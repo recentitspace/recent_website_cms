@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { FileText, Home, MessageCircle, Phone, UserCircle } from "lucide-react";
+import { FileText, Home, MessageCircle, Phone, UserCircle, DollarSign } from "lucide-react";
 import React, { useMemo, useState } from "react";
 
 import Breadcrumb from "../../../components/Breadcrumb";
@@ -37,6 +37,7 @@ const PAGE_ICONS: Partial<Record<PageName, typeof Home>> = {
     about: UserCircle,
     faq: MessageCircle,
     contact: Phone,
+    pricing: DollarSign,
 };
 
 interface ItemEditorState {

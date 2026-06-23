@@ -18,6 +18,7 @@ import { IPricingSection } from "../../../types";
 const sectionSchema = z.object({
     title: z.string().min(1, "Title is required"),
     slug: z.string().optional(),
+    tab_label: z.string().optional(),
     subtitle: z.string().optional(),
     sort_order: z.coerce.number().min(0).optional(),
     is_active: z.boolean().optional(),
@@ -50,6 +51,7 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
         defaultValues: {
             title: "",
             slug: "",
+            tab_label: "",
             subtitle: "",
             sort_order: 0,
             is_active: true,
@@ -62,6 +64,7 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
             reset({
                 title: sectionToEdit.title,
                 slug: sectionToEdit.slug,
+                tab_label: sectionToEdit.tab_label || "",
                 subtitle: sectionToEdit.subtitle || "",
                 sort_order: sectionToEdit.sort_order,
                 is_active: sectionToEdit.is_active,
@@ -136,6 +139,21 @@ const PricingSectionForm: React.FC<PricingSectionFormProps> = ({
                             onChange={field.onChange}
                             onBlur={field.onBlur}
                             error={errors.title?.message}
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="tab_label"
+                    control={control}
+                    render={({ field }) => (
+                        <FormInput
+                            label="Home tab label"
+                            hint='Short label on home pricing tabs — e.g. "Branding" or "NetSuite"'
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={errors.tab_label?.message}
                         />
                     )}
                 />

@@ -11,6 +11,11 @@ class PublicServiceController extends PublicController
 {
     public function categories(Request $request): JsonResponse
     {
+        $request->validate([
+            'show_on_home' => 'nullable|boolean',
+            'include_items' => 'nullable|boolean',
+        ]);
+
         $query = ServiceCategory::query()
             ->with('icon')
             ->where('is_active', true)
@@ -19,6 +24,15 @@ class PublicServiceController extends PublicController
         $showOnHome = $this->parseBooleanQuery($request->query('show_on_home'));
         if ($showOnHome !== null) {
             $query->where('show_on_home', $showOnHome);
+        }
+
+        if ($request->boolean('include_items')) {
+            $query->with([
+                'items' => fn ($itemQuery) => $itemQuery
+                    ->with('icon')
+                    ->where('is_active', true)
+                    ->orderBy('sort_order'),
+            ]);
         }
 
         return $this->successResponse($query->get(), 'Service categories retrieved successfully');

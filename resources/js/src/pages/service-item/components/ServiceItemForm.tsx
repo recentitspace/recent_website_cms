@@ -21,6 +21,7 @@ import FormSelect from "../../../components/form/FormSelect";
 import FormTextarea from "../../../components/form/FormTextarea";
 import { serviceCategoryApi } from "../../../services/serviceCategory";
 import { portfolioCategoryApi } from "../../../services/portfolioCategory";
+import { pricingSectionApi } from "../../../services/pricingSection";
 import { serviceItemApi } from "../../../services/serviceItem";
 import { IMedia, IServiceItem } from "../../../types";
 
@@ -48,6 +49,7 @@ const itemSchema = z.object({
     show_on_home: z.boolean().optional(),
     show_featured_portfolio: z.boolean().optional(),
     portfolio_category_slug: z.string().optional(),
+    pricing_section_slug: z.string().optional(),
     show_domain_registration: z.boolean().optional(),
 }).superRefine((data, ctx) => {
     if (data.show_featured_portfolio && !data.portfolio_category_slug?.trim()) {
@@ -185,6 +187,24 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
         })) || []),
     ];
 
+    const { data: pricingSectionsResponse } = useQuery({
+        queryKey: ["Pricing Sections Select"],
+        queryFn: () =>
+            pricingSectionApi.getAll({
+                per_page: 100,
+                sort_by: "sort_order",
+                sort_direction: "asc",
+            }),
+    });
+
+    const pricingSectionOptions = [
+        { value: "", label: "No pricing section" },
+        ...(pricingSectionsResponse?.data?.map((section) => ({
+            value: section.slug,
+            label: section.tab_label || section.title,
+        })) || []),
+    ];
+
     const {
         control,
         handleSubmit,
@@ -210,6 +230,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
             show_on_home: true,
             show_featured_portfolio: false,
             portfolio_category_slug: "",
+            pricing_section_slug: "",
             show_domain_registration: false,
         },
     });
@@ -254,6 +275,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
         portfolio_category_slug: data.show_featured_portfolio
             ? data.portfolio_category_slug?.trim() || null
             : null,
+        pricing_section_slug: data.pricing_section_slug?.trim() || null,
         show_domain_registration: data.show_domain_registration ?? false,
     });
 
@@ -283,6 +305,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
                 show_on_home: editItem.show_on_home,
                 show_featured_portfolio: editItem.show_featured_portfolio ?? false,
                 portfolio_category_slug: editItem.portfolio_category_slug || "",
+                pricing_section_slug: editItem.pricing_section_slug || "",
                 show_domain_registration: editItem.show_domain_registration ?? false,
             });
             setSelectedIcon(editItem.icon || null);
@@ -676,6 +699,22 @@ const ServiceItemForm: React.FC<ServiceItemFormProps> = ({
                             />
                             <span>Show domain registration section</span>
                         </label>
+                    )}
+                />
+
+                <Controller
+                    name="pricing_section_slug"
+                    control={control}
+                    render={({ field }) => (
+                        <FormSelect
+                            label="Pricing section"
+                            hint="Optional pricing packages block on this service detail page"
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            options={pricingSectionOptions}
+                            error={errors.pricing_section_slug?.message}
+                        />
                     )}
                 />
             </div>

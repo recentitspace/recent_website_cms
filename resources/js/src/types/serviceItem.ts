@@ -22,6 +22,7 @@ export interface IServiceItem extends ITimestamped {
     show_on_home: boolean;
     show_featured_portfolio: boolean;
     portfolio_category_slug?: string | null;
+    pricing_section_slug?: string | null;
     show_domain_registration: boolean;
     category?: IServiceCategory | null;
     icon?: IMedia | null;

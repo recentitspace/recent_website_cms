@@ -46,6 +46,7 @@ class ServiceItemController extends BaseController
             'show_on_home' => 'nullable|boolean',
             'show_featured_portfolio' => 'nullable|boolean',
             'portfolio_category_slug' => 'nullable|string|max:255|exists:portfolio_categories,slug|required_if:show_featured_portfolio,true',
+            'pricing_section_slug' => 'nullable|string|max:255|exists:pricing_sections,slug',
             'show_domain_registration' => 'nullable|boolean',
         ],
         'update' => [
@@ -71,6 +72,7 @@ class ServiceItemController extends BaseController
             'show_on_home' => 'nullable|boolean',
             'show_featured_portfolio' => 'nullable|boolean',
             'portfolio_category_slug' => 'nullable|string|max:255|exists:portfolio_categories,slug|required_if:show_featured_portfolio,true',
+            'pricing_section_slug' => 'nullable|string|max:255|exists:pricing_sections,slug',
             'show_domain_registration' => 'nullable|boolean',
         ],
     ];
@@ -160,6 +162,10 @@ class ServiceItemController extends BaseController
 
         if (!$showFeaturedPortfolio) {
             $validated['portfolio_category_slug'] = null;
+        }
+
+        if (array_key_exists('pricing_section_slug', $validated) && empty($validated['pricing_section_slug'])) {
+            $validated['pricing_section_slug'] = null;
         }
 
         return $validated;

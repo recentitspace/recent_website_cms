@@ -19,6 +19,7 @@ export const PAGE_BLOCK_DISPLAY_ORDER: Record<PageName, string[]> = {
     ],
     faq: ["faq_hero", "faq_section"],
     contact: ["contact_hero"],
+    pricing: ["pricing_hero", "pricing_blog_header"],
 };
 
 export const sortPageBlocksForEditor = <T extends { key: string }>(
@@ -102,6 +103,14 @@ export const getPageBlockLabel = (key: string): { title: string; description?: s
             title: "Contact page hero",
             description: "Headline and intro on the contact page. Address, phone, and email come from Site Settings.",
         },
+        pricing_hero: {
+            title: "Pricing page hero",
+            description: "Headline and intro at the top of the pricing page.",
+        },
+        pricing_blog_header: {
+            title: "Pricing page blog section",
+            description: "Title and subtitle above the blog carousel on the pricing page.",
+        },
     };
 
     return (
@@ -127,5 +136,9 @@ export const PAGE_EDITOR_TITLES: Record<PageName, { title: string; subtitle: str
     contact: {
         title: "Contact page",
         subtitle: "Edit contact page messaging. Contact details (address, phone, email) are managed under Site-wide settings.",
+    },
+    pricing: {
+        title: "Pricing page",
+        subtitle: "Edit the pricing page hero and blog section headings. Packages are managed under Pricing sections.",
     },
 };

@@ -34,6 +34,7 @@ const EDITOR_TO_ADVANCED: Record<string, string> = {
     "/editor/home": "/page-blocks",
     "/editor/about": "/page-blocks",
     "/editor/pricing": "/pricing-sections",
+    "/editor/pricing/page": "/page-blocks",
     "/editor/portfolio": "/portfolio-categories",
     "/editor/blog": "/blogs",
     "/editor/faq": "/faqs",

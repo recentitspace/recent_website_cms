@@ -4,6 +4,7 @@ return [
     [
         'slug' => 'branding',
         'title' => 'Branding Packages',
+        'tab_label' => 'Branding',
         'subtitle' => 'Distinctive designs that turn your vision into identity.',
         'sort_order' => 1,
         'show_on_home' => true,
@@ -79,6 +80,7 @@ return [
     [
         'slug' => 'hosting',
         'title' => 'Hosting Packages',
+        'tab_label' => 'Hosting',
         'subtitle' => 'Scalable, secure hosting for business growth.',
         'sort_order' => 2,
         'show_on_home' => true,
@@ -136,6 +138,7 @@ return [
     [
         'slug' => 'netsuite',
         'title' => 'NetSuite ERP System Packages',
+        'tab_label' => 'NetSuite',
         'subtitle' => 'Scalable, secure ERP system for business growth.',
         'sort_order' => 3,
         'show_on_home' => true,
@@ -196,6 +199,7 @@ return [
     [
         'slug' => 'digital-marketing',
         'title' => 'Digital Media Marketing Packages',
+        'tab_label' => 'Digital Marketing',
         'subtitle' => 'Scalable, secure digital media marketing for business growth.',
         'sort_order' => 4,
         'show_on_home' => true,

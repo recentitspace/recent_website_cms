@@ -20,6 +20,7 @@ class PricingImportSeeder extends Seeder
                 ['slug' => $sectionData['slug']],
                 [
                     'title' => $sectionData['title'],
+                    'tab_label' => $sectionData['tab_label'] ?? null,
                     'subtitle' => $sectionData['subtitle'] ?? null,
                     'sort_order' => $sectionData['sort_order'] ?? 0,
                     'is_active' => true,

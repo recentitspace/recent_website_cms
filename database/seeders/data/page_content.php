@@ -173,5 +173,17 @@ return [
             'title' => "Don't hesitate to reach out",
             'subtitle' => "Have a question or a project in mind? We're here to help. Reach out to us anytime and our team will get back to you as soon as possible.",
         ],
+        [
+            'page' => 'pricing',
+            'key' => 'pricing_hero',
+            'title' => 'Take a tour of our Pricing Plans',
+            'subtitle' => 'Choose a plan that fits your goals and budget. Our flexible pricing gives you the tools and support you need to succeed — without hidden fees or surprises.',
+        ],
+        [
+            'page' => 'pricing',
+            'key' => 'pricing_blog_header',
+            'title' => 'blogs',
+            'subtitle' => 'Recent articles from blog',
+        ],
     ],
 ];

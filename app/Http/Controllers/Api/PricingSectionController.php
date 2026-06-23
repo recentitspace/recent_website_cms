@@ -24,6 +24,7 @@ class PricingSectionController extends BaseController
         'store' => [
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:pricing_sections,slug',
+            'tab_label' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',
@@ -32,6 +33,7 @@ class PricingSectionController extends BaseController
         'update' => [
             'title' => 'sometimes|required|string|max:255',
             'slug' => 'sometimes|nullable|string|max:255',
+            'tab_label' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
             'sort_order' => 'nullable|integer|min:0',
             'is_active' => 'nullable|boolean',

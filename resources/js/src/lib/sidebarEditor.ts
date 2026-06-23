@@ -103,8 +103,17 @@ export const editorWebsiteMenu: MenuItem[] = [
     {
         title: "pricing",
         icon: DollarSign,
-        path: "/editor/pricing",
-        permissions: ["view pricing sections", "view pricing plans"],
+        children: [
+            {
+                title: "editor_pricing_packages",
+                path: "/editor/pricing",
+            },
+            {
+                title: "editor_pricing_page",
+                path: "/editor/pricing/page",
+            },
+        ],
+        permissions: ["view pricing sections", "view pricing plans", "view page blocks"],
     },
     {
         title: "portfolio",

@@ -13,6 +13,7 @@ class PricingSection extends Model
     protected $fillable = [
         'title',
         'slug',
+        'tab_label',
         'subtitle',
         'sort_order',
         'is_active',

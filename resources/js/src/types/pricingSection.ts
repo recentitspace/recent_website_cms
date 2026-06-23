@@ -4,6 +4,7 @@ export interface IPricingSection extends ITimestamped {
     id: number;
     title: string;
     slug: string;
+    tab_label?: string | null;
     subtitle?: string | null;
     sort_order: number;
     is_active: boolean;

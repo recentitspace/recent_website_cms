@@ -145,6 +145,12 @@ const ServiceItemDetail: React.FC<ServiceItemDetailProps> = ({ itemId }) => {
                 <span className="font-medium text-gray-500">Domain Registration Section</span>
                 <p>{item.show_domain_registration ? "Yes" : "No"}</p>
             </div>
+            {item.pricing_section_slug && (
+                <div>
+                    <span className="font-medium text-gray-500">Pricing Section</span>
+                    <p>{item.pricing_section_slug}</p>
+                </div>
+            )}
         </div>
     );
 };

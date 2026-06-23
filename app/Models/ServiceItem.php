@@ -28,6 +28,7 @@ class ServiceItem extends Model
         'show_on_home',
         'show_featured_portfolio',
         'portfolio_category_slug',
+        'pricing_section_slug',
         'show_domain_registration',
     ];
 

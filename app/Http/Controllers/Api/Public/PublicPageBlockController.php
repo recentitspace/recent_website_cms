@@ -11,7 +11,7 @@ class PublicPageBlockController extends PublicController
     public function index(Request $request): JsonResponse
     {
         $request->validate([
-            'page' => 'nullable|string|in:home,about,faq,contact',
+            'page' => 'nullable|string|in:home,about,faq,contact,pricing',
         ]);
 
         $query = PageBlock::query()

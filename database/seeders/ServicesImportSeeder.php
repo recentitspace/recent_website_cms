@@ -25,6 +25,7 @@ class ServicesImportSeeder extends Seeder
             'brand-identity' => [
                 'show_featured_portfolio' => true,
                 'portfolio_category_slug' => 'brand-identity',
+                'pricing_section_slug' => 'branding',
             ],
             'photo-video-production' => [
                 'show_featured_portfolio' => true,
@@ -32,6 +33,13 @@ class ServicesImportSeeder extends Seeder
             ],
             'domain-hosting' => [
                 'show_domain_registration' => true,
+                'pricing_section_slug' => 'hosting',
+            ],
+            'software-development' => [
+                'pricing_section_slug' => 'netsuite',
+            ],
+            'digital-marketing' => [
+                'pricing_section_slug' => 'digital-marketing',
             ],
         ];
 
@@ -92,6 +100,7 @@ class ServicesImportSeeder extends Seeder
                         'show_on_home' => true,
                         'show_featured_portfolio' => $pageFlags['show_featured_portfolio'] ?? false,
                         'portfolio_category_slug' => $pageFlags['portfolio_category_slug'] ?? null,
+                        'pricing_section_slug' => $pageFlags['pricing_section_slug'] ?? null,
                         'show_domain_registration' => $pageFlags['show_domain_registration'] ?? false,
                     ]
                 );

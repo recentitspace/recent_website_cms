@@ -20,6 +20,7 @@ const pageFilterOptions = [
     { value: "about", label: "About" },
     { value: "faq", label: "FAQ" },
     { value: "contact", label: "Contact" },
+    { value: "pricing", label: "Pricing" },
 ];
 
 const PageBlockList = () => {

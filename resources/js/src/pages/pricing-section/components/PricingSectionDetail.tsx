@@ -37,6 +37,12 @@ const PricingSectionDetail: React.FC<PricingSectionDetailProps> = ({ sectionId }
                     <p>{section.subtitle}</p>
                 </div>
             )}
+            {section.tab_label && (
+                <div>
+                    <span className="font-medium text-gray-500">Home Tab Label</span>
+                    <p>{section.tab_label}</p>
+                </div>
+            )}
             <div>
                 <span className="font-medium text-gray-500">Sort Order</span>
                 <p>{section.sort_order}</p>

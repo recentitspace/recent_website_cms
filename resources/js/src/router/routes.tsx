@@ -61,6 +61,7 @@ const EditorAboutPage = lazy(() => import("../pages/editor/EditorAboutPage"));
 const EditorFaqPage = lazy(() => import("../pages/editor/EditorFaqPage"));
 const EditorContactPage = lazy(() => import("../pages/editor/EditorContactPage"));
 const EditorPricingPage = lazy(() => import("../pages/editor/EditorPricingPage"));
+const EditorPricingPageContent = lazy(() => import("../pages/editor/EditorPricingPageContent"));
 const EditorPortfolioPage = lazy(() => import("../pages/editor/EditorPortfolioPage"));
 const EditorBlogsPage = lazy(() => import("../pages/editor/EditorBlogsPage"));
 const ServiceCategoryEditorPage = lazy(
@@ -315,6 +316,12 @@ export const protectedRoutes: RouteConfig[] = [
         element: <EditorPricingPage />,
         layout: "default",
         permissions: ["view pricing sections", "view pricing plans"],
+    },
+    {
+        path: "/editor/pricing/page",
+        element: <EditorPricingPageContent />,
+        layout: "default",
+        permissions: ["view page blocks"],
     },
     {
         path: "/editor/portfolio",
