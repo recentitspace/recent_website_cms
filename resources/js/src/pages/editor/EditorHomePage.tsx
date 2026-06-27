@@ -7,7 +7,7 @@ import TestimonialModal from "../testimonial/components/TestimonialModal";
 import { clientApi } from "../../services/client";
 import { statCounterApi } from "../../services/statCounter";
 import { testimonialApi } from "../../services/testimonial";
-import { IClient, IStatCounter, ITestimonial } from "../../types";
+import { IClient, IQueryParams, IStatCounter, ITestimonial } from "../../types";
 import EditorEntityListSection from "./components/EditorEntityListSection";
 import PageEditorLayout from "./components/PageEditorLayout";
 
@@ -36,9 +36,11 @@ const EditorHomePage = () => {
         queryFn: () =>
             clientApi.getAll({
                 per_page: 100,
+                all: "true",
                 sort_by: "sort_order",
                 sort_direction: "asc",
-            }),
+                filter: { show_on_home: 1 },
+            } as IQueryParams & { all?: string }),
     });
 
     const { data: testimonialsResponse, isLoading: testimonialsLoading } = useQuery({
@@ -92,7 +94,7 @@ const EditorHomePage = () => {
 
                 <EditorEntityListSection
                     title="Client logos"
-                    description="Company logos displayed in a row on the homepage to show who you work with."
+                    description="Logos in the scrolling row on the homepage (Trusted by… section). For the full Clients page grid, use Website Editor → Clients page."
                     items={clientsResponse?.data || []}
                     isLoading={clientsLoading}
                     emptyMessage="No client logos yet."
@@ -179,6 +181,7 @@ const EditorHomePage = () => {
                     }
                 }}
                 clientToEdit={selectedClient}
+                placement="home"
             />
 
             <TestimonialModal

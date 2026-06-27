@@ -1,6 +1,7 @@
 import {
     ArrowRight,
     Briefcase,
+    Building2,
     DollarSign,
     Globe,
     Home,
@@ -67,6 +68,13 @@ const editorPages = [
         path: "/editor/blog",
         icon: Newspaper,
         color: "from-indigo-500/10 to-indigo-500/5",
+    },
+    {
+        title: "Clients page",
+        description: "Company logos on the Our Trusted Clients page.",
+        path: "/editor/clients",
+        icon: Building2,
+        color: "from-teal-500/10 to-teal-500/5",
     },
     {
         title: "FAQ page",

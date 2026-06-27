@@ -60,6 +60,7 @@ const EditorHomePage = lazy(() => import("../pages/editor/EditorHomePage"));
 const EditorAboutPage = lazy(() => import("../pages/editor/EditorAboutPage"));
 const EditorFaqPage = lazy(() => import("../pages/editor/EditorFaqPage"));
 const EditorContactPage = lazy(() => import("../pages/editor/EditorContactPage"));
+const EditorClientsPage = lazy(() => import("../pages/editor/EditorClientsPage"));
 const EditorPricingPage = lazy(() => import("../pages/editor/EditorPricingPage"));
 const EditorPricingPageContent = lazy(() => import("../pages/editor/EditorPricingPageContent"));
 const EditorPortfolioPage = lazy(() => import("../pages/editor/EditorPortfolioPage"));
@@ -346,6 +347,12 @@ export const protectedRoutes: RouteConfig[] = [
         element: <EditorContactPage />,
         layout: "default",
         permissions: ["view page blocks", "manage site settings"],
+    },
+    {
+        path: "/editor/clients",
+        element: <EditorClientsPage />,
+        layout: "default",
+        permissions: ["view clients"],
     },
 
     // Settings (with nested tabs)

@@ -177,7 +177,7 @@ return [
             'page' => 'pricing',
             'key' => 'pricing_hero',
             'title' => 'Take a tour of our Pricing Plans',
-            'subtitle' => 'Choose a plan that fits your goals and budget. Our flexible pricing gives you the tools and support you need to succeed — without hidden fees or surprises.',
+            'subtitle' => 'Choose a plan that fits your goals and budget. our flexible pricing gives you the tools and support <br>you need to succeed — without hidden fees or surprises.',
         ],
         [
             'page' => 'pricing',

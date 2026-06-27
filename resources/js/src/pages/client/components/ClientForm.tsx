@@ -12,8 +12,11 @@ import FormFooter from "../../../components/form/FormFooter";
 import FormInput from "../../../components/form/FormInput";
 import FormSection from "../../../components/form/FormSection";
 import FormToggle from "../../../components/form/FormToggle";
+import { useSimpleFormMode } from "../../../hooks/useSimpleFormMode";
 import { clientApi } from "../../../services/client";
 import { IClient, IMedia } from "../../../types";
+
+export type ClientLogoPlacement = "home" | "clients_page";
 
 const clientSchema = z.object({
     name: z.string().min(1, "Company name is required"),
@@ -29,10 +32,17 @@ type ClientFormData = z.infer<typeof clientSchema>;
 interface ClientFormProps {
     clientToEdit?: IClient | null;
     onClose: () => void;
+    placement?: ClientLogoPlacement;
 }
 
-const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
+const ClientForm: React.FC<ClientFormProps> = ({
+    clientToEdit,
+    onClose,
+    placement = "home",
+}) => {
     const queryClient = useQueryClient();
+    const simpleMode = useSimpleFormMode();
+    const defaultShowOnHome = placement === "home";
     const [generalError, setGeneralError] = useState<string | null>(null);
     const [selectedMedia, setSelectedMedia] = useState<IMedia | null>(null);
     const isEditMode = Boolean(clientToEdit);
@@ -58,7 +68,7 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
             url: "",
             sort_order: 0,
             is_active: true,
-            show_on_home: false,
+            show_on_home: defaultShowOnHome,
         },
     });
 
@@ -79,6 +89,7 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
     const invalidate = () => {
         queryClient.invalidateQueries({ queryKey: ["Client Table"] });
         queryClient.invalidateQueries({ queryKey: ["editor-home-clients"] });
+        queryClient.invalidateQueries({ queryKey: ["editor-clients-page-logos"] });
     };
 
     const createMutation = useMutation({
@@ -118,10 +129,15 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
 
     const onSubmit = (data: ClientFormData) => {
         setGeneralError(null);
+        const payload = {
+            ...data,
+            show_on_home: simpleMode ? defaultShowOnHome : data.show_on_home,
+        };
+
         if (isEditMode) {
-            updateMutation.mutate(data);
+            updateMutation.mutate(payload);
         } else {
-            createMutation.mutate(data);
+            createMutation.mutate(payload);
         }
     };
 
@@ -131,7 +147,11 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
 
             <FormSection
                 title="Client details"
-                description="Name and logo shown in the client logos row on the homepage."
+                description={
+                    placement === "home"
+                        ? "Name and logo for the homepage scrolling row."
+                        : "Name and logo for the Clients page grid."
+                }
             >
                 <Controller
                     name="name"
@@ -206,18 +226,20 @@ const ClientForm: React.FC<ClientFormProps> = ({ clientToEdit, onClose }) => {
                         />
                     )}
                 />
-                <Controller
-                    name="show_on_home"
-                    control={control}
-                    render={({ field }) => (
-                        <FormToggle
-                            label="Show on home page"
-                            description="Display in the scrolling client logos row"
-                            checked={field.value ?? false}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
+                {!simpleMode && (
+                    <Controller
+                        name="show_on_home"
+                        control={control}
+                        render={({ field }) => (
+                            <FormToggle
+                                label="Show on home page"
+                                description="Display in the scrolling client logos row on the homepage"
+                                checked={field.value ?? false}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                )}
             </FormAdvancedFields>
 
             <FormFooter onCancel={onClose} isSubmitting={isSubmitting} isEditMode={isEditMode} />

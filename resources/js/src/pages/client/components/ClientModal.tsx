@@ -3,27 +3,54 @@ import React from "react";
 
 import GenericModal from "../../../components/GenericModal";
 import { IClient } from "../../../types";
-import ClientForm from "./ClientForm";
+import ClientForm, { ClientLogoPlacement } from "./ClientForm";
 
 interface ClientModalProps {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     clientToEdit?: IClient | null;
+    placement?: ClientLogoPlacement;
 }
 
-const ClientModal: React.FC<ClientModalProps> = ({ isOpen, setIsOpen, clientToEdit }) => {
+const PLACEMENT_COPY: Record<
+    ClientLogoPlacement,
+    { subtitle: string; addTitle: string; editTitle: string }
+> = {
+    home: {
+        subtitle: "Logo for the scrolling row on the homepage.",
+        addTitle: "Add homepage logo",
+        editTitle: "Edit homepage logo",
+    },
+    clients_page: {
+        subtitle: "Logo for the Our Trusted Clients page grid.",
+        addTitle: "Add clients page logo",
+        editTitle: "Edit clients page logo",
+    },
+};
+
+const ClientModal: React.FC<ClientModalProps> = ({
+    isOpen,
+    setIsOpen,
+    clientToEdit,
+    placement = "home",
+}) => {
     const isEditMode = Boolean(clientToEdit);
+    const copy = PLACEMENT_COPY[placement];
 
     return (
         <GenericModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            title={isEditMode ? "Edit client logo" : "Add client logo"}
-            subtitle="Upload a client or partner logo for the homepage."
+            title={isEditMode ? copy.editTitle : copy.addTitle}
+            subtitle={copy.subtitle}
             icon={Building2}
             maxWidth="lg"
         >
-            <ClientForm clientToEdit={clientToEdit} onClose={() => setIsOpen(false)} />
+            <ClientForm
+                clientToEdit={clientToEdit}
+                onClose={() => setIsOpen(false)}
+                placement={placement}
+            />
         </GenericModal>
     );
 };

@@ -1,5 +1,6 @@
 import {
     Briefcase,
+    Building2,
     DollarSign,
     FileText,
     Globe,
@@ -120,6 +121,12 @@ export const editorWebsiteMenu: MenuItem[] = [
         icon: Briefcase,
         path: "/editor/portfolio",
         permissions: ["view portfolio categories", "view portfolio items"],
+    },
+    {
+        title: "editor_clients_page",
+        icon: Building2,
+        path: "/editor/clients",
+        permissions: ["view clients"],
     },
     {
         title: "editor_blog_page",

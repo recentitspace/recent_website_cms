@@ -36,6 +36,7 @@ const EDITOR_TO_ADVANCED: Record<string, string> = {
     "/editor/pricing": "/pricing-sections",
     "/editor/pricing/page": "/page-blocks",
     "/editor/portfolio": "/portfolio-categories",
+    "/editor/clients": "/clients",
     "/editor/blog": "/blogs",
     "/editor/faq": "/faqs",
     "/editor/contact": "/page-blocks",
@@ -98,7 +99,11 @@ export const getEditorRedirectPath = (pathname: string): string => {
         return "/editor/faq";
     }
 
-    if (pathname === "/clients" || pathname === "/testimonials") {
+    if (pathname === "/clients") {
+        return "/editor/clients";
+    }
+
+    if (pathname === "/testimonials") {
         return "/editor/home";
     }
 
