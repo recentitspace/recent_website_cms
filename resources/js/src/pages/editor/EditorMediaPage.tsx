@@ -58,7 +58,7 @@ const EditorMediaPage = () => {
                     items={mediaResponse?.data || []}
                     isLoading={isLoading}
                     emptyMessage="No images uploaded yet."
-                    emptyHint="Upload JPEG, PNG, GIF, SVG, or WebP files up to 5MB."
+                    emptyHint="Select one or more JPEG, PNG, GIF, SVG, or WebP files up to 5MB each."
                     onAdd={() => {
                         setSelectedMedia(null);
                         setModalOpen(true);
@@ -67,7 +67,7 @@ const EditorMediaPage = () => {
                         setSelectedMedia(item);
                         setModalOpen(true);
                     }}
-                    addLabel="Upload image"
+                    addLabel="Upload images"
                     editLabel="Edit image"
                     renderItem={(item) => (
                         <div className="flex items-center gap-3">

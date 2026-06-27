@@ -31,6 +31,54 @@ class MediaController extends BaseController
 
         /** @var UploadedFile $file */
         $file = $validated['file'];
+
+        $media = $this->createMediaFromUpload(
+            $file,
+            $validated['alt_text'] ?? null,
+            $request
+        );
+
+        $this->logActivity(
+            class_basename($this->model) . ' was created',
+            $media,
+            ['attributes' => $media->getAttributes()],
+            'created'
+        );
+
+        return $this->createdResponse($media);
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $validated = $request->validate([
+            'files' => 'required|array|min:1|max:50',
+            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+        ]);
+
+        $created = [];
+
+        foreach ($validated['files'] as $file) {
+            $created[] = $this->createMediaFromUpload($file, null, $request);
+        }
+
+        $subject = $created[0] ?? new $this->model;
+        $this->logActivity(
+            class_basename($this->model) . ' records were bulk created',
+            $subject,
+            ['count' => count($created), 'ids' => collect($created)->pluck('id')->all()],
+            'bulk_created'
+        );
+
+        $count = count($created);
+
+        return $this->createdResponse([
+            'created_count' => $count,
+            'items' => $created,
+        ], $count . ' files uploaded successfully');
+    }
+
+    protected function createMediaFromUpload(UploadedFile $file, ?string $altText, Request $request): Media
+    {
         $originalName = $file->getClientOriginalName();
         $mimeType = $file->getClientMimeType() ?: $file->getMimeType();
         $size = $file->getSize();
@@ -55,7 +103,7 @@ class MediaController extends BaseController
             'mime_type' => $mimeType,
             'size' => $size,
             'path' => $relativePath,
-            'alt_text' => $validated['alt_text'] ?? null,
+            'alt_text' => $altText,
             'uploaded_by' => $request->user()?->id,
         ]);
 
@@ -63,14 +111,7 @@ class MediaController extends BaseController
             $media->load($this->relationships);
         }
 
-        $this->logActivity(
-            class_basename($this->model) . ' was created',
-            $media,
-            ['attributes' => $media->getAttributes()],
-            'created'
-        );
-
-        return $this->createdResponse($media);
+        return $media;
     }
 
     public function destroy($id)

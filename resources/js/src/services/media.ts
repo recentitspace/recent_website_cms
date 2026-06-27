@@ -14,6 +14,14 @@ class MediaApi extends BaseApi<IMedia> {
 
         return response.data.data || response.data;
     }
+
+    async bulkUpload(formData: FormData): Promise<{ created_count: number; items: IMedia[] }> {
+        const response = await axiosInstance.post(`${this.endpoint}/bulk`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        return response.data.data || response.data;
+    }
 }
 
 export const mediaApi = new MediaApi();
