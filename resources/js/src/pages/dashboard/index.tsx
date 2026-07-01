@@ -1,30 +1,80 @@
 import { useQuery } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
+import type { ReactNode } from "react";
 import {
-    BookOpen,
-    Globe,
-    Handshake,
-    Image,
+    Activity,
+    Box,
+    Layers,
     Loader2,
-    MessageSquareQuote,
     RefreshCw,
-    Briefcase,
+    Sparkles,
+    Globe,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ApexOptions } from "apexcharts";
 
 import ActivityList from "../../components/dashboard/ActivityList";
 import ChartCard from "../../components/dashboard/ChartCard";
-import StatCard from "../../components/dashboard/StatCard";
 import Breadcrumb from "../../components/Breadcrumb";
 import dashboardService from "../../services/dashboard";
-import { ApexOptions } from "apexcharts";
+import { DashboardContentGroup, DashboardGroupItem } from "../../types/dashboard";
 
-const statusClass: Record<string, string> = {
-    pending: "text-warning",
-    contacted: "text-primary",
-    canceled: "text-danger",
-    completed: "text-success",
+const typeBadgeClass: Record<string, string> = {
+    blog: "bg-violet-500/15 text-violet-600",
+    portfolio_item: "bg-emerald-500/15 text-emerald-600",
+    service_item: "bg-blue-500/15 text-blue-600",
+    page_block: "bg-amber-500/15 text-amber-600",
+    domain_request: "bg-cyan-500/15 text-cyan-600",
+    client: "bg-orange-500/15 text-orange-600",
 };
+
+const OverviewCard = ({
+    title,
+    value,
+    subtitle,
+    icon,
+}: {
+    title: string;
+    value: number;
+    subtitle: string;
+    icon: ReactNode;
+}) => (
+    <div className="panel flex items-center justify-between gap-4">
+        <div>
+            <p className="text-sm text-white-dark">{title}</p>
+            <h3 className="mt-1 text-3xl font-bold dark:text-white-light">{value}</h3>
+            <p className="mt-1 text-xs text-white-dark">{subtitle}</p>
+        </div>
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+            {icon}
+        </div>
+    </div>
+);
+
+const ContentGroupPanel = ({ group }: { group: DashboardContentGroup }) => (
+    <div className="panel h-full">
+        <h5 className="mb-4 text-lg font-semibold dark:text-white-light">{group.title}</h5>
+        <div className="space-y-3">
+            {group.items.map((item: DashboardGroupItem) => (
+                <Link
+                    key={`${group.title}-${item.label}`}
+                    to={item.path}
+                    className="flex items-center justify-between rounded-md border border-white-light px-4 py-3 transition hover:bg-white-light/40 dark:border-[#1b2e4b] dark:hover:bg-[#1b2e4b]/40"
+                >
+                    <div>
+                        <p className="font-medium dark:text-white-light">{item.label}</p>
+                        <p className="text-xs text-white-dark">
+                            {item.active !== null
+                                ? `${item.active} active · ${item.this_month} this month`
+                                : `${item.this_month} this month`}
+                        </p>
+                    </div>
+                    <span className="text-xl font-bold text-primary">{item.total}</span>
+                </Link>
+            ))}
+        </div>
+    </div>
+);
 
 const Dashboard = () => {
     const { data, isLoading, isFetching, refetch, dataUpdatedAt } = useQuery({
@@ -32,91 +82,26 @@ const Dashboard = () => {
         queryFn: () => dashboardService.getOverview(),
     });
 
-    const domainChartOptions: ApexOptions = {
+    const contentChartOptions: ApexOptions = {
         plotOptions: {
             bar: {
                 borderRadius: 8,
-                columnWidth: "45%",
+                columnWidth: "50%",
             },
         },
         xaxis: {
-            categories: data?.domain_requests_chart.labels ?? [],
+            categories: data?.content_chart.labels ?? [],
         },
-        colors: ["#209BD0"],
+        colors: ["#4361ee"],
     };
 
-    const statusChartOptions: ApexOptions = {
-        labels: ["Pending", "Contacted", "Canceled", "Completed"],
-        colors: ["#e2a03f", "#4361ee", "#e7515a", "#00ab55"],
+    const typeChartOptions: ApexOptions = {
+        labels: data?.content_by_type.map((item) => item.label) ?? [],
         legend: {
             position: "bottom",
         },
+        colors: ["#4361ee", "#00ab55", "#805dca", "#209BD0", "#e2a03f", "#e7515a", "#3b3f5c", "#2196f3", "#ff9800", "#8bc34a", "#9c27b0"],
     };
-
-    const statCards = data
-        ? [
-              {
-                  key: "domain_requests",
-                  title: "Domain Requests",
-                  count: data.summary.domain_requests.total,
-                  previousCount: data.summary.domain_requests.previous_month,
-                  linkTo: "/domain-requests",
-                  gradientColors: "bg-gradient-to-r from-cyan-500 to-blue-600",
-                  badgeText: `${data.domain_requests_pending} pending`,
-                  icon: <Globe className="w-5 h-5 mr-2" />,
-              },
-              {
-                  key: "blogs",
-                  title: "Blogs",
-                  count: data.summary.blogs.total,
-                  previousCount: data.summary.blogs.previous_month,
-                  linkTo: "/blogs",
-                  gradientColors: "bg-gradient-to-r from-violet-500 to-purple-600",
-                  badgeText: `${data.summary.blogs.this_month} this month`,
-                  icon: <BookOpen className="w-5 h-5 mr-2" />,
-              },
-              {
-                  key: "portfolio_items",
-                  title: "Portfolio",
-                  count: data.summary.portfolio_items.total,
-                  previousCount: data.summary.portfolio_items.previous_month,
-                  linkTo: "/portfolio-items",
-                  gradientColors: "bg-gradient-to-r from-emerald-500 to-green-600",
-                  badgeText: `${data.summary.portfolio_items.this_month} this month`,
-                  icon: <Briefcase className="w-5 h-5 mr-2" />,
-              },
-              {
-                  key: "clients",
-                  title: "Clients",
-                  count: data.summary.clients.total,
-                  previousCount: data.summary.clients.previous_month,
-                  linkTo: "/clients",
-                  gradientColors: "bg-gradient-to-r from-orange-500 to-amber-600",
-                  badgeText: `${data.summary.clients.this_month} this month`,
-                  icon: <Handshake className="w-5 h-5 mr-2" />,
-              },
-              {
-                  key: "testimonials",
-                  title: "Testimonials",
-                  count: data.summary.testimonials.total,
-                  previousCount: data.summary.testimonials.previous_month,
-                  linkTo: "/testimonials",
-                  gradientColors: "bg-gradient-to-r from-pink-500 to-rose-600",
-                  badgeText: `${data.summary.testimonials.this_month} this month`,
-                  icon: <MessageSquareQuote className="w-5 h-5 mr-2" />,
-              },
-              {
-                  key: "media",
-                  title: "Media",
-                  count: data.summary.media.total,
-                  previousCount: data.summary.media.previous_month,
-                  linkTo: "/media",
-                  gradientColors: "bg-gradient-to-r from-slate-600 to-slate-800",
-                  badgeText: `${data.summary.media.this_month} this month`,
-                  icon: <Image className="w-5 h-5 mr-2" />,
-              },
-          ]
-        : [];
 
     return (
         <div>
@@ -139,88 +124,111 @@ const Dashboard = () => {
                 </div>
             ) : data ? (
                 <div className="space-y-6">
-                    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                        {statCards.map((card) => (
-                            <StatCard key={card.key} {...card} />
-                        ))}
+                    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                        <OverviewCard
+                            title="Total CMS Items"
+                            value={data.overview.total_content}
+                            subtitle="Across all website content modules"
+                            icon={<Box className="h-6 w-6" />}
+                        />
+                        <OverviewCard
+                            title="Created This Month"
+                            value={data.overview.created_this_month}
+                            subtitle="New content added in the current month"
+                            icon={<Sparkles className="h-6 w-6" />}
+                        />
+                        <OverviewCard
+                            title="Active on Website"
+                            value={data.overview.active_items}
+                            subtitle="Published or active content items"
+                            icon={<Activity className="h-6 w-6" />}
+                        />
+                        <OverviewCard
+                            title="Pending Domain Requests"
+                            value={data.overview.pending_domain_requests}
+                            subtitle="Requires follow-up from the team"
+                            icon={<Globe className="h-6 w-6" />}
+                        />
                     </div>
 
                     <div className="grid gap-6 xl:grid-cols-2">
                         <ChartCard
-                            title="Domain Requests"
-                            subtitle="New requests over the last 6 months"
+                            title="CMS Content Growth"
+                            subtitle="All new items created over the last 6 months"
                             type="bar"
                             height={320}
                             loading={isFetching}
                             series={[
                                 {
-                                    name: "Requests",
-                                    data: data.domain_requests_chart.data,
+                                    name: "New Items",
+                                    data: data.content_chart.data,
                                 },
                             ]}
-                            options={domainChartOptions}
+                            options={contentChartOptions}
                         />
                         <ChartCard
-                            title="Request Status"
-                            subtitle="Current breakdown of domain requests"
+                            title="Content Distribution"
+                            subtitle="Breakdown of items across CMS modules"
                             type="donut"
                             height={320}
                             loading={isFetching}
-                            series={[
-                                data.domain_requests_by_status.pending,
-                                data.domain_requests_by_status.contacted,
-                                data.domain_requests_by_status.canceled,
-                                data.domain_requests_by_status.completed,
-                            ]}
-                            options={statusChartOptions}
+                            series={data.content_by_type.map((item) => item.count)}
+                            options={typeChartOptions}
                         />
+                    </div>
+
+                    <div>
+                        <div className="mb-4 flex items-center gap-2">
+                            <Layers className="h-5 w-5 text-primary" />
+                            <h4 className="text-lg font-semibold dark:text-white-light">Content Overview</h4>
+                        </div>
+                        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                            {data.content_groups.map((group) => (
+                                <ContentGroupPanel key={group.title} group={group} />
+                            ))}
+                        </div>
                     </div>
 
                     <div className="grid gap-6 xl:grid-cols-2">
                         <div className="panel h-full">
                             <div className="mb-5 flex items-center justify-between">
                                 <h5 className="text-lg font-semibold dark:text-white-light">
-                                    Recent Domain Requests
+                                    Recent Content Updates
                                 </h5>
                                 <Link
-                                    to="/domain-requests"
+                                    to="/editor"
                                     className="text-sm font-semibold text-primary hover:underline"
                                 >
-                                    View All
+                                    Open Editor
                                 </Link>
                             </div>
 
-                            {data.recent_domain_requests.length === 0 ? (
-                                <p className="text-white-dark">No domain requests yet.</p>
+                            {data.recent_updates.length === 0 ? (
+                                <p className="text-white-dark">No recent content updates yet.</p>
                             ) : (
                                 <div className="space-y-3">
-                                    {data.recent_domain_requests.map((request) => (
+                                    {data.recent_updates.map((item) => (
                                         <Link
-                                            key={request.id}
-                                            to={`/domain-requests?view=${request.id}`}
+                                            key={`${item.type}-${item.id}`}
+                                            to={item.path}
                                             className="block rounded-md border border-white-light p-4 transition hover:bg-white-light/40 dark:border-[#1b2e4b] dark:hover:bg-[#1b2e4b]/40"
                                         >
                                             <div className="flex items-start justify-between gap-3">
-                                                <div>
-                                                    <h6 className="font-semibold dark:text-white-light">
-                                                        {request.full_domain}
-                                                    </h6>
-                                                    <p className="mt-1 text-sm text-white-dark">
-                                                        {request.email} · {request.phone}
-                                                    </p>
-                                                </div>
-                                                <div className="text-right">
+                                                <div className="min-w-0">
                                                     <span
-                                                        className={`text-xs font-semibold uppercase ${statusClass[request.status] || ""}`}
+                                                        className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${typeBadgeClass[item.type] || "bg-primary/10 text-primary"}`}
                                                     >
-                                                        {request.status}
+                                                        {item.label}
                                                     </span>
-                                                    {request.created_at && (
-                                                        <p className="mt-1 text-xs text-white-dark">
-                                                            {format(parseISO(request.created_at), "MMM dd, yyyy")}
-                                                        </p>
-                                                    )}
+                                                    <h6 className="mt-2 truncate font-semibold dark:text-white-light">
+                                                        {item.title}
+                                                    </h6>
                                                 </div>
+                                                {item.created_at && (
+                                                    <p className="shrink-0 text-xs text-white-dark">
+                                                        {format(parseISO(item.created_at), "MMM dd, yyyy")}
+                                                    </p>
+                                                )}
                                             </div>
                                         </Link>
                                     ))}

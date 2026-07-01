@@ -4,12 +4,37 @@ export interface DashboardCountStat {
     previous_month: number;
 }
 
-export interface DashboardRecentDomainRequest {
+export interface DashboardOverview {
+    total_content: number;
+    created_this_month: number;
+    active_items: number;
+    pending_domain_requests: number;
+}
+
+export interface DashboardContentType {
+    label: string;
+    count: number;
+}
+
+export interface DashboardGroupItem {
+    label: string;
+    total: number;
+    active: number | null;
+    this_month: number;
+    path: string;
+}
+
+export interface DashboardContentGroup {
+    title: string;
+    items: DashboardGroupItem[];
+}
+
+export interface DashboardRecentUpdate {
     id: number;
-    full_domain: string;
-    email: string;
-    phone: string;
-    status: string;
+    type: string;
+    label: string;
+    title: string;
+    path: string;
     created_at?: string;
 }
 
@@ -22,25 +47,15 @@ export interface DashboardActivityItem {
 }
 
 export interface DashboardData {
-    summary: {
-        domain_requests: DashboardCountStat;
-        blogs: DashboardCountStat;
-        portfolio_items: DashboardCountStat;
-        clients: DashboardCountStat;
-        testimonials: DashboardCountStat;
-        media: DashboardCountStat;
-    };
-    domain_requests_pending: number;
-    domain_requests_by_status: {
-        pending: number;
-        contacted: number;
-        canceled: number;
-        completed: number;
-    };
-    domain_requests_chart: {
+    overview: DashboardOverview;
+    summary: Record<string, DashboardCountStat>;
+    active_counts: Record<string, number>;
+    content_by_type: DashboardContentType[];
+    content_chart: {
         labels: string[];
         data: number[];
     };
-    recent_domain_requests: DashboardRecentDomainRequest[];
+    content_groups: DashboardContentGroup[];
+    recent_updates: DashboardRecentUpdate[];
     recent_activity: DashboardActivityItem[];
 }
