@@ -15,6 +15,9 @@ Route::prefix('v1')->group(function () {
     // Auth routes
     Route::prefix('auth')->group(base_path('routes/api/v1/auth.php'));
 
+    // Dashboard
+    Route::prefix('dashboard')->group(base_path('routes/api/v1/dashboard.php'));
+
     // Settings routes
     Route::prefix('settings')->group(base_path('routes/api/v1/settings.php'));
 
