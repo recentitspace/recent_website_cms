@@ -64,6 +64,7 @@ export const sidebarMenu: MenuItem[] = [
             "view pricing sections",
             "view pricing plans",
             "view domain extensions",
+            "view domain requests",
             "view service categories",
             "view service items",
             "view faqs",
@@ -130,11 +131,13 @@ export const sidebarMenu: MenuItem[] = [
             { title: "pricing_sections", path: "/pricing-sections" },
             { title: "pricing_plans", path: "/pricing-plans" },
             { title: "domain_extensions", path: "/domain-extensions" },
+            { title: "domain_requests", path: "/domain-requests" },
         ],
         permissions: [
             "view pricing sections",
             "view pricing plans",
             "view domain extensions",
+            "view domain requests",
         ],
     },
     {

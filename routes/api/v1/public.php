@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Public\PublicDomainRequestController;
 use App\Http\Controllers\Api\Public\PublicHomeContentController;
 use App\Http\Controllers\Api\Public\PublicMiscController;
 use App\Http\Controllers\Api\Public\PublicPageBlockController;
@@ -36,5 +37,6 @@ Route::get('/service-items/{slug}', [PublicServiceController::class, 'showItem']
 
 Route::get('/faqs', [PublicMiscController::class, 'faqs']);
 Route::get('/domain-extensions', [PublicMiscController::class, 'domainExtensions']);
+Route::post('/domain-requests', [PublicDomainRequestController::class, 'store']);
 Route::get('/blogs', [PublicMiscController::class, 'blogs']);
 Route::get('/blogs/{slug}', [PublicMiscController::class, 'showBlog']);

@@ -47,6 +47,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('pricing-sections')->group(base_path('routes/api/v1/pricing-sections.php'));
     Route::prefix('pricing-plans')->group(base_path('routes/api/v1/pricing-plans.php'));
     Route::prefix('domain-extensions')->group(base_path('routes/api/v1/domain-extensions.php'));
+    Route::prefix('domain-requests')->group(base_path('routes/api/v1/domain-requests.php'));
     Route::prefix('service-categories')->group(base_path('routes/api/v1/service-categories.php'));
     Route::prefix('service-items')->group(base_path('routes/api/v1/service-items.php'));
     Route::prefix('faqs')->group(base_path('routes/api/v1/faqs.php'));

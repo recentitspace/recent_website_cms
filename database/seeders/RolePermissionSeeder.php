@@ -106,6 +106,11 @@ class RolePermissionSeeder extends Seeder
             'edit domain extensions',
             'delete domain extensions',
 
+            // domain requests
+            'view domain requests',
+            'edit domain requests',
+            'delete domain requests',
+
             // service categories
             'view service categories',
             'create service categories',

@@ -17,6 +17,7 @@ export * from './serviceCategory';
 export * from './serviceItem';
 export * from './processStep';
 export * from './domainExtension';
+export * from './domainRequest';
 export * from './faq';
 export * from './statCounter';
 export * from './pageBlock';

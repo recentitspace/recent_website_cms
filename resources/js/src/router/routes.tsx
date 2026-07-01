@@ -41,6 +41,7 @@ const Testimonials = lazy(() => import("../pages/testimonial"));
 const PricingSections = lazy(() => import("../pages/pricing-section"));
 const PricingPlans = lazy(() => import("../pages/pricing-plan"));
 const DomainExtensions = lazy(() => import("../pages/domain-extension"));
+const DomainRequests = lazy(() => import("../pages/domain-request"));
 const ServiceCategories = lazy(() => import("../pages/service-category"));
 const ServiceItems = lazy(() => import("../pages/service-item"));
 const Faqs = lazy(() => import("../pages/faq"));
@@ -208,6 +209,12 @@ export const protectedRoutes: RouteConfig[] = [
         element: <DomainExtensions />,
         layout: "default",
         permissions: ["view domain extensions"],
+    },
+    {
+        path: "/domain-requests",
+        element: <DomainRequests />,
+        layout: "default",
+        permissions: ["view domain requests"],
     },
     {
         path: "/service-categories",
